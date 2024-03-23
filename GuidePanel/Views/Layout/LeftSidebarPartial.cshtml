@@ -1,0 +1,464 @@
+﻿
+<div class="leftside-menu">
+
+    <!-- LOGO -->
+    <a href="~/" class="logo text-center logo-light">
+        <span class="logo-lg">
+            <img src="~/assets/images/logo-md-dark.png" alt="" height="60px">
+        </span>
+        <span class="logo-sm">
+            <img src="~/assets/images/logo.png" alt="" height="40">
+        </span>
+    </a>
+
+    <!-- LOGO -->
+    <a href="~/" class="logo text-center logo-dark">
+        <span class="logo-lg">
+            <img src="~/assets/images/logo-md-dark.png" alt="" height="60px">
+        </span>
+        <span class="logo-sm">
+            <img src="~/assets/images/logo.png" alt="" height="40">
+        </span>
+    </a>
+
+    <div class="h-100" id="leftside-menu-container" data-simplebar="">
+
+        <!--- Sidemenu -->
+        <ul class="side-nav">
+
+            <li class="side-nav-title side-nav-item">ADMİN PANEL</li>
+
+            <!--Dashboard Management-->
+            @*<li class="side-nav-item">
+                <a href="~/OtherPages/index.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>*@
+
+            <!--Management-->
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages"
+                   class="side-nav-link">
+                    <i class=" uil-suitcase-alt"></i>
+                    <span> Management </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarPages">
+                    <ul class="side-nav-second-level">
+
+                        <!--Image Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Image/Index">
+                                <span> Image Management </span>
+                            </a>
+                        </li>   <!--Image Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Agent/Index">
+                                <span> Agent Management </span>
+                            </a>
+                        </li>
+                       
+                        <!--Custom Help Page Management-->
+                        <li class="side-nav-item">
+                            <a href="/CustomPage/Index">
+                                <span> Custom Page Management </span>
+                            </a>
+
+                        </li>
+                        <!--Tag Management-->
+                        <li class="side-nav-item">
+                            <a href="/Tag/Index">
+                                <span> Tag Management </span>
+                            </a>
+                        </li>
+                        <!--Certificate Management-->
+                        <li class="side-nav-item">
+                            <a href="/Certificate/Index">
+                                <span> Certificate Management </span>
+                            </a>
+                        </li>
+                        
+                        <!--Mail Management-->
+                        <li class="side-nav-item">
+                            <a href="/Mail/Index">
+                                <span> Mail Management </span>
+                            </a>
+                        </li>
+                        <!--F.A.Q Category Management List-->
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarPagesAuth5" aria-expanded="false"
+                               aria-controls="sidebarPagesAuth5">
+                                <span> F.A.Q Management </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarPagesAuth5">
+                                <ul class="side-nav-third-level">
+                                    <li>
+                                        <a href="/Faq/Index">F.A.Q List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/FaqCategory/Index">F.A.Q Category List</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!--System Options Management-->
+                        <li class="side-nav-item">
+                            <a href="/SystemOption/Index">
+                                <span> System Options Management </span>
+                            </a>
+                        </li>
+                        <!--Tour Category Management List-->
+                        <li class="side-nav-item">
+                            <a href="/TourCategory/Index">
+                                <span> Tour Category Management </span>
+                            </a>
+                        </li>
+                        <!--Blog Management List-->
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarPagesAuth7" aria-expanded="false"
+                               aria-controls="sidebarPagesAuth7">
+                                <span>Blog Management</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarPagesAuth7">
+                                <ul class="side-nav-third-level">
+                                    <li>
+                                        <a href="/Blog/Index">Blog List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/BlogCategory/Index">Blog Category List</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!--Fixed Value Management List-->
+                        <li class="side-nav-item">
+                            <a href="/ConstantValue/Index">
+                                <span> Constant Value Management </span>
+                            </a>
+                        </li>
+                        <!--Role Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Role/Index">
+                                <span> Role Management </span>
+                            </a>
+                        </li>
+                        <!--User Management List-->
+                        <li class="side-nav-item">
+                            <a href="/User/Index">
+                                <span> User Management </span>
+                            </a>
+                        </li>
+                        <!--Subscriber Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Subscriber/Index">
+                                <span> Subscriber Management </span>
+                            </a>
+                        </li>
+                        <!--Destinational Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Destination/Index">
+                                <span> Destination Management </span>
+                            </a>
+                        </li>
+                        <!--Comment Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Comment/Index">
+                                <span> Comment Management </span>
+                            </a>
+                        </li>
+                        <!--Tripadvisor Comment Management List-->
+                        <li class="side-nav-item">
+                            <a href="/TripadvisorComment/Index">
+                                <span> Tripadvisor Comment Management </span>
+                            </a>
+                        </li>
+                        <!--Person Policy-->
+                        <li class="side-nav-item">
+                            <a href="/PersonPolicy/Index">
+                                <span> Person Policy </span>
+                            </a>
+                        </li>
+                        <!--Child Policy-->
+                        <li class="side-nav-item">
+                            <a href="/ChildPolicy/Index">
+                                <span> Child Policy </span>
+                            </a>
+                        </li>
+                        <!--SEO Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Seo/Index">
+                                <span> SEO Management </span>
+                            </a>
+                        </li>
+                        <!--Survey Management Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Survey/Index">
+                                <span> Survey Management </span>
+                            </a>
+                        </li>
+                        <!--Cancellation Policy Management List-->
+                        <li class="side-nav-item">
+                            <a href="/CancellationPolicy/Index">
+                                <span> Cancellation Policy </span>
+                            </a>
+                        </li>
+                        <!--ContactInfo  Management List-->
+                        <li class="side-nav-item">
+                            <a href="/ContactInfo/Index">
+                                <span> Contact Information </span>
+                            </a>
+                        </li>
+
+                        <!--Info Card Management List-->
+                        <li class="side-nav-item">
+                            <a href="/InfoCard/Index">
+                                <span> Information Card </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            @* blog  *@
+           
+            @* Operations *@
+            <li class="side-nav-item">
+                <a href="/Operation/Index" class="side-nav-link">
+                    <i class=" uil-suitcase-alt"></i>
+                    <span> Operations</span>
+                </a>
+            </li>
+            <!--Log Management-->
+            @*<li class="side-nav-item">
+                <a href="~/OtherPages/LogList.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Log</span>
+                </a>
+            </li>*@
+
+            <!--Additional Service Management-->
+            <li class="side-nav-item">
+                <a href="/AdditionalService/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Additional Service</span>
+                </a>
+            </li>
+
+            <!--Product Management-->
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages2" aria-expanded="false" aria-controls="sidebarPages"
+                   class="side-nav-link">
+                    <i class=" uil-suitcase-alt"></i>
+                    <span> Product Management </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarPages2">
+                    <ul class="side-nav-second-level">
+
+                        <!--Add-Product-->
+                        <li class="side-nav-item">
+                            <a href="/Product/AddProduct" class="side-nav-link">
+                                <span> Add Product</span>
+                            </a>
+                        </li>
+                        <!--Tour Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Tour/Index" class="side-nav-link">
+                                <span> Tour List</span>
+                            </a>
+                        </li>
+                        <!--Service Management List-->
+                        <li class="side-nav-item">
+                            <a href="/Service/Index" class="side-nav-link">
+                                <span>Service List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!--Vehicle Management-->
+            <li class="side-nav-item">
+                <a href="/Vehicle/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span>Vehicle</span>
+                </a>
+            </li>
+            
+            <!--Supplier Management-->
+            <li class="side-nav-item">
+                <a href="/Supplier/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span>Supplier</span>
+                </a>
+            </li>
+            <!--Discount Management-->
+            
+            <li class="side-nav-item">
+                <a href="/Discount/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span>Discount</span>
+                </a>
+            </li> 
+            <li class="side-nav-item">
+                <a href="/Driver/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span>Driver</span>
+                </a>
+            </li>
+
+            <!--Business Partners Management-->
+            @*<li class="side-nav-item">
+                <a href="~/OtherPages/BusinessPartners.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span>
+                        Business Partners
+                    </span>
+                </a>
+            </li>*@
+
+            <!--Tour Guide Management-->
+            @*<li class="side-nav-item">
+                <a href="~/OtherPages/TourGuideManagement.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Tour Guide </span>
+                </a>
+            </li>*@
+
+            <!--Driver Management-->
+            @*<li class="side-nav-item">
+                <a href="~/DriverManagement/DriverList.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Driver </span>
+                </a>
+            </li>*@
+
+            <!--Customers-->
+            <li class="side-nav-item">
+                <a href="/Customer/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Customers </span>
+                </a>
+            </li>
+
+            <!--Reservations-->
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages3" aria-expanded="false" aria-controls="sidebarPages"
+                   class="side-nav-link">
+                    <i class=" uil-suitcase-alt"></i>
+                    <span> Reservations </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarPages3">
+                    <ul class="side-nav-second-level">
+
+                        <li class="side-nav-item">
+                            <a href="/Reservation/ReservationList" class="side-nav-link">
+                                <span>Reservation List</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="/Reservation/UncomplatedReservationList" class="side-nav-link">
+                                <span>Uncomplated Reservation List</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="/Reservation/AskForPriceReservationList" class="side-nav-link">
+                                <span>Ask For Price Reservation List</span>
+                            </a>
+                        </li>
+@*                        <li class="side-nav-item">
+                            <a href="/Reservation/ComplatedReservationList" class="side-nav-link">
+                                <span>Complated Reservation List</span>
+                            </a>
+                        </li>*@
+                    </ul>
+                </div>
+            </li>
+
+            <!--Reservations-->
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarPages4" aria-expanded="false" aria-controls="sidebarPages"
+                   class="side-nav-link">
+                    <i class=" uil-suitcase-alt"></i>
+                    <span> Request </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarPages4">
+                    <ul class="side-nav-second-level">
+
+                        <li class="side-nav-item">
+                            <a href="/CustomTour/RequestList" class="side-nav-link">
+                                <span>Custom Tour Requests</span>
+                            </a>
+                        </li>
+@*                        <li class="side-nav-item">
+                            <a href="/Reservation/UncomplatedReservationList" class="side-nav-link">
+                                <span>Uncomplated Reservation List</span>
+                            </a>
+                        </li>*@
+                        @*                        <li class="side-nav-item">
+                        <a href="/Reservation/ComplatedReservationList" class="side-nav-link">
+                        <span>Complated Reservation List</span>
+                        </a>
+                        </li>*@
+                    </ul>
+                </div>
+            </li>
+
+            <!--Discount Management-->
+            @*<li class="side-nav-item">
+                <a href="~/DiscountManagement/DiscountList.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Discount </span>
+                </a>
+            </li>*@
+
+            <!--Contact Messages-->
+            <li class="side-nav-item">
+                <a href="/ContactMessage/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Contact Messages </span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="/TourGuide/Index" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Tour Guide </span>
+                </a>
+            </li>
+
+            <!--Progress Payments-->
+            @*<li class="side-nav-item">
+                <a href="~/OtherPages/ProgressPayments.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Progress Payments </span>
+                </a>
+            </li>*@
+
+            <!--General Settings-->
+            @*<li class="side-nav-item">
+                <a href="~/OtherPages/GeneralSettings.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> General Settings </span>
+                </a>
+            </li>*@
+
+            <!--Reports-->
+            <l@*i class="side-nav-item">
+                <a href="~/OtherPages/Reports.html" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Reports </span>
+                </a>
+            </li>*@
+        </ul>
+
+
+        <div class="clearfix"></div>
+
+    </div>
+    <!-- Sidebar -left -->
+
+</div>

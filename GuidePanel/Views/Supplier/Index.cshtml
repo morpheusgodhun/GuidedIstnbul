@@ -1,0 +1,62 @@
+﻿@using Dto.ApiPanelDtos.SupplierDtos
+@model List<SupplierListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Supplier List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Supplier/AddSupplier">
+                        Add Supplier
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    @* <th style="width: 0%;">Status</th> *@
+                    <th>Name</th>
+                    <th>Supplier Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var supplier in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/Supplier/EditSupplier/@supplier.Id">
+                                Update
+                            </a>
+                        </td>
+                     @*    <td>
+                            @if (supplier.Status)
+                            {
+                                <a href="/Supplier/ToggleSupplierStatus/@supplier.Id" class="btn btn-success w-100"> Active</a>
+                            }
+                            else
+                            {
+                                <a href="/Supplier/ToggleSupplierStatus/@supplier.Id" class="btn btn-danger w-100"> Passive</a>
+                            }
+
+                        </td> *@
+                        <td>
+                            @supplier.Name
+                        </td>
+                        <td>
+                            @supplier.SupplierType
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

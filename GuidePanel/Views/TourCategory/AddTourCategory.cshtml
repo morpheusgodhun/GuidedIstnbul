@@ -1,0 +1,107 @@
+﻿@using Dto.ApiPanelDtos.TourCategoryDtos;
+@model AddTourCategoryDto
+@{
+    ViewData["Title"] = "AddTourCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/TourCategory/Index">TourCategory List</a>
+        > Add Tour Category
+    </h4>
+    <div class="card-body">
+        <!--Add Tour Category Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data" id="post-form">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tourcatogoryname" class="form-label fw-bold">
+                        Tour Category
+                        Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required type="text" asp-for="CategoryName" class="form-control" id="tourCategoryName" onkeyup="convertTo()">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="slug" class="form-label fw-bold">
+                        Slug:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required type="text" asp-for="Slug" class="form-control" id="tourCategorySlug">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 ">
+                    <label for="icon" class="form-label fw-bold">
+                        Icon:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required class="form-control" type="file" name="Icon"
+                           placeholder="file not selected.">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 ">
+                    <label for="icon" class="form-label fw-bold">
+                        Banner Image(1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required class="form-control" type="file" name="BannerImage"
+                           placeholder="file not selected.">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="" class="form-label fw-bold">
+                        Content:<span class="text-danger fw-bold"></span>
+                    </label>
+                    <textarea asp-for="Content" class="ckeditor" name="cktext" id="cktext" rows="4" cols="4">  </textarea>
+                    <script>
+                        CKEDITOR.replace('cktext');
+
+                    </script>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Add Tour Category End-->
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function convertTo() {
+
+            var deger = $('#tourCategoryName').val().trim();
+
+            var chacters = {
+                Ç: 'c',
+                Ö: 'o',
+                Ş: 's',
+                İ: 'i',
+                I: 'i',
+                Ü: 'u',
+                Ğ: 'g',
+                ç: 'c',
+                ö: 'o',
+                ş: 's',
+                ı: 'i',
+                ü: 'u',
+                ğ: 'g',
+                " ": '-'
+            };
+            var stringtoarray = deger.split('');
+            for (var i = 0; i < stringtoarray.length; i++) {
+                stringtoarray[i] = chacters[stringtoarray[i]] || stringtoarray[i];
+            }
+
+            var arraytostring = stringtoarray.join('');
+            var cleanMessage = arraytostring.replace(/\./g, "-").replace(/\//g, "-").replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+            $('#tourCategorySlug').val(cleanMessage);
+
+        }
+    </script>
+
+}
+

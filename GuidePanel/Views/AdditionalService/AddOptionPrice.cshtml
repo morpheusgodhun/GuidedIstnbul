@@ -1,0 +1,77 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@using Dto.ApiPanelDtos.PersonPolicyDtos;
+@model AddAdditionalServiceOptionPriceDto
+@{
+    ViewData["Title"] = "AddOptionPrice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Add Option Price</h4>
+    <div class="card-body">
+        <!--Add Blog Category Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="OptionID" value="@ViewBag.OptionID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        From Date<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="date" asp-for="FromDate" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        To Date<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="date" asp-for="ToDate" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        Priority<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="Priority" class="form-control">
+                </div>
+                @if ((bool)ViewBag.IsPerPerson)
+                {
+                    <input hidden name="Prices[0].PersonPolicyID" value="@null" />
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="blogcategoryname" class="form-label fw-bold">
+                            Price:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="number" name="Prices[0].Price" class="form-control">
+
+                    </div>
+                }
+                else
+                {
+                    int i = -1;
+                    @foreach (var personPolicy in ((List<PersonPolicyDto>)ViewBag.PersonPolicyList).OrderBy(x => x.Order).ThenBy(x => x.PersonPolicyID))
+                    {
+                        i++;
+                        <input hidden name="Prices[@i].PersonPolicyID" value="@personPolicy.PersonPolicyID" />
+                        <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                            <label for="blogcategoryname" class="form-label fw-bold">
+                                (@personPolicy.FromPerson - @personPolicy.ToPerson) Person Price:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <input type="number" name="Prices[@i].Price" class="form-control">
+                        </div>
+                        
+                    }
+                }
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Add Blog Category End-->
+
+    </div>
+</div>
+

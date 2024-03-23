@@ -1,0 +1,57 @@
+﻿@using Dto.ApiPanelDtos.ChildPolicyDtos;
+@model AddChildPolicyDto
+@{
+    ViewData["Title"] = "AddChildPolicy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/ChildPolicy/Index">Policy List</a>
+        > Add Child Policy</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Child Policy Start-->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="percent" class="form-label fw-bold">
+                        From Age:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="FromAge" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="percent" class="form-label fw-bold">
+                        To Age:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="ToAge" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="percent" class="form-label fw-bold">
+                        Percent:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="PayPercent" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="Order" class="form-control">
+                </div>
+                <!-- Button -->
+                <div class="col-sm-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Add Child Policy End-->
+    </div>
+</div>
+

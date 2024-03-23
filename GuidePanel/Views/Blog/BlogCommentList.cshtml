@@ -1,0 +1,62 @@
+﻿@using Dto.ApiPanelDtos.BlogDtos;
+@model List<BlogCommentListDto>
+@{
+    ViewData["Title"] = "BlogCommentList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Blog Comment List</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Status</th>
+                    <th>Create Date</th>
+                    <th>To Answer</th>
+                    <th>Sender Name</th>
+                    <th>Sender Email</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var blogComment in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (blogComment.Status)
+                            {
+                                <a href="/Blog/ToggleBlogCommentStatus/@blogComment.BlogCommentID/@blogComment.BlogID" class="btn btn-success w-100">Active</a>
+                            }
+                            else
+                            {
+                                <a href="/Blog/ToggleBlogCommentStatus/@blogComment.BlogCommentID/@blogComment.BlogID" class="btn btn-danger w-100">Passive</a>
+                            }
+
+                        </td>
+                        <td>
+                            @blogComment.SendDate.ToString("dd-MMM-yyyy")
+                        </td>
+                        <td>
+                            @if (blogComment.ToAnswer == null)
+                            {
+                                <span>Blog</span>
+                            }else
+                            {
+                                <span>@blogComment.ToAnswer</span>
+                            }
+                        </td>
+                        <td>@blogComment.SenderName</td>
+                        <td>@blogComment.SenderEmail</td>
+                        <td>@blogComment.Message</td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+

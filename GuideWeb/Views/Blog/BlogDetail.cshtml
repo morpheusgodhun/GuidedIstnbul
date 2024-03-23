@@ -1,0 +1,463 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Blog;
+@using GuideWeb.Helpers;
+@model GetBlogDetailDto
+@{
+    ViewData["PrivateTitle"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string languagePrefix = ViewData["language"].ToString();
+    var seoList = (List<SeoListByRouteIdDto>)ViewData["seoList"];
+    var messages = TempData["ErrorMessages"] as IEnumerable<string>;
+
+
+}
+
+<div class="inner-banner-section" style="background-image: url(@Resource.ImagePath/@Model.BannerImagePath);">
+    <img src="/assets/images/bg/inner-banner-vctr.png" class="inner-banner-vector" alt="@Model.Title" title="@Model.Title">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-md-10 col-sm-12">
+                <div class="breadcrumb-area">
+                    <h1>@Html.Raw(Model.Title)</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="blog-standard-section pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 pe-lg-3">
+                <div class="blog-details-single">
+                    <img src="@Resource.ImagePath/@Model.CardImagePath" class="img-fluid mb-3 w-100 p-5" alt="@Model.Title" title="@Model.Title">
+                    <div class="blog-share-area">
+                        <div class="row mb-3">
+                            <div class=" clearfix">
+                                <div class="float-start">
+                                    <p class="mb-0">
+                                        <b>@Model.ConstantValues.FirstOrDefault(x => x.Key == "BlogDetail.Category").Value</b>
+                                        <a style="color:orange" href="@Helpers.PrepareUrl(languagePrefix,Model.CategoryDto.Slug)">@Model.CategoryDto.Name</a>
+
+                                    </p>
+                                    <p class="mt-0">
+                                        <b>@Helpers.Wcv(Model.ConstantValues,"BlogDetail.Tags")</b>
+                                        @foreach (var tag in Model.Tags)
+                                        {
+                                            <a style="color:#00b1e8" href="@Helpers.PrepareUrl(languagePrefix,tag.Slug)">@tag.Name</a>
+                                        }
+
+                                    </p>
+                                </div>
+
+                                <div class="float-end">
+                                    <p class="mb-0"><b>@Helpers.Wcv(Model.ConstantValues,"BlogDetail.Comments")</b> @Model.CommentCount </p>
+                                    <div class="blog-share">
+                                        <div class="front">
+                                            <img data-src="/assets/images/icons/blog-share-icon.svg"
+                                                 alt="Share" title="Share" class="lazy"><span>
+                                                @Helpers.Wcv(Model.ConstantValues, "BlogDetail.Share")
+                                            </span>
+                                        </div>
+                                        <div class="back">
+                                            <ul class="share-list d-flex justify-content-end flex-row align-items-center gap-3">
+                                                <li>
+                                                    <a href="#" title="Facebook"><i class="bx bxl-facebook"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" title="Twitter">
+                                                        <i class="bx bxl-twitter"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" title="Instagram">
+                                                        <i class="bx bxl-instagram"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <h3 class="m5-4 custom-title"> @Model.Title</h3>
+                    <div class="mt-5">
+                        @Html.Raw(Model.Content1)
+                    </div>
+                </div>
+                <hr>
+                @if (Model.RecomendedTours.Count > 0)
+                {
+                    <div class="mb-5">
+                        <div class="mt-5 mb-5">
+                            <h2 class="custom-title">@Helpers.Wcv(Model.ConstantValues,"BlogDetail.RecomendedTour.Title")</h2>
+                        </div>
+                        <div class="container">
+                            <div class="row justify-content-center g-4">
+                                @foreach (var tour in Model.RecomendedTours)
+                                {
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-8">
+                                        <div class="deal-single1">
+                                            <div class="ribbon_3">
+                                                <span>@tour.TourSegment.TypeName</span>
+                                            </div>
+                                            <div class="deal-image">
+                                                <!-- <span class="discount-bagde">20%</span> -->
+                                                <a href="tour-package-details.html">
+                                                    <img data-src="@Resource.ImagePath/@tour.TourImagePath"
+                                                         class="w-100 lazy" alt="@tour.TourName" title="@tour.TourName">
+                                                </a>
+                                            </div>
+                                            <div class="deal-content">
+                                                <h4 style="">
+                                                    <a href="tour-package-details.html" title="@tour.TourName">
+                                                        @tour.TourName
+                                                    </a>
+                                                </h4>
+
+                                                <div class="clearfix mt-5">
+                                                    <div class="row ">
+                                                        <div class="col-lg-6">
+                                                            @*<div class="price">
+                                                    <span class="float-start">
+                                                    @Helpers.Wcv(Model.ConstantValues, "BlogDetail.RecomendedTour.From")
+                                                    $@tour.TourPrice
+                                                    </span><!-- <del>/$768</del> -->
+                                                    </div>*@
+                                                            <div class="">
+                                                            </div>
+                                                            <div class="row" style="margin-top: 80px;">
+                                                                <div class="clearfix review-area content w-100"
+                                                                     style="margin-top: -55px; justify-content: space-between;">
+                                                                    <i data-star="@tour.TourRate"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <a href="tour-package-details.html" title="Explore Now" class="float-end eg-btn btn--primary-outline btn--md mt-2">
+                                                                @Model.ConstantValues.FirstOrDefault(x => x.Key == "BlogDetail.RecomendedTour.ExplorerNow").Value
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                }
+                <div class="mt-5">
+                    @Html.Raw(Model.Content2)
+                </div>
+                @if (Model.RecomendedBlogs.Count > 0)
+                {
+                <hr>
+                    <div class="mb-5">
+                        <div class="mt-5 mb-5">
+                            <h2 class="text-center custom-title">@Helpers.Wcv(Model.ConstantValues, "BlogDetail.RecomendedBlog.Title")</h2>
+                        </div>
+                        <div class="container">
+                            <div class="row justify-content-center g-4">
+                                @foreach (var blog in Model.RecomendedBlogs)
+                                {
+
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-8">
+                                        <div class="deal-single1 h-100 ">
+                                            <div class="deal-image">
+                                                <!-- <span class="discount-bagde">20%</span> -->
+                                                <a href="/Blog/BlogDetail" title="@blog.BlogTitle">
+                                                    <img data-src="@Resource.ImagePath/@blog.BlogImagePath"
+                                                         class="w-100 lazy" alt="@blog.BlogTitle" title="@blog.BlogTitle">
+                                                </a>
+                                            </div>
+                                            <div>
+
+                                                <div class="deal-content h-auto">
+                                                    <h4>
+                                                        <a href="/Blog/BlogDetail" title="@blog.BlogTitle">
+                                                            @blog.BlogTitle
+                                                        </a>
+                                                    </h4>
+
+                                                    <div class="clearfix h-100 mt-2 mb-5">
+                                                        <div style="text-align: justify;" class="row ">
+                                                            <p>
+                                                                @blog.BlogShortDescription
+                                                            </p>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <a class="eg-btn btn--primary btn--md w-100 position-absolute fixed-bottom" href="/Blog/BlogDetail" title="Read More">
+                                                @Model.ConstantValues.FirstOrDefault(x => x.Key == "BlogDetail.RecomendedBlog.ReadMore").Value
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="blog-share-area">
+                    <div class="row mb-3">
+                        <div class="author-area clearfix">
+                            <div class="float-start">
+                                <p class="mb-0">
+                                    <b>@Model.ConstantValues.FirstOrDefault(x => x.Key == "BlogDetail.Category").Value</b>
+                                    <a style="color:orange" href="@Helpers.PrepareUrl(languagePrefix,Model.CategoryDto.Slug)">@Model.Category</a>
+
+                                </p>
+                                <p class="mt-0">
+                                    <b>@Helpers.Wcv(Model.ConstantValues,"BlogDetail.Tags")</b>
+                                    @foreach (var tag in Model.Tags)
+                                    {
+                                        <a style="color:#00b1e8" href="@Helpers.PrepareUrl(languagePrefix,tag.Slug)">@tag.Name</a>
+                                    }
+
+                                </p>
+                            </div>
+
+                            <div class="float-end">
+                                <p class="mb-0"><b>@Helpers.Wcv(Model.ConstantValues, "BlogDetail.Comments")</b> @Model.CommentCount </p>
+                                <div class="blog-share">
+                                    <div class="front">
+                                        <img data-src="/assets/images/icons/blog-share-icon.svg"
+                                             alt="Share" title="Share" class="lazy"><span>@Helpers.Wcv(Model.ConstantValues, "BlogDetail.Share")</span>
+                                    </div>
+                                    <div class="back">
+                                        <ul class="share-list d-flex justify-content-end flex-row align-items-center gap-3">
+                                            <li>
+                                                <a href="#" title="Facebook"><i class="bx bxl-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" title="Twitter"><i class="bx bxl-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" title="Instagram"><i class="bx bxl-instagram"></i></a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="mt-5 mb-5">
+                    <h3 class="custom-title"> @Helpers.Wcv(Model.ConstantValues,"BlogDetail.Comment.Title")</h3>
+                </div>
+                @foreach (var comment in Model.Comments.Where(x => x.ToAnswer == null || x.ToAnswer == "").OrderBy(y => y.SendDate))
+                {
+                    <!--.Where(x => x.BlogCommentID == null).OrderBy(y => y.SendDate)-->
+
+                    <div>
+                        <div class="blog-details-author">
+                            <div class="author-image">
+                                <img data-src="@Resource.ImagePath/@comment.ProfilePhotoPath" class="img-fluid lazy" alt="@comment.SenderName" title="@comment.SenderName">
+                            </div>
+                            <div class="author-content row">
+                                <div class="clearfix">
+                                    <h5 class="d-inline-block float-start">@comment.SenderName</h5>
+                                    <p class="float-end">@comment.SendDate.ToString("dd.MM.yyyy")</p>
+                                </div>
+                                <p>
+                                    @comment.Message
+                                </p>
+                                <div class="clearfix">
+                                    <button class="reply-button">
+                                        <p class="mb-0"><b>@Helpers.Wcv(Model.ConstantValues,"BlogDetail.Comment.Reply") </b></p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        @foreach (var reply in Model.Comments.Where(x => x.ToAnswer == comment.BlogCommentID).OrderBy(y => y.SendDate))
+                        {
+                            <div>
+                                <div class="blog-details-author reply">
+                                    <div class="author-image">
+                                        <img data-src="@Resource.ImagePath/@reply.ProfilePhotoPath" class="img-fluid lazy" alt="@reply.SenderName" title="@reply.SenderName">
+                                    </div>
+                                    <div class="author-content w-100">
+                                        <div class="clearfix ">
+                                            @*<p><b>@Model.ConstantValues.FirstOrDefault(x=>x.Key == "BlogDetail.ToComment").Value </b> &#64;@comment.Name</p>*@
+                                            <h5 class="d-inline-block float-start">@reply.SenderName</h5>
+                                            <p class="float-end">@reply.SendDate.ToString("dd.MM.yyyy")</p>
+                                        </div>
+                                        <p>
+                                            @reply.Message
+                                        </p>
+                                        <div class="clearfix">
+                                            <button class="reply-button">
+                                                <p class="mb-0"><b>@Helpers.Wcv(Model.ConstantValues, "BlogDetail.Comment.Reply") </b></p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+
+                }
+
+                <!--Kullanıcı login olmuşsa yorum yapabilsin-->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="comment-form-area mt-5">
+                        <h3 class="blog-details-subtitle">@Helpers.Wcv(Model.ConstantValues,"BlogDetail.LeaveComment.Title")</h3>
+                        <!-- <p>Your email address will not be published. Required fields are marked *</p> -->
+                        <div class="blog-comment-form mt-2">
+                            <div class="contact-from-wrapper">
+                                <form method="post" action="/Blog/BlogComment">
+                                    <input type="hidden" asp-for="BlogID">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-inner">
+                                  
+
+                                                <textarea name="CommentContent"  placeholder="@Helpers.Wcv(Model.ConstantValues, "BlogDetail.LeaveComment.MessagePlaceholder")" rows="5" required></textarea>
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 clearfix">
+                                            <div class="g-recaptcha float-start" data-sitekey="@ViewBag.Sitekey"></div>
+
+                                            <button type="submit"
+                                                    class="float-end eg-btn btn--primary btn--lg submit-btn" title="Post Comment">
+                                                @Helpers.Wcv(Model.ConstantValues,"BlogDetail.LeaveComment.SendButton")
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br />
+                                @if (messages != null)
+                                {
+                                    <div class="text-danger">
+                                        <ul>
+                                            @foreach (var error in messages)
+                                            {
+                                                <li>@error</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+            @await Component.InvokeAsync("BlogSidebarViewComponent")
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@graph": [
+        {
+          "@@type": ["Person", "Organization"],
+          "@@id": "https://localhost:7115/#person",
+          "name": "Guided Istanbul Tours - Ranked #1 on Tripadvisor",
+          "sameAs": ["https://www.facebook.com/privateguidedistanbultours"],
+          "logo": {
+            "@@type": "ImageObject",
+            "@@id": "https://localhost:7115/#logo",
+            "url": "https://localhost:7115/assets/images/logo-lg.png",
+            "contentUrl": "https://localhost:7115/assets/images/logo-lg.png",
+            "caption": "Guided Istanbul Tours - Ranked #1 on Tripadvisor",
+            "inLanguage": "en-US",
+            "width": "250",
+            "height": "250"
+          },
+          "image": {
+            "@@type": "ImageObject",
+            "@@id": "https://localhost:7115/#logo",
+            "url": "https://localhost:7115/assets/images/logo-lg.png",
+            "contentUrl": "https://localhost:7115/assets/images/logo-lg.png",
+            "caption": "Guided Istanbul Tours - Ranked #1 on Tripadvisor",
+            "inLanguage": "en-US",
+            "width": "250",
+            "height": "250"
+          }
+        },
+        {
+          "@@type": "WebSite",
+          "@@id": "https://localhost:7115/#website",
+          "url": "https://localhost:7115/",
+          "name": "Guided Istanbul Tours - Ranked #1 on Tripadvisor",
+          "publisher": {
+            "@@id": "https://localhost:7115/#person"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@@type": "ImageObject",
+          "@@id": "@Model.BannerImagePath",
+          "url": "@Model.BannerImagePath",
+          "width": "1200",
+          "height": "800",
+          "caption": "",
+          "inLanguage": "en-US"
+        },
+        {
+          "@@type": "WebPage",
+          "@@id": "",
+          "url": "",
+          "name": "@Model.Title",
+          "datePublished": "@Model.Date",
+          "dateModified": "@Model.Date",
+          "isPartOf": {
+            "@@id": "https://localhost:7115//#website"
+          },
+          "primaryImageOfPage": {
+            "@@id": "@Model.BannerImagePath"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@@type": "BlogPosting",
+          "headline": "@Model.Title",
+          "keywords": "@Model.Tags",
+          "datePublished": "@Model.Date",
+          "dateModified": "@Model.Date",
+          "articleSection": "@Model.Category",
+          "author": {
+            "@@id": "https://www.guidedistanbultours.com/author/guided-istanbul-tours/",
+            "name": "Guided Istanbul Tours"
+          },
+          "publisher": {
+            "@@id": "https://www.guidedistanbultours.com/#person"
+          },
+          "description": "",
+          "name": "@Model.Title - Guided Istanbul Tours",
+          "@@id": "",
+          "isPartOf": {
+            "@@id": ""
+          },
+          "image": {
+            "@@id": "@Model.BannerImagePath"
+          },
+          "inLanguage": "en-US",
+          "mainEntityOfPage": {
+            "@@id": ""
+          }
+        }
+      ]
+    }
+</script>

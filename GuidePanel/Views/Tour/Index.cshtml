@@ -1,0 +1,137 @@
+﻿@using Dto.ApiPanelDtos.LanguageDtos;
+@using Dto.ApiPanelDtos.ProductDtos.TourDtos;
+@model (List<TourListDto2> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Tour List</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Show On Homepage</th>
+                    <th style="width: 0%;">Detail</th>
+                    <th style="width: 0%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th>Tour Type</th>
+                    <th>Tour Title</th>
+                    <th style="width: 0%;">Order</th>
+                    @*<th style="width: 0%;">Faq</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tour in Model.DataModel.OrderBy(x => x.Order))
+                {
+                    <tr>
+                        <td>
+                            @if (tour.ShowOnHomepage)
+                            {
+                                <a class="btn btn-info w-100" href="/Tour/ToggleShowOnHomepage/@tour.ProductID">
+                                    Show
+                                </a>
+                            }else
+                            {
+                                <a class="btn btn-danger w-100" href="/Tour/ToggleShowOnHomepage/@tour.ProductID">
+                                    Dont Show
+                                </a>
+                            }
+                            
+                        </td>
+                        <td>
+                            @if (@tour.Uncompleted){
+
+                            }else{
+                                <div class="btn-group">
+                                    <a href="/Tour/TourDetail/@tour.ProductID"  class="btn btn-success">Detail</a>
+                                    <button type="button"
+                                            class="btn btn-success dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @foreach (var language in Model.LangaugeModel)
+                                        {
+                                            <li>
+                                                <a class="dropdown-item"
+                                                   href="/Tour/TourLanguageDetail/@tour.ProductID/@language.LanguageID">@language.LanguageName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @if (@tour.Uncompleted)
+                            {
+                                <a href="/Product/AddTour/@tour.ProductID" class="btn btn-warning w-100">Continue Adding</a>
+                            }
+                            else
+                            {
+                                <div class="btn-group">
+                                    <a href="/Tour/EditTour/@tour.ProductID" class="btn btn-primary">Update</a>
+                                    <button type="button"
+                                            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @foreach (var language in Model.LangaugeModel)
+                                        {
+                                            <li>
+                                                <a class="dropdown-item"
+                                                   href="/Tour/LanguageEditTour/@tour.ProductID/@language.LanguageID">@language.LanguageName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </td>
+                        <td>
+
+                            <div class="btn-group">
+
+                                @if (tour.Status)
+                                {
+                                    <a href="/Tour/ToggleTourStatus/@tour.ProductID" class="btn btn-success w-100">Active</a>
+                                }
+                                else
+                                {
+                                    <a href="/Tour/ToggleTourStatus/@tour.ProductID" class="btn btn-danger w-100">Passive</a>
+                                }
+                                <button type="button" class="btn btn-@(tour.Status ? "success":"danger") dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                <ul class="dropdown-menu">
+                                        <li>
+                                        <a class="dropdown-item" href="/Tour/Delete/@tour.TourID/">Delete</a>
+                                        </li>
+                                </ul>
+                            </div>
+
+
+                            
+                            
+                        </td>
+                        <td>
+                            @tour.TourType
+                        </td>
+                        <td>
+                            @tour.TourTitle
+                        </td>
+                        <td>
+                            @tour.Order
+                        </td>
+                       @* <td>
+                            <a href="/Tour/TourFaqList/@tour.ProductID" class="btn btn-secondary">Tour F.A.Q</a>
+                        </td>*@
+
+                    </tr>
+                }
+                
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+

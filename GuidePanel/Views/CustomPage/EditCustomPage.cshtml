@@ -1,0 +1,55 @@
+﻿@using Dto.ApiPanelDtos.CustomPageManagementDto;
+@model EditCustomPageDto
+@{
+    ViewData["Title"] = "EditCustomPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="float-start">
+            <a href="/CustomPage/Index">Custom Page List</a>
+            > Edit Custom Page > @Model.PageName</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Custom Help Page Management Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <input hidden value="@Model.PageID" name="PageID" />
+                <input hidden asp-for="ImagePath" />
+                <!-- PAge Name -->
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="pagename" class="form-label fw-bold">
+                        Page Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" id="pagename" disabled value="@Model.PageName" class="form-control">
+                </div>
+                <!-- Image -->
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="image" class="form-label fw-bold">
+                        Banner Image(1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="file" id="image" name="Image" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+
+            </div>
+        </form>
+        <!--Edit Custom Page Management End-->
+
+    </div>
+</div>
+

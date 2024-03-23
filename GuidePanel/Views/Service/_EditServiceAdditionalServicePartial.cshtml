@@ -1,0 +1,115 @@
+﻿@using Dto.ApiPanelDtos.ProductDtos.GeneralDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model EditProductAdditionalServiceDto
+
+
+<div id="editAdditionalServiceModal" class="modal fade" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                Edit Additional Service
+            </div>
+            <div class="modal-body p-2">
+                <form method="post" action="/Service/EditProductAdditionalService">
+                    <input id="productIdInput" hidden name="ProductID"  />
+                    <input hidden name="ProductAdditionalServiceID" value="@Model.ProductAdditionalServiceID" />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12  mb-3 mr-1">
+                            <label for="option-name" class="form-label fw-bold">
+                                Additional Service:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <select asp-for="AdditionalServiceID" required class="form-select" id="edit-additionalServiceInput-@Model.ProductAdditionalServiceID">
+                                <option selected value="@Model.AdditionalServiceID">@Model.AdditionalServiceName</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-12  mb-3 mr-1">
+                            <label for="option-name" class="form-label fw-bold">
+                                Option:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <select asp-for="OptionIDs" required class="js-example-basic-multiple" id="edit-optionInput" multiple="multiple">
+                                @foreach (var option in (List<SelectListOptionDto>)ViewBag.OptionSelectList)
+                                {
+                                    @if (Model.OptionIDs.Contains(option.OptionID))
+                                    {
+                                        <option selected value="@option.OptionID">@option.Option</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@option.OptionID">@option.Option</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-md-6  mb-3 ">
+                            <label for="option-name" class="form-label fw-bold">
+                                Order:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <input required type="number" asp-for="Order" class="form-control" id="option-name">
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 mb-3 ">
+                            <label for="" class="form-label fw-bold d-block">
+                                Is required:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            @if (Model.IsRequired)
+                            {
+                                <input checked asp-for="IsRequired" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="edit-required">
+                            }
+                            else
+                            {
+                                <input asp-for="IsRequired" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="edit-required">
+                            }
+
+                            <label class="form-check-label" for="edit-required">
+                                Required
+                            </label>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 mb-3">
+                            <label for="" class="form-label fw-bold d-block">
+                                Is Comission Valid?:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            @if (Model.IsComissionValid)
+                            {
+                                <input checked asp-for="IsComissionValid" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="edit-comissionValid">
+                            }
+                            else
+                            {
+                                <input asp-for="IsComissionValid" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="edit-comissionValid">
+                            }
+                            <label class="form-check-label" for="edit-comissionValid">
+                                Valid
+                            </label>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 mb-3 " style="display:none">
+                            <label for="" class="form-label fw-bold d-block">
+                                Allow Multiple Select:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            @if (Model.IsMultiSelect)
+                            {
+                                <input checked asp-for="IsMultiSelect" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="edit-multipleSelect">
+                            }
+                            else
+                            {
+                                <input asp-for="IsMultiSelect" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="edit-multipleSelect">
+                            }
+
+                            <label class="form-check-label" for="edit-multipleSelect">
+                                Allow
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <!-- Button -->
+                        <div class="col-sm-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                            <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                                SAVE
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,48 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Reservation;
+@model GetReservationInquiryDto
+@{
+    ViewData["Title"] = "ReservationInquiry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string language = ViewData["language"].ToString();
+    string reservationInquiryResponseUrl = $"/{language}/reservation-inquiry-response";
+}
+
+<div class="feature-section2 mt-120 mb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="row">
+                    <div class="col text-center">
+                        <h1>Reservation Inquiry</h1>
+                    </div>
+                    <div class=" form-left h-100 py-5 px-5 booking-form-box">
+                        <fieldset>
+                            <div class="form-card border px-3">
+                                <form id="msform" action="@reservationInquiryResponseUrl" class="banner-form row">
+                                    <div class="col-10">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-barcode"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ReservationInquiry.ReservationCodePlaceholder")" type="text" name="reservationCode" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit"
+                                                class="eg-btn btn--primary btn--md submit-btn float-end">
+                                            @Helpers.Wcv(Model.ConstantValues,"ReservationInquiry.SearchButton")
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,132 @@
+﻿@using Dto.ApiPanelDtos.ImageManagementDtos;
+@using GuidePanel.Helpers;
+@model EditImageDto
+@{
+    ViewData["Title"] = "EditImage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Image/Index">Image List</a>
+        > Edit Image > @Model.PageName
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!-- Edit Image Management Start -->
+        <!-- start page title -->
+
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="ImageID" />
+            <input hidden asp-for="ImagePath" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="page" class="form-label fw-bold">Page:</label>
+                    <input type="text" class="form-control" name="PageName" disabled value="@Model.PageName">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 ">
+                    <label for="icon" class="form-label fw-bold">
+                        Image (1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-image" class="float-end">
+                        Current Image
+                    </button>
+                    <!-- current icon Modal-->
+                    <div class="modal fade" id="current-image" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.ImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- current icon Modal-->
+                  
+                    <input name="Image" required class="form-control" type="file" id="ImagePath"
+                           placeholder="file not selected.">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+
+@*
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="ImageID" />
+            <input hidden asp-for="ImagePath" />
+            <div class="row">
+                <!-- PAge Name -->
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="page" class="form-label fw-bold">Page:</label>
+                    <input type="text" class="form-control" name="PageName" disabled value="@Model.PageName">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="image" class="form-label fw-bold">
+                        Image (1903x650): <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="file" required name="Image" placeholder="file not selected.">
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6 mb-3 ">
+                <label for="icon" class="form-label fw-bold">
+                    Image:<span class="text-danger fw-bold">*</span>
+                </label>
+                <button type="button" style="border:none" data-bs-toggle="modal"
+                        data-bs-target="#current-image" class="float-end">
+                    Current Image
+                </button>
+
+                <!-- current icon Modal-->
+                <div class="modal fade" id="current-image" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Current Banner Image</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="@Resource.ImagePath/@Model.ImagePath" class="w-100">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>*@
+        <!-- Edit Image Management End -->
+
+    </div>
+</div>
+

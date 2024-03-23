@@ -1,0 +1,76 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.PageComponets;
+@using GuideWeb.Helpers;
+@model GetFindTourFormDto
+
+<div class="searchbar-section">
+    <div class="container">
+        <div class="multi-main-search">
+            <form class="p-0 m-0" asp-action="TourFilter" asp-controller="Tour" method="get">
+            <div class="row align-items-center g-4">
+                
+                    <div class="col-lg-10">
+                        <div class="row gx-0 gy-4 align-items-center">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="search-box-single">
+                                    <div class="searchbox-icon">
+                                        <img src="/assets/images/icons/form-location.svg" alt="form-location">
+                                    </div>
+                                    <div class="searchbox-input">
+                                        <select name="Destinations" class="defult-select-drowpown" data-placeholder="" id="place-dropdown">
+                                            <option value="">@Helpers.Wcv(Model.ConstantValues, "TourFilterComponent.WhereToPlaceholder") </option>
+                                            @foreach (var option in Model.WhereToOptions)
+                                            {
+                                                <option value="@option.OptionID">@option.Option</option>
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @* <div class="col-lg-4 col-md-4">
+                                <div class="search-box-single">
+                                    <div class="searchbox-icon">
+                                        <img src="/assets/images/icons/calendar.svg" alt="calendar">
+                                    </div>
+                                    <div class="searchbox-input">
+                                        <select name="Months" class="defult-select-drowpown" data-placeholder=""
+                                                id="activity-dropdown">
+                                            <option value="">@Helpers.Wcv(Model.ConstantValues, "TourFilterComponent.SelectMonthPlaceholder")</option>
+                                            @foreach (var option in Model.SelectMonthOptions)
+                                            {
+                                                <option value="@option.OptionID">@option.Option</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> *@
+                            <div class="col-lg-6 col-md-6">
+                                <div class="search-box-single remove-after">
+                                    <div class="searchbox-icon">
+                                        <img src="/assets/images/icons/travelling.svg" alt="travelling">
+                                    </div>
+                                    <div class="searchbox-input">
+                                        <select name="TourTypes" class="defult-select-drowpown" id="person-dropdown">
+                                            <option selected="TourType" value="">@Helpers.Wcv(Model.ConstantValues, "TourFilterComponent.TourTypePlaceholder")</option>
+                                            @foreach (var option in Model.TourTypeOptions)
+                                            {
+                                                <option value="@option.OptionID">@option.Option</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 d-flex justify-content-end">
+                        <div class="main-form-submit w-100">
+                            <button type="submit" class="eg-btn btn--primary btn--lg w-100" alt="Find Tour" title="Find Tour">@Helpers.Wcv(Model.ConstantValues, "TourFilterComponent.FindTourButton")</button>
+                        </div>
+                    </div>
+                
+                
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

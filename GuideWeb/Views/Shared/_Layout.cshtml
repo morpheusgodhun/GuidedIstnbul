@@ -1,0 +1,25 @@
+﻿@{
+    string language = ViewData["language"].ToString();
+}
+<!DOCTYPE html>
+<html lang="@language">
+@await Html.PartialAsync("/Views/Layout/_HeadPartial.cshtml")
+<body>
+    @await Html.PartialAsync("/Views/Layout/_PreloaderPartial.cshtml")
+
+    @*@await Html.PartialAsync("/Views/Layout/_TopbarPartial.cshtml")*@
+    @await Component.InvokeAsync("_TopbarPartial")
+
+    @await Component.InvokeAsync("_NavbarPartial")
+
+    @RenderBody()
+
+    @await Component.InvokeAsync("FooterViewComponent")
+    
+    @await Html.PartialAsync("/Views/Layout/_ConstantObjectPartial.cshtml")
+
+    @await Html.PartialAsync("/Views/Layout/_ScriptPartial.cshtml")
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

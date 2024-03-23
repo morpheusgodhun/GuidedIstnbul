@@ -1,0 +1,180 @@
+﻿@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@using GuideWeb.Helpers;
+@model ReservationDetailDto
+@{
+    ViewData["Title"] = "ReservationDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col" id="payment-success-text">
+            <img class="mb-4" style="width: 25%; height: 25%;" src="@Resource.ImagePath/green-check.svg" alt="Have Fun">
+            <h1 class="text-center">Have Fun</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center g-4">
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-10">
+            <div class="facility-single2">
+                <div class="facility-content">
+                    <h4>Code</h4>
+                    <p>@Model.ReservationCode</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-10">
+            <div class="facility-single2">
+                <div class="facility-content">
+                    <h4>Starting Date</h4>
+                    <p>@Model.StartDate</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-10">
+            <div class="facility-single2">
+                <div class="facility-content">
+                    <h4>Price</h4>
+                    <p>@Model.TotalPrice<span>$</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+
+<div class="container mb-60 mt-60">
+
+    <div class="card">
+        @if (Model.BookingStatus >= 2)
+        {
+            <div style="width : 80%; margin-left : 10%">
+                <div class="row">
+                    <div class="payment-title mb-3 text-center">
+                        <h3 class="h1 fw-bold mb-4">Participant Informations</h3>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Surname</th>
+                                <th class="text-center">Birth Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var participant in Model.Participants)
+                            {
+                                <tr>
+                                    <td class="text-center">@participant.Name</td>
+                                    <td class="text-center">@participant.Surname</td>
+                                    <td class="text-center">@participant.BirthDate</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <br />
+
+            <br />
+        }
+
+        <div style="width : 80%; margin-left : 10%">
+            <div class="row">
+                <div class="payment-title mb-3 text-center">
+                    <h3 class="h1 fw-bold mb-4">Product Informations</h3>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                        @if (Model.IsTour)
+                        {
+                            <tr>
+                                <th class="ps-4">Tour</th>
+                                <td class="ps-4">@Model.ProductName</td>
+                                <td class="ps-4">@Model.TourPrice</td>
+                            </tr>
+                        }
+
+                        @foreach (var service in Model.AdditionalServices)
+                        {
+                            <tr>
+                                <th class="ps-4">@service.AdditionalServiceName</th>
+                                <td class="ps-4">@service.OptionName</td>
+                                <td class="ps-4">@service.Price$</td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        @if (Model.BookingStatus >= 2)
+        {
+            <br />
+
+            <br />
+            <div style="width : 80%; margin-left : 10%">
+                <div class="row">
+                    <div class="payment-title mb-3 text-center">
+                        <h3 class="h1 fw-bold mb-4">Other Informations</h3>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            @if (Model.ReservationNote != "")
+                            {
+                                <tr>
+                                    <th class="ps-4">Reservation Note</th>
+                                    <td class="ps-4">@Model.ReservationNote</td>
+                                </tr>
+                            }
+                            @if (Model.PickUpPoint != "")
+                            {
+                                <tr>
+                                    <th class="ps-4">Pick Up Point</th>
+                                    <td class="ps-4">@Model.PickUpPoint</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        }
+
+        <br /><br />
+
+        @if (Model.IsTour)
+        {
+            <div class="row">
+                <div class="payment-title mb-3 text-center">
+                    <h3 class="h1 fw-bold mb-4">Tour Program</h3>
+                </div>
+            </div>
+            @foreach (var day in Model.Plan)
+            {
+                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 offset-md-1">
+                    <div class="facility-single2">
+                        <div style="text-align:justify" class="facility-content">
+                            <h4>@day.DayTitle</h4>
+
+                            <div>@Html.Raw(day.DayContent)</div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <br />
+            }
+
+        }
+
+    </div>
+</div>
+

@@ -1,0 +1,18 @@
+﻿@using DTO;
+@using Dto.ApiWebDtos.ApiToWebDtos.PageComponets;
+@using GuideWeb.Helpers;
+@model GetVisitTurkeyCardDto
+
+<div class="row abous-us-body m-0">
+    <div class="col-12 col-md-6 p-0" id="visitTurkeyImage" alt="It's Time To Visit Turkey" title="It's Time To Visit Turkey">
+    </div>
+    <div class="col-12 col-md-6 p-0">
+        <div class="features-content p-0 abous-us-text pt-5">
+            <h3>“@Helpers.Wcv(Model.ConstantValues, "VisitTurkey.Title")”</h3>
+            <p>
+                @Model.ConstantValues.Where(x=>x.Key == "VisitTurkey.Content").FirstOrDefault().Value<br>
+                <a class="btn_1 medium" href="../turkey-tours/index.html" target="_self" rel="noopener" title="Visit Turkey">@Model.ConstantValues.Where(x => x.Key == "VisitTurkey.Button").FirstOrDefault().Value</a>
+            </p>
+        </div>
+    </div>
+</div>

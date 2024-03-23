@@ -1,0 +1,50 @@
+﻿@using Dto.ApiPanelDtos.ProductDtos.TourDtos;
+@model TourDetailDto
+@{
+    var cuurentPage = ViewBag.CurrentPage;
+}
+<ul class="nav nav-tabs nav-bordered mb-3">
+    <li class="nav-item">
+        <a href="/Tour/TourDetail/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourDetail"?"active":"")">
+            <i class="mdi mdi-information-outline d-md-none d-block"></i>
+            <span class="d-none d-md-block">General Info</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Tour/TourDetailImage/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourDetailImage"?"active":"")">
+            <i class="mdi mdi-account-circle d-md-none d-block"></i>
+            <span class="d-none d-md-block">Images</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Tour/TourDetailPrice/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourDetailPrice"?"active":"")">
+            <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+            <span class="d-none d-md-block">Pricing - Number of Days</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Tour/TourDetailAdditionalService/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourDetailAdditionalService"?"active":"")">
+            <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+            <span class="d-none d-md-block">Pricing - Additional Service</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Tour/TourDetailBlog/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourDetailBlog"?"active":"")">
+            <i class="mdi mdi-newspaper d-md-none d-block"></i>
+            <span class="d-none d-md-block">Blog</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/Tour/TourDetailSellLimit/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourDetailSellLimit"?"active":"")">
+            <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+            <span class="d-none d-md-block">Sell Limit</span>
+        </a>
+    </li>
+    <li class="nav-item">
+
+        <a href="/Tour/TourFaqList/@ViewBag.ProductID" class="nav-link @(ViewBag.CurrentPage=="TourFaqList"?"active":"")">
+            <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+            <span class="d-none d-md-block">Tour F.A.Q</span>
+        </a>
+    </li>
+</ul>

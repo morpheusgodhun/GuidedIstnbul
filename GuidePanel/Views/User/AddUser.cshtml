@@ -1,0 +1,151 @@
+﻿@using Dto.ApiPanelDtos.UserDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddUserDto
+@{
+    ViewData["Title"] = "AddUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/User/Index">User List</a>
+        > Add User</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Add User Start-->
+        <!-- start page title -->
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                <label for="email" class="form-label fw-bold">
+                    Email:<span class="text-danger fw-bold">*</span>
+                </label>
+                <input type="email" id="email-input" class="form-control">
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button id="btn-find-user" type="button"
+                            class="btn btn-dark rounded-pill px-5 mt-3" data-bs-toggle="modal" data-bs-target="#userFind">
+                        Find
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <!---Add User End-->
+        <!---Find User Modal Start-->
+        <div class="modal fade" id="userFind" aria-hidden="true"
+             aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div id="deneme" class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Add User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form method="post" action="">
+                                <input hidden id ="userId" asp-for ="UserID" />
+                                <div class="row" id="addUserRow">
+                                    <div class="col-sm-12 col-lg-6 mb-3 mr-1">
+                                        <label for="commission-rate"
+                                               class="form-label fw-bold">
+                                            Name:
+                                            <span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <input readonly asp-for="Name" type="text" id="userName"
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-sm-12 col-lg-6 mb-3 mr-1">
+                                        <label for="commission-rate"
+                                               class="form-label fw-bold">
+                                            Surname:
+                                            <span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <input readonly asp-for="Surname" type="text" id="surname"
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                                        <label for="roles" class="form-label fw-bold">
+                                            Roles:<span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <select class="form-select" asp-for="Roles">
+                                            @foreach (var role in (List<SelectListOptionDto>)ViewBag.Roles)
+                                            {
+                                                <option value="@role.OptionID">@role.Option</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="findUserNotFound">
+                                    <div class="row">
+                                        <div class="col-12" id="findUserNotFoundMsj">
+                                            <b>Kullanıcı Bulunamadı</b> @*TODO: constant values*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="addUserFooter">
+                                    <!-- Button -->
+                                    <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                        <button type="submit"
+                                                class="btn btn-dark rounded-pill px-5 mt-3">
+                                            ADD
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!---Find User Modal End-->
+
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $("#btn-find-user").click(function () {
+        $("#findUserNotFound").hide();
+
+        var email = $('#email-input').val();
+        $.ajax({
+            type: "GET",
+            url: '/User/FindUser',
+            dataType: "json",
+            contentType: "application/json",
+            data: {
+                email: email
+            },
+            success: function (result) {
+                console.log(result);
+                if (result.data != null) {
+                    // $("#findUserNotFoundModal").show();
+                    $("#addUserRow").show();
+                    $("#findUserNotFound").hide();
+                    $("#addUserFooter").show();
+                    $("#userId").val(result.data.userID);
+                    $("#userName").val(result.data.name);
+                    $("#surname").val(result.data.surname);
+                }
+                else { //error
+                    $("#findUserNotFound").show();
+                    $("#addUserRow").hide();
+                    $("#addUserFooter").hide();
+
+                }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+
+            }
+        });
+    });
+</script>

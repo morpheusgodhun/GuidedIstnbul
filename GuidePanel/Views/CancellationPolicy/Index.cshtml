@@ -1,0 +1,74 @@
+﻿@using Dto.ApiPanelDtos.CancellationPolicyDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<CancellationPolicyListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Cancellation Policy List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/CancellationPolicy/AddCancellationPolicy">
+                        Add Cancellation Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th class="text-center">Cancellation Policy Name</th>
+                    <th class="text-center">Uncancellable Hour</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cancellationPolicy in Model.DataModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/CancellationPolicy/EditCancellationPolicy/@cancellationPolicy.CancellationPolicyID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/CancellationPolicy/LanguageEditCancellationPolicy/@cancellationPolicy.CancellationPolicyID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (cancellationPolicy.Status)
+                            {
+                                <a href="/CancellationPolicy/ToggleCancellationPolicyStatus/@cancellationPolicy.CancellationPolicyID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/CancellationPolicy/ToggleCancellationPolicyStatus/@cancellationPolicy.CancellationPolicyID" class="btn btn-danger w-100">Passive</a>
+                            }
+                            
+                        </td>
+                        <td class="text-center">@cancellationPolicy.Name</td>
+                        <td class="text-center">@cancellationPolicy.UnCancellableHour</td>
+                    </tr>
+                }
+                
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

@@ -1,0 +1,99 @@
+﻿@using Dto.ApiPanelDtos.CustomTourDtos;
+@model AddOfferDto
+@{
+    ViewData["Title"] = "AddOffer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="card">
+        <h4 class="card-header">
+        <a href="/CustomTour/OfferList/@Model.CustomTourRequestId">Offer List</a>
+        > New Offer</h4>
+        <div class="card-body">
+            <p class="card-text">
+                Asterisk (<span class="text-danger fw-bold">*</span>) required
+                fields
+            </p>
+            <!--New Offer Start-->
+            <!-- start page title -->
+                <form method="post" action="/CustomTour/AddOffer">
+                <input type="hidden" name="CustomTourRequestId" value="@Model.CustomTourRequestId" />
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="new-offer" class="form-label fw-bold">New Offer Price: </label>
+                    <input name="Price" type="number" id="new-offer" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-offer-temlate-category" class="form-label fw-bold">
+                            Tour Offer Template Category:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="form-select" id="tour-offer-temlate-category" required>
+                            <option selected disabled value="">Select...</option>
+                            <option value="">Istanbul Tours</option>
+                            <option value="">Pamukkale Tours</option>
+                            <option value="">Capadocia Tours</option>
+                            <option value="">Antalya Tours</option>
+                            <option value="">Yatch Tours</option>
+                            <option value="">Mardin Tours</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-offer-temlate" class="form-label fw-bold">
+                            Tour Offer
+                            Template:
+                        </label>
+                    <select class="form-select" id="tour-offer-temlate" required>
+                            <option selected disabled value="">Select...</option>
+                            <option value="">Istanbul Tour</option>
+                            <option value="">Pamukkale Tour</option>
+                            <option value="">Capadocia Tour</option>
+                            <option value="">Antalya Tour</option>
+                            <option value="">Yatch Tour</option>
+                            <option value="">Mardin Tour</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12  mb-3 mr-1">
+                        <label for="snow-editor" class="form-label fw-bold">
+                            Tour Program:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        @*<div id="snow-editor" class="bg-white Program" style="height: 300px;"></div>*@
+
+                        <textarea required name="Program" id="editor-0" rows="4" cols="4"> </textarea>
+                        <script>
+                            CKEDITOR.replace('editor-0');
+                        </script>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 mb-3 pe-0">
+                            <label for="save-template" class="form-label fw-bold">Save as template: </label>
+                            <input onclick="checkboxControl('save-template','template-name')" id="save-template" class="form-check-input" type="checkbox">
+                            <input style="display: none;" placeholder="Template Name" id="template-name" class="form-control" type="text">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3 pe-0">
+                            <label for="new-offer" class="form-label fw-bold">Admin Answer:</label>
+                        <textarea name="AdminAnswer" class="form-control" cols="30" rows="4" required> </textarea>
+                        </div>
+                    </div>
+                    <!-- Button -->
+                    <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                        <button style="margin-left: 10px;" type="submit"
+                                class="btn btn-primary rounded-pill px-5 mt-3 ">
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!--New Offer End-->
+
+        </div>
+    </div>
+
+

@@ -1,0 +1,56 @@
+﻿@using Dto.ApiPanelDtos.SupplierDtos
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddSupplierDto
+@{
+    ViewData["Title"] = "AddVehicle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Supplier/Index">Supplier List</a>
+        > Add Supplier
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!-- Add Supplier Management Start  -->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="name" class="form-label fw-bold">
+                        Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Name type="text" id="name" class="form-control" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="suppliers" class="form-label fw-bold">
+                        Supplier Type:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="SupplierType" class="form-select" id="suppliers" required>
+                        <option selected disabled value="">Choose...</option>
+                        @foreach (var supplier in (List<SelectListOption>)ViewBag.SupplierTypeSelectList)
+                        {
+                            <option value="@supplier.ID">@supplier.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---AddSupplier Management End-->
+    </div>
+</div>
+

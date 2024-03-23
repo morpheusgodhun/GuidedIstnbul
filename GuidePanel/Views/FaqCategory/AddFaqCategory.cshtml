@@ -1,0 +1,64 @@
+﻿@using Dto.ApiPanelDtos.FaqCategoryDtos;
+@model AddFaqCategoryDto
+@{
+    ViewData["Title"] = "AddFaqCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/FaqCategory/Index">F.A.Q Category List</a>
+        > Add F.A.Q Category
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add FAQ Category Start-->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="faqcategoryname" class="form-label fw-bold">
+                        FAQ Category
+                        Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required asp-for=CategoryName type="text" id="faqcategoryname" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="orderinput" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required asp-for=Order type="number" id="orderinput" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label class="form-label fw-bold">
+                        Page: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="form-select" asp-for="PageId" required>
+                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.PageSelectList)
+                        {
+                            <option value="@tag.OptionID">@tag.Option</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+
+        </form>
+        <!--Add FAQ Category End-->
+
+    </div>
+</div>
+

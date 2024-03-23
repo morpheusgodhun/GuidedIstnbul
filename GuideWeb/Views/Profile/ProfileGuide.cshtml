@@ -1,0 +1,242 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Profile;
+@model GetProfileGuideDto
+@{
+    ViewData["Title"] = "ProfileGuide";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row mt-30 mb-60">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="bg-white shadow rounded my-5">
+                <div class="row">
+                    <div class="col-md-12 px-0">
+                        <div class="form-left h-100 py-5 px-5 booking-form-box">
+                            <fieldset>
+                                <div class="form-card">
+                                    <form method="post" enctype="multipart/form-data" id="msform" class="banner-form row" action="/Profile/ProfileGuide">
+                                        <input hidden name="UserID" value="@Model.UserID" />
+                                        <div class="col-lg-12 clearfix">
+
+                                           @* <a class="eg-btn btn--primary btn--sm submit-btn float-start ps-2 pe-2"
+                                               href="register-agent.html">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileGuideApplyAgentButton").Value</a>*@
+                                            <a class="eg-btn btn--primary btn--sm submit-btn float-end ps-2 pe-2"
+                                               href="change-password.html" title="Change Password"> @Model.ConstantValues.FirstOrDefault(x => x.Key == "ProfileGuideChangePasswordButton").Value</a>
+                                        </div>
+                                        <br /><br><br>
+                                        <div style="margin-top: -30px;" class="mb-5">
+                                            <h1 class="text-center mt-5">@Helpers.Wcv(Model.ConstantValues,"ProfileGuideTitle")</h1>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-id-card-alt"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuideNamePlaceholder")" value="@Model.Name" type="text" name="Name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="far fa-id-card"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuideSurnameLabelPlaceholder")" value="@Model.Surname" type="text" name="Surname" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="far fa-envelope-open"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuideEmailPlaceholder")" value="@Model.Email" type="email"
+                                                               name="Email" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-phone-alt"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuidePhonePlaceholder")" type="tel"
+                                                               name="Phone" value="@Model.Phone" class="phone" id="phone" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+@*                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                                    <span class="rez_form_head">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileGuideLanguageKnow").Value</span>
+
+                                                    @foreach (var language in Model.LanguageKnowOptions)
+                                                    {
+                                                        <div class="col-6 col-sm-6 col-md-4 float-start">
+                                                            <label>
+                                                                @if (Model.LanguageKnowIDs.Contains(language.OptionID))
+                                                                {
+                                                                    <input checked value="@language.OptionID" name="LanguageKnowIDs" id="language-@language.OptionID" type="checkbox" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input value="@language.OptionID" name="LanguageKnowIDs" id="language-@language.OptionID" type="checkbox" />
+                                                                }
+                                                                
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="w-auto text-start" for="language-@language.OptionID">
+                                                                @language.Option
+                                                            </label>
+
+                                                        </div>
+                                                    }
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>*@
+@*                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                                    <span class="rez_form_head">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileGuideSpecializeCity").Value</span>
+                                                    @foreach (var city in Model.SpecializeCityOptions)
+                                                    {
+                                                        <div class="col-6 col-sm-6 col-md-4 float-start">
+                                                            <label>
+                                                                @if (Model.SpecializeCityIDs.Contains(city.OptionID))
+                                                                {
+                                                                    <input checked value="@city.OptionID" name="SpecializeCityIDs" id="city-@city.OptionID" type="checkbox" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input value="@city.OptionID" name="SpecializeCityIDs" id="city-@city.OptionID" type="checkbox" />
+                                                                }
+                                                               
+                                                                <span></span>
+                                                            </label>
+                                                            <label class="w-auto text-start" for="city-@city.OptionID">
+                                                                @city.Option
+                                                            </label>
+
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                        <div class="row">
+                                            <div class="col-md-2 fw-bold pt-3">
+                                                <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues,"ProfileGuideProfilPhotoLabel")</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="search-box-single destination-box postition-relative p-0">
+                                                    <div class="searchbox-input">
+                                                        <input style="height: 47px;" class="p-0" type="file"
+                                                               name="ProfilPhoto" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 fw-bold pt-3">
+                                                <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues,"ProfileGuideLicenseFrontLabel")</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="search-box-single destination-box postition-relative p-0">
+                                                    <div class="searchbox-input">
+                                                        <input style="height: 47px;" class="p-0" type="file"
+                                                               name="LicenseFront" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 fw-bold pt-3">
+                                                <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues,"ProfileGuideLicenseBackLabel")</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="search-box-single destination-box postition-relative p-0">
+                                                    <div class="searchbox-input">
+                                                        <input style="height: 47px;" class="p-0" type="file"
+                                                               name="LicenseBack" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-birthday-cake"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues, "ProfileGuideBirthDateLabel")" value="@Model.DateBirth.ToString("yyyy-MM-dd")" type="date" name="BirthDate">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-id-card"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuideTurebLicensePlaceholder")" type="text"
+                                                            value="@Model.TurebLicense"   name="TurebLicenseNumber" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-id-card"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuideTcPlaceholder")" type="text" value="@Model.Tc"
+                                                               name="Tc" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-file-contract"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileGuideRegisteredDirectoryRoomPlaceholder")" type="text"
+                                                               name="RegisteredDirectoryRoom" value="@Model.RegisteredDirectoryRoom" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="clearfix col-lg-12">
+                                                <button type="submit"
+                                                        class="float-end eg-btn btn--primary btn--lg submit-btn">
+                                                    @Helpers.Wcv(Model.ConstantValues, "ProfileGuideSaveButton")
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,68 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Tour;
+@using GuideWeb.Helpers;
+@model GetTourFilterDto
+@foreach (var tour in Model.Tours)
+{
+    <div class="col-lg-12 col-md-6">
+        <div class="tour-package-standard">
+            <div class="tour-standard-image">
+                <span class="favourite">
+                    <i class="bi bi-suit-heart-fill"></i>
+                </span>
+                <img style="object-fit: cover; width: 100%; height: 270px;"
+                 src="@Resource.ImagePath/@tour.CardImagePath" class="img-fluid" alt="@tour.TourName" title="@tour.TourName">
+            </div>
+            <div class="tour-standard-content">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="col">
+                            @foreach (var tag in tour.TagNames)
+                            {
+                                <span class="badge bg-secondary">@tag</span>
+                            }
+
+
+                        </div>
+                        <div class="col mt-2">
+                            @foreach (var category in tour.CategoryNames)
+                            {
+                                <span class="badge bg-info text-dark">
+                                    <i class="fas fa-user-check"></i>
+                                    @category
+                                </span>
+                            }
+
+
+                        </div>
+
+                        <h4 class="mt-4">
+                            <a href="/Tour/TourDetail/@tour.ProductId">
+                                @tour.TourName
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="review-area">
+                            <i data-star="@tour.Rate"></i>
+                        </div>
+                        <div class="price">
+                            <button type="submit"
+                                class="eg-btn btn--primary btn--md submit-btn float-end mt-2">
+                                @Helpers.Wcv(Model.ConstantValues, "TourFilter.FromLabel")
+                                @Helpers.Wprice(@tour.Price)
+                            </button>
+                            <span>@Helpers.Wcv(Model.ConstantValues, "TourFilter.PricePerPersonLabel")</span>
+                        </div>
+                        <a href="/Tour/TourDetail/@tour.ProductId"
+                       class="eg-btn btn--primary-outline btn--md float-end" title="Detail">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "TourFilter.DetailButton").Value</a>
+                    </div>
+                    <hr class="mt-4">
+                    @*                                        <div>
+                <b>@Model.ConstantValues.FirstOrDefault(x=>x.Key == "TourFilter.NumberOfReviewLabel").Value: @tour.ReviewCount</b>
+                </div>*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,84 @@
+﻿@using Dto.ApiPanelDtos.LanguageDtos;
+@using Dto.ApiPanelDtos.TourCategoryDtos;
+@using GuidePanel.Helpers;
+@model (List<TourCategoryListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Tour Category List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="float-end btn btn-secondary" href="/TourCategory/AddTourCategory">
+                        Add Tour Category
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Update</th>
+                    <th style="width: 8%;">Status</th>
+                    <th style="width: 0%;">Icon</th>
+                    <th >Tour Category Name</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tourCategory in Model.DataModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/TourCategory/EditTourCategory/@tourCategory.TourCategoryID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="/TourCategory/LanguageEditTourCategory/@tourCategory.TourCategoryID/@language.LanguageID"> @language.LanguageName</a>
+                                        </li>
+                                    }
+                                  
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (tourCategory.Status)
+                            {
+                                <a href="/TourCategory/ToggleTourCategoryStatus/@tourCategory.TourCategoryID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/TourCategory/ToggleTourCategoryStatus/@tourCategory.TourCategoryID" class="btn btn-danger w-100">Passive</a>
+                            }
+                            
+                        </td>
+                        <td>
+                            <img src="@Resource.ImagePath/@tourCategory.IconPath" alt="" style="width: 40px;">
+                        </td>
+                        <td>
+                            @tourCategory.CategoryName
+                        </td>
+                        
+
+                    </tr>
+                }
+                
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+

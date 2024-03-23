@@ -1,0 +1,91 @@
+﻿@using Dto.ApiPanelDtos.TagManagementDtos;
+@model LanguageEditTagDto
+@{
+    ViewData["Title"] = "LanguageEditTag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+
+        <h4 class="float-start">
+            <a href="/Tag/Index">Tag List</a>
+            > Edit Tag
+        </h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Tag Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="TagLanguageItemID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="tagname" class="form-label fw-bold">
+                        Display Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="DisplayName" class="form-control" id="tagName" onkeyup="convertTo()">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label asp-for="Slug" class="form-label fw-bold">
+                        Slug:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Slug" class="form-control" id="slug">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit Tag End-->
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function convertTo() {
+
+            var deger = $('#tagName').val().trim();
+
+            var chacters = {
+                Ç: 'c',
+                Ö: 'o',
+                Ş: 's',
+                İ: 'i',
+                I: 'i',
+                Ü: 'u',
+                Ğ: 'g',
+                ç: 'c',
+                ö: 'o',
+                ş: 's',
+                ı: 'i',
+                ü: 'u',
+                ğ: 'g',
+                " ": '-'
+            };
+            var stringtoarray = deger.split('');
+            for (var i = 0; i < stringtoarray.length; i++) {
+                stringtoarray[i] = chacters[stringtoarray[i]] || stringtoarray[i];
+            }
+
+            var arraytostring = stringtoarray.join('');
+            var cleanMessage = arraytostring.replace(/\./g, "-").replace(/\//g, "-").replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+            $('#slug').val(cleanMessage);
+
+        }
+    </script>
+
+}

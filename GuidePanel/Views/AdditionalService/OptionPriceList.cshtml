@@ -1,0 +1,65 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@using Dto.ApiPanelDtos.PersonPolicyDtos;
+@model List<AdditionalServiceOptionPriceListDto>
+@{
+    ViewData["Title"] = "OptionPriceList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Additional Service Option Price List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/AdditionalService/AddOptionPrice/@ViewBag.OptionID">
+                        Add Price
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Priority</th>
+                    @if ((bool)ViewBag.IsPerPerson)
+                    {
+                        <th>Price</th>
+                    }else
+                    {
+                        @foreach (var personPolicy in ((List<PersonPolicyDto>)ViewBag.PersonPolicyList).OrderBy(x => x.Order).ThenBy(x => x.PersonPolicyID))
+                        {
+                            <th> (@personPolicy.FromPerson - @personPolicy.ToPerson) Person</th>
+                        }
+                    } 
+                    <th style="width: 0%">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var price in Model.OrderBy(x=> x.Priority))
+                {
+                    <tr>
+                        <td>@price.FromDate.ToString("dd-MM-yyyy")</td>
+                        <td>@price.ToDate.ToString("dd-MM-yyyy")</td>
+                        <td>@price.Priority</td>
+                        @if ((bool)ViewBag.IsPerPerson)
+                        {
+                            <td>@price.Prices.FirstOrDefault().Price</td>
+                        }else
+                        {
+                            @foreach (var priceDto in ((List<PersonPolicyDto>)ViewBag.PersonPolicyList).OrderBy(x => x.Order).ThenBy(x => x.PersonPolicyID))
+                            {
+                                <td>@price.Prices.FirstOrDefault(x=> x.PersonPolicyID == priceDto.PersonPolicyID)?.Price</td>
+                            }  
+                        }
+                        <td><a href="/AdditionalService/DeleteOptionPrice/@price.PriceID/@ViewBag.OptionID" class="btn btn-danger w-100">Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

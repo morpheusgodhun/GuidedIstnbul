@@ -1,0 +1,76 @@
+﻿s;
+@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddAdditionalServiceFormInputDto
+@{
+    ViewData["Title"] = "AddAdditionalServiceFormInput";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/AdditionalService/FormInputList/@ViewBag.AdditionalServiceID">Service List</a>
+        > Add Form Information Field</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Form Information Field Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="AdditionalServiceID" value="@ViewBag.AdditionalServiceID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 mb-3 mr-1">
+                    <label for="property-name" class="form-label fw-bold">
+                        Property Name: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" id="property-name" asp-for="PropertyName" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 mb-3 mr-1">
+                    <label for="input-type" class="form-label fw-bold">
+                        Input Type:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="Type" class="form-select" id="input-type">
+                        <option disabled selected value="">Select Propert Type</option>
+                        @foreach (var type in (List<SelectListOption>)ViewBag.TypeList)
+                        {
+                            <option value="@type.ID">@type.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 mb-3 mr-1">
+                    <label for="serial-number" class="form-label fw-bold">
+                        Order:
+                        <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="Order" id="serial-number" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 mb-3 mr-1">
+                    <div class="row">
+                        <label for="serial-number" class="form-label fw-bold">
+                            Required:
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                    </div>
+                    <input type="checkbox" asp-for="IsRequired" class="form-check-input" id="crequired field">
+                    <label class="form-label" for="crequired field">Required</label>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+        <!--Add Form Information Field End-->
+
+    </div>
+</div>
+

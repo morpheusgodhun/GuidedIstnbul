@@ -1,0 +1,437 @@
+﻿@using Dto.ApiPanelDtos.ReservationDtos;
+@model List<ReservationPanelListDto>
+@{
+    ViewData["Title"] = "ReservationList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <h4 class="card-header">Reservation List</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%">Detail</th>
+                    <th style="width: 0%">Action</th>
+                    <th>Booking Time</th>
+                    <th>Rez No</th>
+                    <th>Booking Status</th>
+                    <th>Booker</th>
+                    <th>Start Date</th>
+                    <th>Product Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-success" href="/Reservation/ReservationFormDetail/@reservation.ReservationId">
+                                Detail
+                            </a>
+                        </td>
+
+                        @if (reservation.BookingStatus == "Pending")
+                        {
+                            <td>
+                                <a class="btn btn-warning" href="/Reservation/ConfirmReservation/@reservation.ReservationId">
+                                    Confirm
+                                </a>
+                                <a class="btn btn-dark" href="/Reservation/RejectReservation/@reservation.ReservationId">
+                                    Reject
+                                </a>
+                                @if (reservation.HasActiveCancelRequest)
+                                {
+                                    <button data-bs-toggle="modal" data-bs-target="#replyCancelModal" data-id="@reservation.ReservationId" class="btn btn-dark" id="replyCancelRequestBtn">
+                                        Reply Cancel Request
+                                    </button>
+                                }
+                                @if (reservation.HasActiveUpdateRequest)
+                                {
+                                    <button data-bs-toggle="modal" data-bs-target="#replyUpdateModal" data-id="@reservation.ReservationId" class="btn btn-dark" id="replyUpdateRequestBtn">
+                                        Reply Update Request
+                                    </button>
+                                }
+                            </td>
+                        }
+                        else if (reservation.BookingStatus == "Confirmed")
+                        {
+                            <td style="text-align: center;">
+                                <a class="btn btn-info" href="/Reservation/SendToOperation/@reservation.ReservationId">
+                                    Send to Operation
+                                </a>
+                                @if (reservation.HasActiveCancelRequest)
+                                {
+                                    <button data-bs-toggle="modal" data-bs-target="#replyCancelModal" data-id="@reservation.ReservationId" class="btn btn-dark" id="replyCancelRequestBtn">
+                                        Reply Cancel Request
+                                    </button>
+                                }
+                                @if (reservation.HasActiveUpdateRequest)
+                                {
+                                    <button data-bs-toggle="modal" data-bs-target="#replyUpdateModal" data-id="@reservation.ReservationId" class="btn btn-dark" id="replyUpdateRequestBtn">
+                                        Reply Update Request
+                                    </button>
+                                }
+                            </td>
+
+                        }
+                        else if (reservation.BookingStatus == "Rejected")
+                        {
+                            <td class="text-center">
+                                @reservation.BookingStatus - No Action
+                            </td>
+                        }
+                        else if (reservation.BookingStatus == "Cancellation Request")
+                        {
+                            <td class="text-center">
+
+                                <a class="btn btn-secondary" href="/* /Reservation/RejectReservation/@reservation.ReservationId */">
+                                    Reply to Cancellation Request
+                                </a>
+                            </td>
+                        }
+                        else if (reservation.BookingStatus == "Edit Request")
+                        {
+                            <td class="text-center">
+
+                                <a class="btn btn-primary" href="/* /Reservation/RejectReservation/@reservation.ReservationId */">
+                                    Reply to Revision Request
+                                </a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                            </td>
+                        }
+                        <td>@reservation.BookingTime</td>
+                        <td>@reservation.ReservationCode</td>
+                        <td>@reservation.BookingStatus</td>
+                        <td>@reservation.Booker</td>
+                        <td>@reservation.StartDateTime</td>
+                        <th>@reservation.ProductName</th>
+
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+        <!--Reservations List End -->
+        <!-- Send Comment Mail modal-->
+        <div class="modal fade" id="send-comment-mail" tabindex="-1" role="dialog"
+             aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center" id="myLargeModalLabel">
+                            Mail
+                            Content
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="m-0 p-0">
+                            <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Participant</th>
+                                        <th>Status</th>
+                                        <th class="text-center">Tripadvisor</th>
+                                        <th class="text-center">Survey</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>Ecmel SADIKOĞLU </td>
+                                    <td><span class="text-success text-center">(glad)</span></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>Metin ÖNAL</td>
+                                    <td><span class="text-danger">(not glad)</span></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>Sümeyye ÜNAL</td>
+                                    <td><span class="text-success text-center">(glad)</span></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                </tr>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 mt-2 me-2">
+                                    <button class="btn btn-primary float-end"
+                                            data-bs-dismiss="modal"
+                                            aria-hidden="true" type="submit">
+                                        Send Mail
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!--Reply to cancel request modal-->
+        <div class="modal fade" id="replyCancelModal" tabindex="-1" aria-labelledby="replyCancelLabel" aria-hidden="true">
+            <form method="post" asp-action="ReplyEditRequest" asp-controller="Reservation" enctype="multipart/form-data" id="update-form">
+                @Html.Hidden("ReservationId", "", new { @class = "hiddenCancelReservationId" })
+                @Html.Hidden("RequestId", "", new { @class = "hiddenCancelRequestId" })
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateLabel">Cancel Request Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body m-4">
+                            <div class="col-sm-12 mb-3">
+                                <label><b>Selected Reason</b> </label>
+                                <input name="cancelReasonText" id="selectedCancelReason" class="form-control input-font" disabled />
+                            </div>
+                            <div class="col-sm-12 mb-3">
+                                <label><b>Reason> </label>
+                                <textarea for="UpdateReasonText" id="cancelReasonText" cols="" rows="4" class="form-control input-font" disabled></textarea>
+                            </div>
+                            <div class="col-sm-12 mb-3">
+                                <label><b>Your Reply</label>
+                                <textarea for="Answer" id="cancelAnswer" cols="" rows="4" class="form-control input-font"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font submitCancelRequestReply" id="approveCancelButton">Approve</button>
+                            <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font submitCancelRequestReply" id="rejectCancelButton">Reject</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="modal-table-cancel" class="text-center order-column w-100 nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Reason</th>
+                                        <th>Reason Text</th>
+                                        <th>Request Status</th>
+                                        <th>Admin Answer</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--Reply to update request modal-->
+        <div class="modal fade" id="replyUpdateModal" tabindex="-1" aria-labelledby="replyUpdateLabel" aria-hidden="true">
+            <form method="post" asp-action="ReplyEditRequest" asp-controller="Reservation" enctype="multipart/form-data" id="update-form">
+                @Html.Hidden("ReservationId", "", new { @class = "hiddenUpdateReservationId" })
+                @Html.Hidden("RequestId", "", new { @class = "hiddenUpdateRequestId" })
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateLabel">Update Request Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body m-4">
+                            <div class="col-sm-12 mb-3">
+                                <label><b>Reason</b> </label>
+                                <input name="updateReasonText" id="updateReasonText" class="form-control input-font" disabled />
+                            </div>
+                            <div class="col-sm-12 mb-3">
+                                <label><b>Your Reply</b></label>
+                                <textarea for="Answer" id="updateAnswer" cols="" rows="4" class="form-control input-font"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font submitUpdateRequestReply" id="approveUpdateButton">Approve</button>
+                            <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font submitUpdateRequestReply" id="rejectUpdateButton">Reject</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="modal-table-update" class="text-center order-column w-100 nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Reason</th>
+                                        <th>Request Status</th>
+                                        <th>Admin Answer</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+@*     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script> *@
+    <script>
+
+        //reply to cancel request modal btn click
+        $(document).on("click", "#replyCancelRequestBtn", function () {
+            var passedReservationID = $(this).data('id');
+            $("#replyCancelModal .hiddenCancelReservationId").val(passedReservationID);
+            var getReservationRequests = {
+                reservationId: passedReservationID
+            };
+            $.ajax({
+                url: '/Reservation/GetReservationCancelRequests/',
+                type: 'GET',
+                data: getReservationRequests,
+                dataType: 'json',
+                success: function (res) {
+                    var responseData = res.data;
+                    var responseData = res.data;
+                    responseData.sort(function (a, b) {
+                        if (a.requestStatus === 'Waiting') return -1;
+                        if (b.requestStatus === 'Waiting') return 1;
+                        return 0;
+                    });
+                    $('#modal-table-cancel').DataTable().destroy();
+                    $('#modal-table-cancel').DataTable().clear();
+                    $('#modal-table-cancel').DataTable({
+                        "scrollX": false,
+                        "paging": false,
+                        "destroy": true,
+                        "searching": false,
+                        "data": responseData,
+                        "columns": [
+                            { "title": "Reason", "data": "reason" },
+                            { "title": "Reason Text", "data": "reasonText" },
+                            { "title": "Request Status", "data": "requestStatus" },
+                            { "title": "Admin Answer", "data": "adminAnswer" },
+                        ]
+                    });
+                    const activeRequest = responseData.find((res) => res.requestStatus == "Waiting");
+                    $("#cancelReasonText").html(activeRequest.reasonText)
+                    $("#selectedCancelReason").val(activeRequest.reason)
+                    $("#replyCancelModal .hiddenCancelRequestId").val(activeRequest.requestId);
+                },
+                error: function (err) {
+                    // console.log(err);
+                }
+            });
+        });
+        //reply to cancel request modal form submit button click
+        $(document).on("click", ".submitCancelRequestReply", function (event) {
+            const reservationId = $(".hiddenCancelReservationId").val();
+            const requestId = $(".hiddenCancelRequestId").val();
+            let approveStatus = false;
+            switch (event.target.id) {
+                case "approveCancelButton":
+                    approveStatus = true;
+                    break;
+                case "rejectCancelButton":
+                    approveStatus = false;
+                    break;
+            }
+            const adminAnswer = $("#cancelAnswer").val();
+            const replyEditRequestPostDto = {
+                reservationId: reservationId,
+                requestId: requestId,
+                answer: adminAnswer,
+                approveStatus: approveStatus
+            };
+
+            $.ajax({
+                url: '/Reservation/ReplyEditRequest/',
+                type: 'POST',
+                data: replyEditRequestPostDto,
+                dataType: 'json',
+                success: function (res) {
+                    window.location.reload();
+                    //TODO modal kapanacak & sayfa yenilenecek
+                },
+                error: function (err) {
+                }
+            });
+
+        });
+
+        //reply to update request btn click
+        $(document).on("click", "#replyUpdateRequestBtn", function () {
+            var passedReservationID = $(this).data('id');
+            console.log(passedReservationID);
+            $("#replyUpdateModal .hiddenUpdateReservationId").val(passedReservationID);
+            var getReservationRequests = {
+                reservationId: passedReservationID
+            };
+            $.ajax({
+                url: '/Reservation/GetReservationUpdateRequests/',
+                type: 'GET',
+                data: getReservationRequests,
+                dataType: 'json',
+                success: function (res) {
+                    var responseData = res.data;
+                    responseData.sort(function (a, b) {
+                        if (a.requestStatus === 'Waiting') return -1;
+                        if (b.requestStatus === 'Waiting') return 1;
+                        return 0;
+                    });
+                    $('#modal-table-update').DataTable().destroy();
+                    $('#modal-table-update').DataTable().clear();
+                    $('#modal-table-update').DataTable({
+                        "scrollX": false,
+                        "paging": false,
+                        "destroy": true,
+                        "searching": false,
+                        "data": responseData,
+                        "columns": [
+                            { "title": "Reason", "data": "reason" },
+                            { "title": "Request Status", "data": "requestStatus" },
+                            { "title": "Admin Answer", "data": "adminAnswer" },
+                        ]
+                    });
+                    const activeRequest = responseData.find((res) => res.requestStatus == "Waiting");
+                    console.log(activeRequest)
+                    $("#updateReasonText").val(activeRequest.reason)
+                    $("#replyUpdateModal .hiddenUpdateRequestId").val(activeRequest.requestId);
+                },
+                error: function (err) {
+                    // console.log(err);
+                }
+            });
+        });
+
+        //reply to cancel request modal form submit button click
+        $(document).on("click", ".submitUpdateRequestReply", function (event) {
+            const reservationId = $(".hiddenUpdateReservationId").val();
+            const requestId = $(".hiddenUpdateRequestId").val();
+            let approveStatus = false;
+            switch (event.target.id) {
+                case "approveUpdateButton":
+                    approveStatus = true;
+                    break;
+                case "rejectUpdateButton":
+                    approveStatus = false;
+                    break;
+            }
+            const adminAnswer = $("#updateAnswer").val();
+            const replyEditRequestPostDto = {
+                reservationId: reservationId,
+                requestId: requestId,
+                answer: adminAnswer,
+                approveStatus: approveStatus
+            };
+
+            $.ajax({
+                url: '/Reservation/ReplyEditRequest/',
+                type: 'POST',
+                data: replyEditRequestPostDto,
+                dataType: 'json',
+                success: function (res) {
+                    window.location.reload();
+                    //TODO modal kapanacak & sayfa yenilenecek
+
+                },
+                error: function (err) {
+                }
+            });
+
+        });
+
+    </script>
+}

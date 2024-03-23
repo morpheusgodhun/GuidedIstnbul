@@ -1,0 +1,84 @@
+﻿@using Dto.ApiPanelDtos.ImageManagementDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@using GuidePanel.Helpers;
+@model (List<ImageListDto> DataModel, List<LanguageListDto> LangaugeModel)
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        Image List
+    </h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable"
+               class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Update</th>
+                    <th style="width: 0%">Curent Image</th>
+                    <th>Page Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var image in Model.DataModel)
+                {
+                    <tr>
+
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Image/EditImage/@image.ImageID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/Image/LanguageEditImage/@image.ImageID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" data-bs-toggle="modal"
+                                    data-bs-target="#current-image-@image.ImageID" class="btn btn-secondary w-100">
+                                Current Image
+                            </button>
+
+                        </td>
+                        <td>
+                            @image.PageName
+                        </td>
+                    </tr>
+                    <!-- current icon Modal-->
+                    <div class="modal fade" id="current-image-@image.ImageID" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Icon</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@image.ImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- current icon Modal-->
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

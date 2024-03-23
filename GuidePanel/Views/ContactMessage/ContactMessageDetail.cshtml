@@ -1,0 +1,50 @@
+﻿@using Dto.ApiPanelDtos.ContactMessageDtos;
+@model ContactMessageDetailDto
+@{
+    ViewData["Title"] = "ContactMessageDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Contact Message Detail</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 table-striped nowrap">
+            <tbody>
+                <!-- 1 -->
+                <tr>
+                    <td>Sending Date</td>
+                    <td>@Model.SendingDate.ToString("dd-MM-yyyy")</td>
+                </tr>
+                <tr>
+                    <td>Sender</td>
+                    <td>@Model.SenderName</td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td>@Model.Country</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>@Model.Phone</td>
+                </tr>
+                <tr>
+                    <td>How did you find us?</td>
+                    <td>@Model.HowFindUs</td>
+                </tr>
+                <tr>
+                    <td>Subject</td>
+                    <td>@Model.Subject</td>
+                </tr>
+                <tr>
+                    <td>Message</td>
+                    <td style="white-space:normal; text-align: justify">@Model.Message</td>
+                </tr>
+
+            </tbody>
+
+
+        </table>
+
+    </div>
+</div>
+

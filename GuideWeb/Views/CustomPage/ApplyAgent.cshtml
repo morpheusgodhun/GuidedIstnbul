@@ -1,0 +1,221 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.GeneralPages;
+@using GuideWeb.Helpers
+@model GetApplyAgentDto
+@{
+    ViewData["Title"] = "ApplyAgent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string prefix = ViewData["language"].ToString();
+}
+
+<div class="container">
+    <div class="row mt-30 mb-60">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="bg-white shadow rounded my-5">
+                <div class="row">
+                    <div class="col-md-12 px-0">
+                        <div class="form-left h-100 py-5 px-5 booking-form-box">
+                            <fieldset>
+                                <div class="mb-5">
+                                    <h1 class="text-center"> @Helpers.Wcv(Model.ConstantValues,"ApplyAgent.Title")</h1>
+                                </div>
+                                <div class="form-card">
+                                    <form method="post" id="msform" class="banner-form row" enctype="multipart/form-data" action="/CustomPage/ApplyAgent">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-id-card-alt"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.AgentTitlePlaceholder")" type="text" name="AgentTitle" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="far fa-envelope-open"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.EmailPlaceholder")" type="email"
+                                                               name="Email" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative ps-0">
+
+                                                    <div class="searchbox-input text-start">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.PhonePlaceholder")" type="text" name="Phone"
+                                                               class="masked phone" id="phone" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.ContactPersonPlaceholder")" type="text"
+                                                               name="ContactPerson" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-globe"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <select required name="CountryID" class="defult-select-drowpown" id="activity-dropdown">
+                                                            <option value="">@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.CountryPlaceholder")</option>
+                                                            @foreach (var Country in Model.CountryOptions)
+                                                            {
+                                                                if (Country.Value == "United States of America")
+                                                                {
+                                                                    <option selected value="@Country.ID">@Country.Value</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@Country.ID">@Country.Value</option>
+                                                                }
+                                                            }
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-mouse"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.WebsiteLinkPlaceholder")" type="text" name="WebsiteLink" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* <div class="col-md-6">
+
+                                            <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                            <i class="fas fa-atlas"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                            <select required name="CityID" class="defult-select-drowpown" id="activity-dropdown">
+                                            <option value="">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ApplyAgent.CityPlaceholder").Value</option>
+                                            @foreach (var City in Model.CityOptions)
+                                            {
+                                            <option value="@City.OptionID">@City.Option</option>
+                                            }
+                                            </select>
+                                            </div>
+                                            </div>
+                                            </div> *@
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-briefcase"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "ApplyAgent.TaxAdministrationPlaceholder")" type="text" name="TaxAdministration" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-barcode"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.TaxNumberPlaceholder")" type="text" name="TaxNumber" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-user-tie"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "ApplyAgent.CampanyManagerPlaceholder")" type="text"
+                                                               name="CompanyManager" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-barcode"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.TradeRegistryNumberPlaceholder")" type="text"
+                                                               name="TradeRegistryNumber" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*    <div class="row">
+
+                                        </div> *@
+                                        <div class="row">
+                                            <div class="col-md-2 fw-bold pt-3">
+                                                <label for="" required class="float-start">@Helpers.Wcv(Model.ConstantValues, "ApplyAgent.LogoPlaceholder")</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="search-box-single destination-box postition-relative p-0">
+                                                    <div class="searchbox-input">
+                                                        <input required style="height: 47px;" class="p-0" type="file"
+                                                               name="Logo" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="search-box-single">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <textarea required name="Address" rows="6"
+                                                                  placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyAgent.AddressPlaceholder")"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="@Helpers.PrepareUrl(prefix,Model.ApplyAgentFaqSlug)>FAQ</a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="clearfix col-lg-12">
+                                                <button type="submit"
+                                                        class="float-end eg-btn btn--primary btn--lg submit-btn" title="Apply">
+                                                    @Helpers.Wcv(Model.ConstantValues,"ApplyAgent.ApplyButton")
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,562 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Agent;
+@using GuideWeb.Helpers
+@model GetUserManagementDto
+@{
+    ViewData["Title"] = "UserManagement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="feature-section2 mt-60 mb-120">
+    <div class="row mb-60">
+        <div class="col text-center">
+            <h1>@Helpers.Wcv(Model.ConstantValues, "UserManagement.Title")</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="row">
+                    <div class=" form-left h-100 py-5 px-5 booking-form-box">
+                        <fieldset>
+                            <div class="form-card border px-3">
+                                <form id="msform" class="banner-form row">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-10 col-lg-10">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="far fa-envelope-open"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    <input id="searchbox-input" placeholder="@Helpers.Wcv(Model.ConstantValues, "UserManagement.EmailPlaceholder")" type="email" name="Email" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-2 col-lg-2">
+                                            <button type="button"
+                                                    class="eg-btn btn--primary btn--md submit-btn float-end newUser"
+                                                    data-bs-toggle="modal" data-bs-target="#addModal">
+                                                @Helpers.Wcv(Model.ConstantValues, "UserManagement.AddButton")
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-60">
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>@Helpers.Wcv(Model.ConstantValues, "UserManagement.Table.UpdateLabel")</th>
+                            <th>@Helpers.Wcv(Model.ConstantValues, "UserManagement.Table.StatusLabel")</th>
+                            <th>@Helpers.Wcv(Model.ConstantValues,"UserManagement.Table.RoleLabel")</th>
+                            <th>@Helpers.Wcv(Model.ConstantValues ,"UserManagement.Table.FullnameLabel")</th>
+                            <th>@Helpers.Wcv(Model.ConstantValues, "UserManagement.Table.MailLabel")</th>
+                            <th>@Helpers.Wcv(Model.ConstantValues,"UserManagement.Table.PhoneLabel")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <th class="p-3">
+                                    @if (user.IsWaitingForApprove)
+                                    {
+                                        <button class="btn btn-secondary btn--sm updateUser" disabled>
+                                            @Helpers.Wcv(Model.ConstantValues,"UserManagement.Table.WaitingForApprove")
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn--sm updateUser" data-name="@user.Fullname" data-email="@user.Email" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                            @Helpers.Wcv(Model.ConstantValues,"UserManagement.Table.UpdateButton")
+                                        </button>
+                                    }
+                                </th>
+                                <td class="p-3">
+                                    @if (user.Status)
+                                    {
+                                        <a style="font-weight: 500; font-size: 1.4rem;" href="#" class="btn btn-danger w-100 passiveUser"  data-email="@user.Email" data-haswaitingrequest="@user.IsWaitingForApprove">Remove @*@Model.ConstantValues.FirstOrDefault(x=>x.Key == "UserManagement.Table.ActiveButton").Value*@</a>
+                                    }
+                                    @*else
+                                {
+                                <a style="font-weight: 500; font-size: 1.4rem;" href="#" class="btn btn-danger w-100">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "UserManagement.Table.PassiveButton").Value</a>
+                                }*@
+                                </td>
+                                <td class="p-3">
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <span>@role</span>
+                                    }
+                                </td>
+                                <td class="p-3">@user.Fullname</td>
+                                <td class="p-3">@user.Email</td>
+                                <td class="p-3">@user.Phone</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <form class="m-0 p-0" id="addAgentUserForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLabel">@Helpers.Wcv(Model.ConstantValues,"UserManagement.AddModal.Title")</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="adduserForm">
+                        <div class="row">
+                            <div class="col-4">
+                                <b>Email:</b>
+                            </div>
+                            <div class="col">
+                                <p><input id="adduserEmail" type="text" name="Email" value="" /> </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <b>@Helpers.Wcv(Model.ConstantValues,"UserManagement.AddModal.FullnameLabel")</b>
+                            </div>
+                            <div class="col">
+                                <p id="adduserName"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <b>@Helpers.Wcv(Model.ConstantValues,"UserManagement.AddModal.RoleLabel")</b>
+                            </div>
+                            <div class="col">
+                                <select class="defult-select-drowpdown" name="Role" data-placeholder="" id="role-dropdown"
+                                        style="padding-left: 0px;">
+                                    <option disabled selected value="">@Helpers.Wcv(Model.ConstantValues, "UserManagement.AddModal.RolePlaceholder")</option>
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        <option value="@role.OptionID">@role.Option</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="adduserWarning">
+                        <div class="row">
+                            <div class="col-12" id="adduserWarningMsj">
+                                <b>Kullanıcı Bulunamadı</b> @*TODO: constant values*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="adduserFooter" class="modal-footer" style="justify-content: space-evenly">
+                    <button type="reset" class="btn btn-danger btn-lg" data-bs-dismiss="modal">@Helpers.Wcv(Model.ConstantValues,"UserManagement.AddModal.CancelButton")</button>
+                    <button type="button" id="addUserSubmitBtn" class="btn btn-success btn-lg">@Helpers.Wcv(Model.ConstantValues,"UserManagement.AddModal.AddButton")</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Update -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <form class="m-0 p-0" action="/Agent/UpdateUser" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLabel">@Helpers.Wcv(Model.ConstantValues, "UserManagement.UpdateModal.Title") </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="row">
+                        <div class="col-4">
+                            <b>@Helpers.Wcv(Model.ConstantValues,"UserManagement.Update.Modal.Email")</b> @*TODO: constant values*@
+                        </div>
+                        <div class="col">
+                            <p><input id="updateuserEmail" readonly type="text" name="Email" value="" /> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <b>@Helpers.Wcv(Model.ConstantValues,"UserManagement.UpdateModal.FullnameLabel")</b>
+                        </div>
+                        <div class="col">
+                            <p id="updateuserName"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <b>@Helpers.Wcv(Model.ConstantValues, "UserManagement.UpdateModal.RoleLabel")</b>
+                        </div>
+                        <div class="col">
+                            <select class="defult-select-drowpown" name="role" data-placeholder="" id="updateuserRole" style="padding-left: 0px;">
+                                <option disabled selected value="">@Helpers.Wcv(Model.ConstantValues,"UserManagement.UpdateModal.RolePlaceholder")</option>
+                                @foreach (var role in Model.Roles)
+                                {
+                                    <option value="@role.OptionID">@role.Option</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content: space-evenly">
+                    <button type="reset" class="btn btn-danger btn-lg" data-bs-dismiss="modal">@Helpers.Wcv(Model.ConstantValues, "UserManagement.UpdateModal.CancelButton")</button>
+                    <button type="submit" class="btn btn-success btn-lg">@Helpers.Wcv(Model.ConstantValues, "UserManagement.UpdateModal.UpdateButton")</button>
+                </div>,
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+</button>
+
+<!-- Modal AgentGuide Info  -->
+<div class="modal fade" id="fillAgentGuideInfoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-left h-100 py-5 px-5 booking-form-box">
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="mb-5">
+                                <h1 class="text-center">@Helpers.Wcv(Model.ConstantValues,"Guide Information")</h1>  @*TODO: constant values*@
+                            </div>
+                            <form method="post" enctype="multipart/form-data" id="guideInfoForm" class="banner-form row" asp-action="NewAgentGuideUser">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card-alt"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.NamePlaceholder")" type="text" name="Name" id="guideInfoName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card-alt"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.SurnamePlaceholder")" type="text" name="Surname" id="guideInfoSurname" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="far fa-envelope-open"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "ApplyGuide.EmailPlaceholder")" type="email" name="Email" id="guideInfoEmail" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-phone-alt"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "ApplyGuide.PhonePlaceholder")" type="text" name="Phone" class="masked phone" id="phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                            <span class="rez_form_head">@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.LanguageYouKnowTitle")</span>
+                                            @foreach (var language in Model.LanguageKnowOptions)
+                                            {
+                                                <div class="col-6 col-sm-6 col-md-4 float-start">
+                                                    <label>
+                                                        <input value="@language.OptionID" name="LanguageKnowIDs" id="language-@language.OptionID" type="checkbox" />
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="w-auto text-start" for="language-@language.OptionID">
+                                                        @language.Option
+                                                    </label>
+
+                                                </div>
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                            <span class="rez_form_head">@Helpers.Wcv(Model.ConstantValues, "ApplyGuide.CitiesWhereYouSpecializeTitle")</span>
+                                            @foreach (var city in Model.SpecializeCityOptions)
+                                            {
+                                                <div class="col-6 col-sm-6 col-md-4 float-start">
+                                                    <label>
+                                                        <input value="@city.OptionID" name="SpecializeCityIDs" id="city-@city.OptionID" type="checkbox" />
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="w-auto text-start" for="city-@city.OptionID">
+                                                        @city.Option
+                                                    </label>
+
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 fw-bold pt-3">
+                                        <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.ProfilPhotoLabel")</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="search-box-single destination-box postition-relative p-0">
+                                            <div class="searchbox-input">
+                                                <input required style="height: 47px;" class="p-0" type="file"
+                                                       name="ProfilPhoto" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 fw-bold pt-3">
+                                        <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues, "ApplyGuide.LicenseFrontSideLabel")</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="search-box-single destination-box postition-relative p-0">
+                                            <div class="searchbox-input">
+                                                <input required style="height: 47px;" class="p-0" type="file"
+                                                       name="LicenseFront" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 fw-bold pt-3">
+                                        <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.LicenseBackSideLabel")</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="search-box-single destination-box postition-relative p-0">
+                                            <div class="searchbox-input">
+                                                <input required style="height: 47px;" class="p-0" type="file"
+                                                       name="LicenseBack">@Helpers.Wcv(Model.ConstantValues, "ApplyGuide.LicenseBackLabel") </>  @*TODO: constant values*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-birthday-cake"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "ApplyGuide.BirthDayPlaceholder")" type="date" name="BirthDate">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.TurebLicenseNumberPlaceholder")" type="text"
+                                                       name="TursebLicenseNumber" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.TcPlaceholder")" type="text"
+                                                       name="Tc" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-file-contract"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues,"ApplyGuide.RegisteredDirectoryRoomPlaceholder")" type="text"
+                                                       name="RegisteredDirectoryRoom" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="clearfix col-lg-12">
+                                        <button type="submit" title="Register"
+                                                class="float-end eg-btn btn--primary btn--lg submit-btn">
+                                            @Helpers.Wcv(Model.ConstantValues, "ApplyGuide.ApplyButton")
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            var agentGuideRoleTemplateId = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Roles.Where(x => x.Option == "AgentGuide").FirstOrDefault().OptionID.ToString()))
+
+                $("#msform").submit(function (e) {
+                    e.preventDefault();
+                });
+
+            $(".newUser").on("click", function () {
+
+                $("#adduserFooter").hide();
+                $("#adduserForm").hide();
+                $("#adduserWarning").hide();
+
+                $("#adduserName").empty();
+                $("#adduserEmail").val('');
+
+                var searchbox = $("#searchbox-input").val();
+                $.ajax({
+                    url: "/Agent/NewUserInfo",
+                    type: "POST",
+                    data: { email: searchbox },
+                    success: function (result) {
+                        if (result.data?.email) {
+                            console.log(result);
+                            var userNameSurname = result.data.name + " " + result.data.surname
+                            $("#adduserName").html(userNameSurname);
+                            $("#adduserEmail").val(result.data.email);
+                            $("#adduserEmail").prop('disabled', true);
+
+                            $("#adduserFooter").show();
+                            $("#adduserForm").show();
+                            var roleDropdown = document.getElementById("role-dropdown");
+                            $(roleDropdown).off("change");
+                            roleDropdown.onchange = function () {
+                                var selectedRoleTemplateId = $('#role-dropdown').find(":selected").val();
+                                if (agentGuideRoleTemplateId == selectedRoleTemplateId) {
+                                    console.log("yeah from dropdown onchange")
+                                    $('#guideInfoName').val(result.data.name);
+                                    $('#guideInfoSurname').val(result.data.surname);
+                                    $('#guideInfoEmail').val(result.data.email)
+                                    $('#phone').val(result.data.phone)
+                                }
+                            }
+                        }
+                        else {
+                            $("#adduserWarningMsj").html(result.errors[0]);
+                            $("#adduserWarning").show();
+                        }
+                    },
+                    error: function () {
+                        $("#adduserWarning").show();
+                    }
+                });
+            });
+
+
+            $(".updateUser").on("click", function () {
+                updateUser = $(this);
+                $("#updateuserName").html(updateUser.data("name"));
+                $("#updateuserEmail").val(updateUser.data("email"));
+            });
+
+            $(".passiveUser").on("click", function () {
+                var email = $(this).data("email");
+                var hasWaitingRequest = $(this).data("haswaitingrequest");
+                console.log(email)
+                console.log(hasWaitingRequest)
+
+                $.ajax({
+                    url: "/Agent/PassiveUser",
+                    type: "POST",
+                    data: {
+                        email: email,
+                        isWaitingForApprove: hasWaitingRequest
+                    },
+                    success: function (result) {
+                        location.reload(true)
+                    },
+                    error: function () {
+                        location.reload(true)
+                    }
+                });
+            });
+
+            $("#addUserSubmitBtn").on("click", function () {
+                var userEmail = $("#adduserEmail").val();
+                var userName = $("#adduserName").html();
+
+                var selectedRoleTemplateId = $('#role-dropdown').find(":selected").val();
+                var agentNewUserDto = {
+                    email: userEmail,
+                    role: selectedRoleTemplateId,
+                    name: userName,
+                }
+                if (agentGuideRoleTemplateId == selectedRoleTemplateId) {
+                    console.log("yeah")
+                    $('#fillAgentGuideInfoModal').modal('show');
+                }
+                else {
+                    $.ajax({
+                        url: "/Agent/NewUser",
+                        type: "POST",
+                        data: agentNewUserDto,
+                        success: function (result) {
+                            console.log("yeaaaa")
+
+                        },
+                        error: function () {
+                            $("#adduserWarning").show();
+                        }
+                    });
+                }
+            });
+
+        })
+
+    </script>
+}

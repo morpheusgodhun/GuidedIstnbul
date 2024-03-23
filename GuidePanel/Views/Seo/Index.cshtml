@@ -1,0 +1,63 @@
+﻿@using Dto.ApiPanelDtos.SeoDtos;
+@model List<SeoListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">SEO List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Seo/AddSeo">
+                        Add SEO
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="scroll-horizontal-datatable"
+               class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    <th>Meta Title</th>
+                    <th>Meta Key</th>
+                    <th>Meta Description</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seo in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/Seo/EditSeo/@seo.SeoID">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @seo.MetaTitle
+                        </td>
+                        <th>
+                            @seo.MetaKey
+                        </th>
+                        <td>
+                            @seo.MetaDescription
+                        </td>
+                        <td>
+                            @seo.PageLink
+                        </td>
+                    </tr>
+                }
+                
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

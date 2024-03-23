@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Dto.ApiPanelDtos.ConstantValueDtos
+{
+    public class AddConstantValueDto
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+        public Guid PageID { get; set; }
+    }
+}

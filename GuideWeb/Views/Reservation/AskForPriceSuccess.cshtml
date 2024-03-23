@@ -1,0 +1,25 @@
+﻿@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@using GuideWeb.Helpers;
+@model ReservationSuccessDto
+@{
+    ViewData["Title"] = "AskForPriceSuccess";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col" id="payment-success-text">
+            <img class="mb-4" style="width: 25%; height: 25%;" src="@Resource.ImagePath/green-check.svg" alt="Your Request has been Received!">
+            <h1 class="text-center">Your Request has been Received!</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center g-4">
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-10">
+            <div class="facility-single2">
+                <div class="facility-content">
+                    <p>Your request has been successfully received. Thank you for providing the information. Our team will process your request promptly and will contact you regarding pricing shortly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

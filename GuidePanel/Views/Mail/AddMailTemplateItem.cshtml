@@ -1,0 +1,87 @@
+﻿@model AddMailTemplateItemDto
+@{
+    ViewData["Title"] = "AddDiscount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Mail/Index">Mail List</a> > Add Template Item > @ViewBag.TemplateName
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Tour Start-->
+        <!--@* value="@ViewBag.MailTemplateId" *@
+
+        start page title -->
+
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="SendMailTemplateId" />
+            <div class="row">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-title" class="form-label fw-bold">
+                            Turkish Subject:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" asp-for="TurkishSubject" class="form-control"  required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="" class="form-label fw-bold">
+                            Turkish Content:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea required asp-for="TurkishContent" id="editor1" rows="4" cols="4"></textarea>
+                        <script>
+                            CKEDITOR.replace('editor1');
+                        </script>
+                    </div>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-title" class="form-label fw-bold">
+                            English Subject:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" asp-for="EnglishSubject" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="" class="form-label fw-bold">
+                            English Content:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea required asp-for="EnglishContent" id="editor2" rows="4" cols="4"></textarea>
+                        <script>
+                            CKEDITOR.replace('editor2');
+                        </script>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--Tour Add End-->
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+

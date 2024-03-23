@@ -1,0 +1,76 @@
+﻿@using Dto.ApiPanelDtos.UserDtos;
+@model List<UserListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">User List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/User/AddUser">
+                        Add User
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Update</th>
+                    <th style="width: 8%;">Status</th>
+                    <th style="width: 12%;">Roles</th>
+                    <th style="width: 30%;">Name surname</th>
+                    <th style="width: 30%;">E-mail</th>
+                    <th style="width: 10%;">Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/User/EditUser/@user.UserID">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (user.Status)
+                            {
+                                <a href="/User/ToggleUserStatus/@user.UserID" class="btn btn-success w-100">Active</a>
+                            }
+                            else
+                            {
+                                <a href="/User/ToggleUserStatus/@user.UserID" class="btn btn-danger w-100">Passive</a>
+                            }
+
+                        </td>
+                        <td>
+                            @for (int i = 0; i < user.Roles.Count; i++)
+                            {
+                                if (i == user.Roles.Count - 1)
+                                {
+                                    <span>@user.Roles[i]</span>
+                                }else
+                                {
+                                    <span>@user.Roles[i] & </span>
+                                }
+                            }
+                        </td>
+                        <th>@user.FullName</th>
+                        <th>@user.Email</th>
+                        <th>@user.Phone</th>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+    </div>
+</div>

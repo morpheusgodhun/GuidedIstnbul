@@ -1,0 +1,183 @@
+﻿@using Core;
+@using Dto.ApiPanelDtos;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<GetGuideDto>
+@{
+    string availablity;
+}
+
+<div class="card">
+    <h4 class="card-header">Tour Guide Management</h4>
+    <div class="card-body">
+        <div class="row col-sm-12 col-md-6 col-lg-6 mt-5 mb-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control date" id="birthdatepicker"
+                       data-toggle="date-picker" data-single-date-picker="true">
+
+                <button type="button" class="btn btn-secondary">Filter</button>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Status</th>
+                    <th>Availability</th>
+                    <th>Name Surname</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Languages You Know</th>
+                    <th>Cities where you specialize</th>
+                    <th>Image</th>
+                    <th>Date of birth</th>
+                    <th>Tureb License Number</th>
+                    <th>Turkish Identity Number</th>
+                    <th>Registered Directory Room</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var GetGuideDto in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+
+                            @if (GetGuideDto.ApproveStatus == (int)Enums.ApproveStatus.Onaylandi)
+                            {
+                                @if (GetGuideDto.Status == true)
+                                {
+                                    <a href="/TourGuide/ChangeGuideStatus/@GetGuideDto.Id" class="btn btn-danger "> Passive</a>
+                                }
+                                else
+                                {
+                                    <a href="/TourGuide/ChangeGuideStatus/@GetGuideDto.Id" class="btn btn-success "> Active</a>
+                                }
+                            }
+                            else if (GetGuideDto.ApproveStatus == (int)Enums.ApproveStatus.OnayBekliyor)
+                            {
+                            
+                                <a href="/TourGuide/ApproveGuide/@GetGuideDto.Id" class="btn btn-primary">Approve</a>
+                                <a href="/TourGuide/RejectGuide/@GetGuideDto.Id" class="btn btn-danger">Reject</a>
+                            
+                            }
+
+                        </td>
+                        @if (GetGuideDto.Status == true)
+                        {
+                            <td>Available</td>
+                        }
+                        else
+                        {
+                            <td>Not Available</td>
+                        }
+                        @* @if (GetGuideDto.ApproveStatus == true)
+                    {
+                    <td>Approved</td>
+                    }
+                    else
+                    {
+                    <td>Not Approved</td>
+                    }*@
+                        <td>@GetGuideDto.Name @GetGuideDto.Surname</td>
+                        <td>@GetGuideDto.Email</td>
+                        <td>@GetGuideDto.Phone</td>
+
+                        @{
+                            string languages = "";
+                        }
+                        @foreach (var languageName in GetGuideDto.LanguageNames)
+                        {
+                            languages += $",{languageName.Name}";
+                        }
+                        <td>
+                            @languages.Substring(1)
+                        </td>
+
+                        @{
+                            string cities = "";
+                        }
+                        @foreach (var cityName in GetGuideDto.CityNames)
+                        {
+                            cities += $",{cityName.Name}";
+                        }
+                        <td>
+                            @cities.Substring(1)
+                        </td>
+                        <td><img src="~/Panel/img/AddImagePanel/@GetGuideDto.ProfilPhotoPath" style="height:50px;width:50px" /></td>
+                        <td>@GetGuideDto.BirthDate</td>
+                        <td>@GetGuideDto.TurebLicenseNumber</td>
+                        <td>@GetGuideDto.Tc</td>
+                        <td>@GetGuideDto.RegisteredDirectoryRoom</td>
+                    </tr>
+                }
+                <!-- 1 -->
+                @* <tr>
+                <td class="text-center">
+                <a href="#" class="btn btn-success "> Active</a>
+                </td>
+                <td>Available</td>
+                <td>Approved</td>
+                <td>Ecmel SADIKOĞLU</td>
+                <td>ecmel@gmail.com</td>
+                <td>0552 694 53 50</td>
+                <td>English, Turkish, Spanish, Arabic</td>
+                <td>Rize, İzmir, Adana</td>
+                <td>
+                <img src="" alt="">
+                </td>
+                <td>16-02-2000</td>
+                <td>AS9D0A9SD</td>
+                <td>33647175772</td>
+                <td>18AS9A0SID</td>
+
+                </tr>
+                <!-- 2 -->
+                <tr>
+                <td class="text-center">
+                <a href="#" class="btn btn-success "> Active</a>
+                </td>
+                <td>Available</td>
+                <td>Approved</td>
+                <td>Metin ÖNAL</td>
+                <td>metin@gmail.com</td>
+                <td>0532 784 20 50</td>
+                <td>English, Turkish, Spanish, Germany</td>
+                <td>Konya, İstanbul, İzmir</td>
+                <td>
+                <img src="" alt="">
+                </td>
+                <td>07-05-2002</td>
+                <td>AHISDAS003</td>
+                <td>12830912301</td>
+                <td>ASD821ADSA</td>
+
+                </tr>
+                <!-- 3 -->
+                <tr>
+                <td>
+                <button type="button" class="btn btn-primary">Approve</button>
+                <button type="button" class="btn btn-danger">Reject</button>
+                </td>
+                <td>Not Available</td>
+                <td>Not Approved</td>
+                <td>Berk YILMAZ</td>
+                <td>berk@gmail.com</td>
+                <td>0543 345 00 08</td>
+                <td>Spanish, English, Arabic</td>
+                <td>Çanakkale, Bursa, İstanbul</td>
+                <td>
+                <img src="" alt="">
+                </td>
+                <td>26-10-1995</td>
+                <td>ASD8A990SD</td>
+                <td>2131729312</td>
+                <td>SDA98S09DA</td>
+
+                </tr>*@
+            </tbody>
+        </table>
+
+    </div>
+</div>

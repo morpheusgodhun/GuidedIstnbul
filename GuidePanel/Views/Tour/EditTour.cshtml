@@ -1,0 +1,371 @@
+﻿@using Core.StaticClass;
+@using Dto.ApiPanelDtos.ProductDtos.TourDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@using GuidePanel.Helpers;
+@using System.Globalization
+@model EditTourDto
+@{
+    ViewData["Title"] = "EditTour";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header"><a href="/Tour/Index">Tour List</a>
+            > Edit Tour > @ViewBag.ProductName</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Tour Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="ProductID" />
+            <input hidden asp-for="BannerImagePath" />
+            <input hidden asp-for="CardImagePath" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Tour Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input readonly asp-for="ProductName" type="text" id="tour-name" class="form-control">
+                </div>
+               @* <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy" class="form-label fw-bold">Operator Agent:<span class="text-danger fw-bold">*</span></label>
+                    <select asp-for=OperatorAgentID class="form-select" id="cancellation-policy" required>
+                        <option selected disabled value="">Select...</option>
+                        @foreach (var agent in (List<SelectListOptionDto>)ViewBag.AgentSelectList)
+                        {
+                            <option value="@agent.OptionID">@agent.Option</option>
+                        }
+                    </select>
+                </div>*@
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">Youtube Link:</label>
+                    <input asp-for=YoutubeLink type="text" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Banner Image:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-banner" class="float-end">
+                        Current Image
+                    </button>
+                    <!-- current image Modal-->
+                    <div class="modal fade" id="current-banner" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.BannerImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- current image Modal-->
+                    <label for="image" class="form-label fw-bold">
+                        Banner Image (1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input name="BannerImage" type="file" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Card Image:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-card" class="float-end">
+                        Current Image
+                    </button>
+                    <!-- current image Modal-->
+                    <div class="modal fade" id="current-card" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.CardImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- current image Modal-->
+                    <label for="image" class="form-label fw-bold">
+                        Card Image (380x270):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input name="CardImage" type="file" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy" class="form-label fw-bold">
+                        Cancellation Policy:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=CancellationPolicyID class="form-select" id="cancellation-policy">
+                        <option selected disabled>Select...</option>
+                        @foreach (var cancellationPolicy in (List<SelectListOptionDto>)ViewBag.CancellationPolicySelectList)
+                        {
+                            <option value="@cancellationPolicy.OptionID">@cancellationPolicy.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for=Order id="Order" class="form-control" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Tags:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="tour-tag" asp-for=TagIDs multiple="multiple">
+                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.TagSelectList)
+                        {
+                            <option value="@tag.OptionID">@tag.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">Cut-off Time:</label>
+                    <div class="row">
+                        <div class="col">
+                            <input asp-for=CutOffDay type="number" id="tour-title" class="form-control" placeholder="Day">
+                        </div>
+                        <div class="col">
+                            <input asp-for=CutOffHour type="number" id="tour-title" class="form-control" placeholder="Hour">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Customer Deposito Amount
+                    </label>
+                    <input asp-for=CustomerDepositoAmount type="text" value="@Model.CustomerDepositoAmount.ToString("F2")" step="0.01" pattern="\d+(\,\d{2})?" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Agent Deposito Amount
+                    </label>
+                    @*<input asp-for=AgentDepositoAmount type="number" value="@Model.AgentDepositoAmount.ToString().Replace("," , ".")" id="tour-title" class="form-control">*@
+                    <input asp-for="AgentDepositoAmount" type="text" value="@Model.AgentDepositoAmount.ToString("F2")" step="0.01" pattern="\d+(\,\d{2})?" id="tour-title" class="form-control">
+
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Day of Payment
+                    </label>
+                    <input asp-for=DayOfPayment type="number" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Minimum Payout Percent
+                    </label>
+                    <input asp-for=MinimumPayoutPercent type="number" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="" class="form-label fw-bold d-block">
+                        Activate Child Policy:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=IsChildPolicyActive class="form-check-input" type="checkbox" value="true" id="childPolicy">
+                    <label class="form-check-label" for="childPolicy">
+                        Activate
+                    </label>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy" class="form-label fw-bold">
+                        Tour Type:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=TourTypeID class="form-select" id="tourType">
+                        <option selected disabled>Select...</option>
+                        @foreach (var tourType in (List<SelectListOptionDto>)ViewBag.TourTypeSelectList)
+                        {
+                            <option value="@tourType.OptionID">@tourType.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy"
+                           class="form-label fw-bold">
+                        Segment:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=SegmentID class="form-select" id="segment">
+                        <option selected disabled>Select...</option>
+                        @foreach (var segment in (List<SelectListOptionDto>)ViewBag.SegmentSelectList)
+                        {
+                            <option value="@segment.OptionID">@segment.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy" class="form-label fw-bold">
+                        Starting City:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=StartingCityID class="form-select" id="startCity">
+                        <option selected disabled>Select...</option>
+                        @foreach (var city in (List<SelectListOption>)ViewBag.CitySelectList)
+                        {
+                            <option value="@city.ID">@city.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Destination:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=DestinationIDs class="js-example-basic-multiple" id="destination" multiple="multiple">
+                        @foreach (var destination in (List<SelectListOptionDto>)ViewBag.DestinationSelectList)
+                        {
+                            <option value="@destination.OptionID">@destination.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Tour Category:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=TourCategoryIDs class="js-example-basic-multiple" id="category" multiple="multiple">
+                        @foreach (var tourCategory in (List<SelectListOptionDto>)ViewBag.TourCategorySelectList)
+                        {
+                            <option value="@tourCategory.OptionID">@tourCategory.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Start Time:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=StartTimeIDs class="js-example-basic-multiple" id="startTime" multiple="multiple">
+                        @foreach (var startTime in (List<SelectListOption>)ViewBag.StartTimeSelectList)
+                        {
+                            <option value="@startTime.ID">@startTime.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy" class="form-label fw-bold">
+                        Suggested Start Time:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=SuggestedStartTimeID class="form-select" id="suggestedStartTime">
+                        <option selected disabled>Select...</option>
+                        @foreach (var startTime in (List<SelectListOption>)ViewBag.StartTimeSelectList)
+                        {
+                            <option value="@startTime.ID">@startTime.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-selectable-durations" class="form-label fw-bold">
+                        Selectable Durations:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="region" asp-for="SelectableDurations"
+                            multiple="multiple" required>
+                        @for (int i = 1; i <= 35; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Inclusions:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="InclusionIDs" class="js-example-basic-multiple" id="inclusions" multiple="multiple">
+                        @foreach (var inclusion in (List<SelectListOptionDto>)ViewBag.InclusionExclusionSelectList)
+                        {
+                            <option value="@inclusion.OptionID">@inclusion.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Exclusions:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=ExclusionIDs class="js-example-basic-multiple" id="exclusions" multiple="multiple">
+                        @foreach (var exclusion in (List<SelectListOptionDto>)ViewBag.InclusionExclusionSelectList)
+                        {
+                            <option value="@exclusion.OptionID">@exclusion.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Sights To See:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=SightToSeeIDs class="js-example-basic-multiple" id="sights-to-see" multiple="multiple">
+                        @foreach (var sightToSee in (List<SelectListOptionDto>)ViewBag.SightToSeeSelectList)
+                        {
+                            <option value="@sightToSee.OptionID">@sightToSee.Option</option>
+                        }
+                    </select>
+                </div>
+             @*   <div class="clearfix">*@
+                  
+                @*</div>*@
+                <div class="col-sm-12 col-md-6 col-lg-6">
+
+                    <div class="row">
+                        <label for="" class="form-label fw-bold">
+                            Per Person/Group:<span class="text-danger fw-bold">*</span>
+                        </label>
+                    </div>
+                    <div class="d-inline-block mb-3 me-2">
+                        <input class="form-check-input" type="radio" asp-for="IsPerPerson" id="per-person" value="true">
+                        <label class="form-check-label" for="per-person">Person</label>
+                    </div>
+                    <div class="d-inline-block mb-3">
+                        <input class="form-check-input" type="radio" asp-for="IsPerPerson" id="group" value="false">
+                        <label class="form-check-label" for="group">Group</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+
+                    <div class="row">
+                        <label for="" class="form-label fw-bold">
+                            Per Day/Per Tour:<span class="text-danger fw-bold">*</span>
+                        </label>
+                    </div>
+                    <div class="d-inline-block mb-3 me-2">
+                        <input class="form-check-input" type="radio" asp-for="IsPerDay" id="per-day" value="true">
+                        <label class="form-check-label" for="per-day">Day</label>
+                    </div>
+                    <div class="d-inline-block mb-3">
+                        <input class="form-check-input" type="radio" asp-for="IsPerDay" id="per-group" value="false">
+                        <label class="form-check-label" for="per-group">Tour</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="" class="form-label fw-bold d-inline-block">
+                        Person Limit:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <div class="float-end">
+                        <input asp-for=IsPersonLimited class="form-check-input" type="checkbox" value="true" id="IsPersonLimited">
+                        <label class="form-check-label" for="IsPersonLimited">
+                            Not Limited
+                        </label>
+                    </div>
+
+                    <input asp-for=PersonLimit type="number" id="personLimit" class="form-control">
+                </div>
+                
+            </div>
+            <div class="clear-fix">
+                <button type="submit" class="btn btn-primary float-end">SAVE</button> 
+            </div>
+        </form>
+        <!--Edit Tour End-->
+    </div>
+</div>
+

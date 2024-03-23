@@ -1,0 +1,147 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Blog;
+@using Dto.ApiWebDtos.GeneralDtos;
+@using GuideWeb.Helpers;
+@model GetBlogListDto;
+@{
+    ViewData["PrivateTitle"] = Model.BlogListPage.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string languagePrefix = ViewData["language"].ToString();
+    List<int> pagination = Model.Paginate.GeneratePaginationLinks(Model.Paginate.CurrentPage, Model.Paginate.TotalPages);
+}
+
+<div class="inner-banner-section" alt="Blog List" title="Blog List" style="background-image: url(@Resource.ImagePath/@Model.BlogListPage.BannerImagePath);">
+    <img src="/assets/images/bg/inner-banner-vctr.png" class="inner-banner-vector" alt="@Model.BlogListPage" title="@Model.BlogListPage">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-md-10 col-sm-12">
+                <div class="breadcrumb-area">
+                    <h1>@Model.BlogListPage.Title</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-standard-section pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-standard-area">
+                    @foreach (var blog in Model.Blogs)
+                    {
+                        <div class="blog-standard-single">
+                            <div class="blog-format">
+                                <span class="blog-date">@blog.Date.ToString("dd-MM-yyyy")</span>
+                                <div class="blog-image">
+                                    <img style="width: 100%;" data-src="@Resource.ImagePath/@blog.ImagePath" class="lazy img-fluid" alt="@blog.Title" title="@blog.Title">
+                                </div>
+                            </div>
+                            <div class="blog-content">
+                                <h3><a href="@Helpers.PrepareUrl(languagePrefix,blog.Slug)" title="@blog.Title">@blog.Title</a></h3> 
+                                <div class="author-area clearfix mb-2">
+                                    <div class="float-start">
+                                        <p class="mb-0">
+                                            <b>@Helpers.Wcv(Model.ConstantValues, "BlogList.Categories")</b>
+                                            <a href="@Helpers.PrepareUrl(languagePrefix,blog.CategoryDto.Slug)" title="@blog.CategoryDto.Name">@blog.CategoryDto.Name</a>
+                                        </p>
+                                        <p class="mt-0">
+                                            <b>@Helpers.Wcv(Model.ConstantValues, "BlogList.Tags")</b>
+                                            @foreach (var tag in blog.Tags)
+                                            {
+                                                <a style="color:#00b1e8" href="@Helpers.PrepareUrl(languagePrefix,tag.Slug)">@tag.Name</a>
+                                            }
+                                            @Html.Raw(string.Join(", ", blog.Tags.Select(tag => $"<a style='color:#00b1e8' href='#'>{tag.Name}</a>")))
+
+                                        </p>
+                                    </div>
+                                    <p class="float-end"><b>@Helpers.Wcv(Model.ConstantValues,"BlogList.Comments")</b> @blog.CommentCount </p>
+                                </div>
+                                <p>
+                                    @blog.ShortDescription
+                                </p>
+                                <div class="blog-meta">
+                                    <a href="@Helpers.PrepareUrl(languagePrefix,blog.Slug)" class="read-more-btn" title="Continue Reading">
+                                        <b>
+                                            @Helpers.Wcv(Model.ConstantValues,"BlogList.ContinueReading")<i class="bi bi-arrow-right"></i>
+                                        </b>
+                                    </a>
+                                    <ul class="share-list">
+                                        <li>
+                                            <i class="bi bi-share"></i> <b>@Helpers.Wcv(Model.ConstantValues,"BlogList.Share")</b>
+                                            <ul class="blog-social">
+                                                <li>
+                                                    <a href="#" title="Facebook"><i class="bx bxl-facebook"></i></a>
+                                                </li>
+                                                <li><a href="#" title="Twitter"><i class="bx bxl-twitter"></i></a></li>
+                                                <li>
+                                                    <a href="#" title="Instagram"><i class="bx bxl-instagram"></i></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+                <nav class="pagination-wrap pt-50">
+                    <ul class="pagination d-flex justify-content-center gap-md-3 gap-2">
+                        @if (Model.Paginate.isPrevious)
+                        {
+                            <li class="page-item">
+                                @{
+                                    var paginateQueryString = Helpers.PrepareUrl(languagePrefix, "blogs") + $"?currentPage={Model.Paginate.CurrentPage - 1}&pageSize={Model.Paginate.PageSize}";
+                                }
+                                <a class="page-link" href="@paginateQueryString"><i class="bi bi-arrow-left"></i></a>
+                            </li>
+                        }
+
+                        @foreach (var pagenate in pagination)
+                        {
+                            if (pagenate == -1)
+                            {
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            }
+                            else
+                            {
+                                <li class="page-item @(pagenate == Model.Paginate.CurrentPage ? "active" : "")">
+                                    @{
+                                        var paginateQueryString = Helpers.PrepareUrl(languagePrefix, "blogs") + $"?currentPage={pagenate}&pageSize={Model.Paginate.PageSize}";
+                                    }
+                                    <a class="page-link" href="@paginateQueryString">@pagenate</a>
+                                </li>
+                            }
+                        }
+
+                        @if (Model.Paginate.isNext)
+                        {
+                            <li class="page-item">
+                                @{
+                                    var paginateQueryString = Helpers.PrepareUrl(languagePrefix, "blogs") + $"?currentPage={Model.Paginate.CurrentPage + 1}&pageSize={Model.Paginate.PageSize}";
+                                }
+                                <a class="page-link" href="@paginateQueryString"><i class="bi bi-arrow-right"></i></a>
+                            </li>
+                        }
+
+                        @*        <li class="page-item">
+                        <a class="page-link" href="#" tabindex="-1"><i class="bi bi-arrow-left" alt="@Model.BlogListPage" title="@Model.BlogListPage"></i></a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">02</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#" alt="@Model.BlogListPage" title="@Model.BlogListPage">03</a></li>
+                        <li class="page-item">
+                        <a class="page-link" href="#"><i class="bi bi-arrow-right" alt="@Model.BlogListPage" title="@Model.BlogListPage"></i></a>
+                        </li> *@
+
+                    </ul>
+                </nav>
+            </div>
+            @await Component.InvokeAsync("BlogSidebarViewComponent")
+        </div>
+    </div>
+</div>
+

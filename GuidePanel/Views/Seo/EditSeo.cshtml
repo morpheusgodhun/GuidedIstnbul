@@ -1,0 +1,62 @@
+﻿@using Dto.ApiPanelDtos.SeoDtos;
+@model EditSeoDto
+@{
+    ViewData["Title"] = "EditSeo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Seo/Index">Seo List</a>
+        > Edit SEO > @Model.MetaTitle
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit SEO Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="SeoID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="meta-title" class="form-label fw-bold">
+                        Meta Title:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="MetaTitle" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="link" class="form-label fw-bold">
+                        Link:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="PageLink" class="form-control" readonly>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="meta-key" class="form-label fw-bold fw-bold">
+                        Meta Key:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="MetaKey" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="meta-desciption" class="form-label fw-bold">
+                        Meta
+                        Description:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="MetaDescription" class="form-control">
+                </div>
+              
+               
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit SEO Category End-->
+    </div>
+</div>
+

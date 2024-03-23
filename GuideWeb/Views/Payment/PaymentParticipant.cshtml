@@ -1,0 +1,114 @@
+﻿@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@model ReservationParticipantInformationDto
+@{
+    ViewData["Title"] = "PaymentParticipant";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            <div class="booking-form-box pb-0">
+                <form method="post" action="/Payment/PaymentParticipant" id="msform" class="banner-form">
+                    <input hidden asp-for="ReservationId" />
+                    <ul id="progressbar" class="payment_form_progressbar">
+                        <li class="active" id="account"><strong>Participants</strong></li>
+                        @*<li id="personal"><strong>Billing Information</strong></li>*@
+                        <li id="payment"><strong>Payment Information</strong></li>
+                    </ul>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <br>
+                    <!-- fieldsets -->
+                    <fieldset>
+                        <div class="form-card row">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2 class="steps">Step 1 - 2</h2>
+                                </div>
+                            </div>
+                            @{
+                                int i = 0;
+                            }
+                            @foreach (var participant in Model.Participants)
+                            {
+                                <input hidden name="Participants[@i].ParticipantId" value="@participant.ParticipantId">
+                                <div class="row">
+                                    <span class="rez_form_head">Participants @(i + 1) *</span>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="fas fa-id-card-alt"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    <input required placeholder="Name" type="text" name="Participants[@i].Name" value="@participant.Name" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="far fa-id-card"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                <input required placeholder="Surname" type="text" name="Participants[@i].Surname" value="@participant.Surname" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="fas fa-phone-alt"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    <input placeholder="Date of Birth" type="date" name="Participants[@i].BirthDate" value="@participant.BirthDate" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                i++;
+                            }
+                            <div class="row">
+                                <div class="col">
+                                    <div class="search-box-single destination-box postition-relative">
+                                        <div class="searchbox-icon">
+                                            <i class="fas fa-handshake"></i>
+                                        </div>
+                                        <div class="searchbox-input">
+                                            <input required placeholder="Pick Up Point" type="text" asp-for="PickUpPoint" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="search-box-single">
+                                        <div class="searchbox-icon">
+                                            <i class="bi bi-chat-left-text-fill"></i>
+                                        </div>
+                                        <div class="searchbox-input">
+                                            <textarea asp-for="ReservationNote" rows="6" placeholder="Reservation Note"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="action-button" title="Next">Next</button>
+                        @*<a href="/Payment/PaymentBilling" >Next</a>*@
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+        @await Component.InvokeAsync("PaymentReservationDetailViewComponent" , new {reservationId = Model.ReservationId.ToString()} )
+    </div>
+</div>
+
+@section Scripts{
+    
+}

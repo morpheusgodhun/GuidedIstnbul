@@ -1,0 +1,134 @@
+﻿@using DTO;
+@using Dto.ApiWebDtos.ApiToWebDtos.Faq;
+@using Dto.ApiWebDtos.ApiToWebDtos.PageComponets;
+@using System.Reflection;
+@using GuideWeb.Helpers;
+
+@model GetFaqDto
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*PageBannerArea:Start*@
+<div class="inner-banner-section" style="background-image: url(@Resource.ImagePath/@Model.BannerImagePath);">
+    <img src="~/assets/images/bg/inner-banner-vctr.png" class="inner-banner-vector" alt="Frequently Asked Questions" title="Frequently Asked Questions">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-md-10 col-sm-12">
+                <div class="breadcrumb-area">
+                    <h1>@Helpers.Wcv(Model.ConstantValues,"Faq.Title")</h1>
+                    <span>@Helpers.Wcv(Model.ConstantValues, "Faq.Subtitle")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*PageBannerArea:End*@
+@*PageContentArea:Start*@
+<div class="blog-standard-section pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            @*FaqListArea:Start*@
+            <div class="col-lg-8">
+                @{
+                    int accordion = 0;
+                }
+                @foreach (var item in @Model.FaqCategories.OrderBy(x => x.Order))
+                {
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-xl-8 col-lg-10 col-md-10 text-center">
+                                <div class="section-title1 mb-4">
+                                    <h2>@item.FaqCategoryName</h2>
+                                    @*@await Html.PartialAsync("~/Views/Shared/_PageHeadIcon.cshtml")*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+
+                        <div class="faq-wrap sibling-2 mb-30">
+                            <div class="accordion" id="accordionExample-@accordion">
+                                @{
+                                    int accordionitem = 0;
+                                }
+                                @foreach (var faqs in item.Faqs.OrderBy(x => x.Order))
+                                {
+                                    <div class="accordion-item mb-3">
+                                        <h3 class="accordion-header" id="headingOne-@accordionitem@accordion">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseOne-@accordionitem@accordion" aria-expanded="true"
+                                                    aria-controls="collapseOne-@accordionitem@accordion">
+                                                @faqs.Question
+                                            </button>
+                                        </h3>
+                                        <div id="collapseOne-@accordionitem@accordion" class="accordion-collapse collapse"
+                                             aria-labelledby="headingOne-@accordionitem@accordion" data-bs-parent="#accordionExample-@accordion">
+                                            <div class="accordion-body">
+                                                <p>
+                                                    @faqs.Answer
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    accordionitem++;
+
+                                }
+                                @{
+                                    accordion++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <br />
+                }
+
+            </div>
+            @*FaqListArea:End*@
+            @*FaqPageRightArea:Start*@
+            <div class="col-lg-4">
+                <div class="blog-sidebar ps-lg-4">
+                    <br>
+                    <div class="blog-widget">
+                        <h4 class="blog-widget-title">@Helpers.Wcv(Model.ConstantValues, "Faq.BlogsTitle")</h4>
+                        <div class="trending-post">
+                            <ul class="trending-post-list">
+                                @foreach (var TrendBlog in Model.Blogs)
+                                {
+                                    <li>
+                                        <div class="trending-post-single">
+                                            <div class="row">
+                                                <div class="package-image col-3">
+                                                    <img style="width: 100%;" data-src="@Resource.ImagePath/@TrendBlog.ImagePath"
+                                                         class="img-fluid m-auto lazy" alt="@TrendBlog.Title" title="@TrendBlog.Title">
+                                                </div>
+                                                <div class="post-content col-8">
+                                                    <h6>
+                                                        <a href="/Blog/BlogDetail/@TrendBlog.BlogID" title="@TrendBlog.Title">
+                                                            @TrendBlog.Title
+                                                        </a>
+                                                    </h6>
+                                                    <span class="post-date">@TrendBlog.Date.ToString("dd.MM.yyyy")</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*FaqPageRightArea:End*@
+        </div>
+    </div>
+</div>
+@*PageContentArea:End*@
+

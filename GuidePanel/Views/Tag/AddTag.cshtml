@@ -1,0 +1,109 @@
+﻿@using Core.StaticClass;
+@using Dto.ApiPanelDtos.TagManagementDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddTagDto
+@{
+    ViewData["Title"] = "AddTag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Tag/Index">Tag List</a>
+        > Add Tag
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Tag Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagname" class="form-label fw-bold">
+                        Tag Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" name="DisplayName" class="form-control" id="tagName" onkeyup="convertTo()">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label asp-for="Slug" class="form-label fw-bold">
+                        Tag Slug:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Slug" class="form-control" id="slug">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagicon" class="form-label fw-bold">
+                        Tag Icon:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="file" name="Icon"
+                           placeholder="Dosya seçilmedi.">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagcategories" class="form-label fw-bold">
+                        Tag
+                        Categories:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" name="TagCategoryIDs[]"
+                            id="tagcategories" multiple="multiple">
+                        @foreach (var tagCategory in ((List<SelectListOption>)ViewBag.TagCategories))
+                        {
+                            <option value="@tagCategory.ID">@tagCategory.Value</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit Tag End-->
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function convertTo() {
+
+            var deger = $('#tagName').val().trim();
+
+            var chacters = {
+                Ç: 'c',
+                Ö: 'o',
+                Ş: 's',
+                İ: 'i',
+                I: 'i',
+                Ü: 'u',
+                Ğ: 'g',
+                ç: 'c',
+                ö: 'o',
+                ş: 's',
+                ı: 'i',
+                ü: 'u',
+                ğ: 'g',
+                " ": '-'
+            };
+            var stringtoarray = deger.split('');
+            for (var i = 0; i < stringtoarray.length; i++) {
+                stringtoarray[i] = chacters[stringtoarray[i]] || stringtoarray[i];
+            }
+
+            var arraytostring = stringtoarray.join('');
+            var cleanMessage = arraytostring.replace(/\./g, "-").replace(/\//g, "-").replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+            $('#slug').val(cleanMessage);
+
+        }
+    </script>
+
+}

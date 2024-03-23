@@ -1,0 +1,69 @@
+﻿@using Dto.ApiPanelDtos.RoleDtos;
+@model List<RoleListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Role List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Role/AddRole">
+                        Add Role
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width:0%">Update</th>
+                    <th style="width:0%">Status</th>
+                    <th>Role Name</th>
+                    <th>Pages</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/Role/EditRole/@role.RoleTemplateId">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (role.Status)
+                            {
+                                <a href="/Role/ToggleRoleStatus/@role.RoleTemplateId" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/Role/ToggleRoleStatus/@role.RoleTemplateId" class="btn btn-danger w-100">Passive</a>
+                            }
+                        </td>
+                        <td>@role.RoleTemplateName</td>
+                        <td>
+                            @for (int i = 0; i < role.Roles.Count; i++)
+                            {
+                                if (i == role.Roles.Count - 1)
+                                {
+                                    <span>@role.Roles[i]</span>
+                                }
+                                else
+                                {
+                                    <span>@role.Roles[i] &</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+                
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

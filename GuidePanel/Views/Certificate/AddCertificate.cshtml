@@ -1,0 +1,56 @@
+﻿@using Dto.ApiPanelDtos.CertificateManagementDtos;
+@model AddCertificateDto
+@{
+    ViewData["Title"] = "AddCertificate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Certificate/Index">Certificate List</a>
+        > Add Certificate</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Tag Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagname" class="form-label fw-bold">
+                        Title:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Title" class="form-control">
+                    @Html.ValidationMessageFor(x=>x.Title, null, new{@class = "text-danger"})
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Order" class="form-control">
+                    @Html.ValidationMessageFor(x=>x.Order, null, new{@class = "text-danger"})
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagicon" class="form-label fw-bold">
+                        Image(1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required class="form-control" type="file" name="Image" placeholder="Dosya seçilmedi.">
+                </div>
+               @* <div class="text-danger" asp-validation-summary="All"></div>*@
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit Tag End-->
+
+    </div>
+</div>

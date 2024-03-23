@@ -1,0 +1,33 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.PageComponets;
+@using GuideWeb.Helpers;
+@model GetStartedCardDto
+@{
+    string prefix = ViewData["language"].ToString();
+}
+
+<div class="get_started_section pb-20 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="@Resource.ImagePath/laptop-btt.png" class="img-fluid" />
+            </div>
+            <div class="col-md-6 align-middle pt-4">
+                @Html.Raw(Helpers.Wcv(Model.ConstantValues, "GetStarted.Content"))
+                <ul class="list_order">
+                    <li><b>1</b> @Helpers.Wcv(Model.ConstantValues, "GetStarted.FirstItem")</li>
+                    <li><b>2</b> @Helpers.Wcv(Model.ConstantValues,"GetStarted.SecondItem")</li>
+                    <li><b>3</b> @Helpers.Wcv(Model.ConstantValues, "GetStarted.ThirdItem")</li>
+                </ul>
+                <p>
+                    <a class="eg-btn btn--primary btn--lg" href="@Helpers.PrepareUrl(prefix, Model.Slug)" title="Start Now">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "GetStarted.Button").Value</a>
+                  @*  @{
+                        var oldConstantValue = Helpers.Wcv(Model.ConstantValues, "ApplyGuide.ReadConstentLabel");
+                        var replacedConstatValue = oldConstantValue.Replace("#", Helpers.PrepareUrl(prefix, Model.ApplyGuideFaqSlug));
+                    }
+                    @Html.Raw(replacedConstatValue);*@
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>

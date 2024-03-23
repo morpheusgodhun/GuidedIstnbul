@@ -1,0 +1,517 @@
+﻿@using Dto.ApiPanelDtos.ReservationDtos;
+@model ReservationFormDetailDto
+@{
+    ViewData["Title"] = "ReservationFormDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Reservation Form Detail</h4>
+    <div class="card-body">
+        <br />
+        <h4 class="header-title mb-3 text-center">General Info</h4>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <tbody>
+                <tr>
+                    <td style="width: 0%">Reservation Code</td>
+                    <td>@Model.ReservationCode</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Product Name</td>
+                    <td>@Model.ProductName</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Start Time</td>
+                    <td>@Model.StartDateTime</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Participant Number</td>
+                    <td>@Model.ParticipantNumber</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">How Did You Find Us?</td>
+                    <td>@Model.FindUs</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Contact Person</td>
+                    <td>@Model.ContactFullname</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Contact Mail</td>
+                    <td>@Model.ContactEmail</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Contact Phone</td>
+                    <td>@Model.ContactPhone</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Hotel</td>
+                    <td>@Model.Hotel</td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Also Interested</td>
+                    <td>
+                        @foreach (var item in Model.AlsoInterested)
+                        {
+                            <span>@item</span>
+                            <br />
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 0%">Also Interested Note</td>
+                    <td>@Model.ReservationCode</td>
+                </tr>
+                @if (Model.BookingStatus > 1)
+                {
+                    <tr>
+                        <td style="width: 0%">Reservation Note</td>
+                        <td>@Model.ReservationNote</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 0%">Pick Up Point</td>
+                        <td>@Model.PickUpPoint</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br /> <br />
+        <h4 class="header-title mb-3 text-center">Additional Services</h4>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th>Additional Service</th>
+                    <th>Additional Service Option</th>
+                    <th>Participant Number</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var additionalService in Model.AdditionalServices)
+                {
+                    <tr>
+                        <td>@additionalService.AdditionalServiceName</td>
+                        <td>@additionalService.AdditionalServiceOptionName</td>
+                        <td>@additionalService.ParcitipantNumber</td>
+                        <td>@additionalService.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model.BookingStatus > 1)
+        {
+            <br /> <br />
+            <h4 class="header-title mb-3 text-center">Participant Info</h4>
+            <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Birtdate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var participant in Model.Participants)
+                    {
+                        <tr>
+                            <td>@participant.Name</td>
+                            <td>@participant.Surname</td>
+                            <td>@participant.BirthDate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        @if (Model.BookingStatus >= 3)
+        {
+            @* <br /> <br />
+        <h4 class="header-title mb-3 text-center">Billing Info</h4>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+        <tbody>
+        <tr>
+        <td style="width: 0%">Billing Type</td>
+        <td>
+        @if (Model.BillingInfo.IsIndividual)
+        {
+        <span>Individual</span>
+        }else
+        {
+        <span>Corparate</span>
+        }
+        </td>
+        </tr>
+        @if (Model.BillingInfo.IsIndividual)
+        {
+        <tr>
+        <td style="width: 0%">Name Surname</td>
+        <td>@Model.BillingInfo.Fullname</td>
+        </tr>
+        <tr>
+        <td style="width: 0%">Tc Or Passport Number</td>
+        <td>@Model.BillingInfo.TcOrPassportNo</td>
+        </tr>
+        }else
+        {
+        <tr>
+        <td style="width: 0%">Tax Administration</td>
+        <td>@Model.BillingInfo.TaxAdministration</td>
+        </tr>
+        <tr>
+        <td style="width: 0%">Tax Number</td>
+        <td>@Model.BillingInfo.TaxNumber</td>
+        </tr>
+        }
+        <tr>
+        <td style="width: 0%">E-mail</td>
+        <td>@Model.BillingInfo.Email</td>
+        </tr>
+        <tr>
+        <td style="width: 0%">Address</td>
+        <td>@Model.BillingInfo.Address</td>
+        </tr>
+        <tr>
+        <td style="width: 0%">Phone Number</td>
+        <td>@Model.BillingInfo.Phone</td>
+        </tr>
+
+
+        </tbody>
+        </table>*@
+        }
+
+
+
+
+
+        <br /> <br />
+        <h4 class="header-title mb-3 text-center">Payment Detail</h4>
+
+
+        <form action="" class=" col-sm-10 col-md-10 m-5">
+            <div class="row p-3">
+                <div class="col sm-4 col-md-4">
+                    <label for="">Subtotal(Tour Price) : 500 USD</label>
+                </div>
+                <div class="col sm-4 col-md-4">
+                    <label for="">Payment Amount: 125 USD</label>
+                </div>
+                <div class="col sm-4 col-md-4">
+                    <label for="">Payment Statu: 125 USD</label>
+                </div>
+                <div class="col sm-12 col-md-12">
+                    <div class="mt-3">
+                        <button style="float: right; margin-left: 5px;" type="button"
+                                class="btn btn-secondary" data-bs-toggle="modal"
+                                data-bs-target="#send-payment-link">
+                            Send Payment Link
+                        </button>
+                        <button style="float: right;" type="button"
+                                class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#update-payment">
+                            Update Payment
+                        </button>
+
+                    </div>
+                    <!--Update Payment Link Modal-->
+                    <div class="modal" id="update-payment" tabindex="-1" role="dialog"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="mySmallModalLabel">
+                                        Update Payment
+                                    </h4>
+                                    <button type="button" class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row m-2">
+                                        <div class="col-sm-3 my-2">
+                                            <label for=""
+                                                   class="form-label fw-bold">
+                                                Total Price:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-9 my-2">
+                                            <input type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row m-2">
+                                        <div class="col-sm-3 my-2">
+                                            <label for=""
+                                                   class="form-label fw-bold">
+                                                Inclusions:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-9 my-2">
+                                            <select class="js-example-basic-multiple"
+                                                    name="states[]" id="Inclusions"
+                                                    multiple="multiple">
+                                                <option value="">
+                                                    Lunch, Drinks
+                                                </option>
+                                                <option value="">
+                                                    Private Tour
+                                                </option>
+                                                <option value="">Transportation</option>
+                                                <option value="">
+                                                    Museum/Attraction
+                                                    Tickets
+                                                </option>
+                                                <option value="">
+                                                    Professional Local
+                                                    Guide
+                                                </option>
+                                                <option value="">
+                                                    Tips to guide & driver
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row m-2">
+                                        <div class="col-sm-3 my-2">
+                                            <label for=""
+                                                   class="form-label fw-bold">
+                                                Exclusions:
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-9 my-2">
+                                            <select class="js-example-basic-multiple"
+                                                    name="states[]" id="Exclusions"
+                                                    multiple="multiple">
+                                                <option value="">
+                                                    Lunch, Drinks
+                                                </option>
+                                                <option value="">
+                                                    Private Tour
+                                                </option>
+                                                <option value="">Transportation</option>
+                                                <option value="">
+                                                    Museum/Attraction
+                                                    Tickets
+                                                </option>
+                                                <option value="">
+                                                    Professional Local
+                                                    Guide
+                                                </option>
+                                                <option value="">
+                                                    Tips to guide & driver
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="submit"
+                                                class="btn btn-secondary">
+                                            Update
+                                            Payment
+                                        </button>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    <!--Send Payment Link Modal-->
+                    <div class="modal fade" id="send-payment-link" tabindex="-1"
+                         role="dialog" aria-labelledby="mySmallModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="mySmallModalLabel">
+                                        Send
+                                        Payment Link
+                                    </h4>
+                                    <button type="button" class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h4 class="text-center">Rezervasyondan Kalan Borç : @ViewBag.CurrentDebt $</h4>
+                                    <div class="row m-2">
+
+                                        <div class="col-sm-3 my-2">
+                                            <label for=""
+                                                   class="form-label fw-bold">Amount</label>
+                                        </div>
+                                        <div class="col-sm-9 my-2">
+                                            <input type="text" id="amountInput" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row m-2">
+
+                                        <div class="col-sm-3 my-2">
+                                            <label for=""
+                                                   class="form-label fw-bold">Email</label>
+                                        </div>
+                                        <div class="col-sm-9 my-2">
+                                            <input type="email" id="emailInput" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row m-2">
+
+                                        <div class="col-sm-3 my-2">
+                                            <label for=""
+                                                   class="form-label fw-bold">Validity Period(Default 2 Day)</label>
+                                        </div>
+                                        <div class="col-sm-9 my-2">
+                                            <input type="number" id="validatyInput" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="submit" id="sendPayment"
+                                                class="btn btn-secondary float-end">
+                                            Send
+                                            Payment Link
+                                        </button>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+
+        </form>
+
+        <!--Add Payment Start-->
+        <div class="container-fluid">
+            <div class="page-title-box">
+                <h4 class="header-title mb-4 fw-bold">Add Payment</h4>
+                <h6 class="font-10 fst-italic">
+                    Asterisk (<span class="text-danger fw-bold">*</span>) required fields
+                </h6>
+            </div>
+            <form action="" class=" text-black font-weight-bold p-3 mb-5 ">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="payment-type" class="form-label fw-bold">
+                            Payment
+                            Type:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="form-select" id="patment-type">
+                            <option selected disabled>Select...</option>
+                            <option value="">Havale/EFT</option>
+                            <option value="">Card</option>
+                            <option value="">Cash Payment</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="payment-service" class="form-label fw-bold">
+                            Payment
+                            Service:
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="form-select" id="payment-service">
+                            <option selected disabled>Select...</option>
+                            <option value="">Museum ticket payment</option>
+                            <option value="">Transfer payment</option>
+                            <option value="">Tour payment</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="description" class="form-label fw-bold">
+                            Description:
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" id="description" class="form-control">
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="description" class="form-label fw-bold">
+                            Price:
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="number" id="description" class="form-control">
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                        <button type="submit"
+                                class="btn btn-dark rounded-pill px-5">
+                            SAVE
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--Add Payment End-->
+        <br /> <br />
+
+        <h4 class="header-title mb-3 text-center">Reservation Payments</h4>
+
+        <table id="scroll-horizontal-datatable"
+               class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th>Create Date</th>
+                    <th>Debt(Debt Type)</th>
+                    <th>Price</th>
+                    <th>-</th>
+                    <th>Payment Method</th>
+                    <th>Payment Type</th>
+                    <th>Card Info</th>
+                    <th>-</th>
+                    <th>Discount Rate</th>
+                    <th>Desc</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var payment in Model.ReservationPayments)
+                {
+                    <tr>
+                        <td>@payment.CreateDate</td>
+                        <td>@(payment.IsDebt ? "Borç" + " (" + payment.DebtType + ")" : "Alınmış")</td>
+                        <td>@payment.Price</td>
+                        <td>-</td>
+                        <td>@payment.PaymentMethod</td>
+
+                        <td>@payment.PaymentType</td>
+
+                        <td>@payment.CardHolderName <br /> @payment.CardNumber</td>
+                        <td>-</td>
+
+                        <td>@payment.DiscountRate</td>
+
+                        <td>-</td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#sendPayment").click(function () {
+                var amount = $("#amountInput").val();
+                var email = $("#emailInput").val();
+                var validaty = $("#validatyInput").val();
+                var reservationId = '@Model.ReservationId';
+                console.log(amount);
+                console.log(email);
+                $.ajax({
+                    url: "/Reservation/SendPaymentLink",
+                    method: "POST",
+                    data: { amount: amount, email: email, reservationId: reservationId,validaty:validaty },
+                    success: function (response) {
+                        //alert("E-posta adresine gönderilen bağlantı: " + response.url);
+                    },
+                    error: function (xhr, status, error) {
+                        // Hata durumunda burası çalışır
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+    </script>
+
+ }

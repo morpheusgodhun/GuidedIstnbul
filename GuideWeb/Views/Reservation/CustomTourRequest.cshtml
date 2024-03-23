@@ -1,0 +1,280 @@
+﻿@using Core.StaticValues
+@using Dto.ApiWebDtos.ApiToWebDtos.Tour
+@model GetCustomTourRequestDetailDto
+@{
+    ViewData["Title"] = "CustomTourRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="feature-section2 mt-60">
+    <div class="row">
+        <div class="col text-center">
+            <h1>Offer History</h1>
+        </div>
+    </div>
+    <div class="container mt-40">
+        <div class="clearfix">
+            <button class="btn btn-primary btn--sm float-end mb-4" data-bs-toggle="modal"
+                    data-bs-target="#request-detail">
+                Request Detail
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>Answer</th>
+                        <th>Offer Date</th>
+                        <th>Tour Program</th>
+                        <th>Tour Name</th>
+                        <th>Total Offer</th>
+                        <th>Request Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.OfferList)
+                    {
+                        <tr>
+                            <td class="p-3">
+                                @if (!String.IsNullOrWhiteSpace(item.AdminAnswer) && String.IsNullOrWhiteSpace(item.CustomerAnswer))
+                                {
+                                    <button class="btn btn-success btn--sm" data-bs-toggle="modal"
+                                    data-bs-target="#confirmOfferModal@(item.OfferId)">
+                                        Confirm
+                                    </button>
+                                    <button class="btn btn-danger btn--sm" data-bs-toggle="modal"
+                                    data-bs-target="#editOfferModal@(item.OfferId)">
+                                        Edit
+                                    </button>
+                                }
+                                else if (!String.IsNullOrWhiteSpace(item.AdminAnswer) && !String.IsNullOrWhiteSpace(item.CustomerAnswer))
+                                {
+                                    @item.Answer
+                                }
+                            </td>
+                            <td class="p-3">@item.Date</td>
+                            <td class="p-3">
+                                <button class="btn btn-secondary btn--sm" data-bs-toggle="modal"
+                                    data-bs-target="#detailModal@(item.OfferId)">
+                                    Program Detail
+                                </button>
+                            </td>
+                            <td class="p-3">@(item.TourName)</td>
+                            <td class="p-3">@(item.Price)</td>
+                            @if (Model.OfferList[0].OfferId == item.OfferId) @*ilk satırsa*@
+                            {
+                                <td class="p-3" rowspan="@(Model.OfferList.Count)">@(new CustomTourOfferStatus().GetValue((int)Model.RequestDetail.RequestStatus))</td>
+                            }
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Modal Request Detail -->
+<div class="modal fade" id="request-detail" tabindex="-1" aria-labelledby="detailRModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailRLabel">Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <table id="scroll-horizontal-datatable" class="table w-100  table-striped">
+                    <tbody>
+                        <tr>
+                            <td style="width: 30%;">Destinations</td>
+                            <td>@Html.Raw( String.Join(", ",@Model.RequestDetail.Destinations) )</td>
+                        </tr>
+                        <tr>
+                            <td>Arrival Date</td>
+                            <td>@Model.RequestDetail.ArrivalDate</td>
+                        </tr>
+                        <tr>
+                            <td>Deparature Date</td>
+                            <td>@Model.RequestDetail.DeperatureDate</td>
+                        </tr>
+                        <tr>
+                            <td>Number of Adults</td>
+                            <td>@Model.RequestDetail.NumberOfAldult</td>
+                        </tr>
+                        @*<tr>
+                            <td>Number of Children (0-6)</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Number of Children (7-12)</td>
+                            <td>1</td>
+                        </tr>*@
+                        <tr>
+                            <td>Sender Name</td>
+                            <td>@Model.RequestDetail.SenderName</td>
+                        </tr>
+                        <tr>
+                            <td>Sender Mail</td>
+                            <td>@Model.RequestDetail.SenderEmail</td>
+                        </tr>
+                        <tr>
+                            <td>Sender Phone Number</td>
+                            <td>@Model.RequestDetail.SenderPhone</td>
+                        </tr>
+                        <tr>
+                            <td>Country</td>
+                            <td>@Model.RequestDetail.Country</td>
+                        </tr>
+                        <tr>
+                            <td>Language</td>
+                            <td>@Model.RequestDetail.Language</td>
+                        </tr>
+                        <tr>
+                            <td>How did you find us?</td>
+                            <td>@Model.RequestDetail.HowFindUs</td>
+                        </tr>
+                        <tr>
+                            <td>Special Request</td>
+                            <td>
+                                @Model.RequestDetail.CustomerNote
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Interested With</td>
+                            <td>@Html.Raw( String.Join(", ",@Model.RequestDetail.AlsoInteresteds) )</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@foreach (var item in Model.OfferList)
+{
+<!-- Modal Detail -->
+    <div class="modal fade" id="detailModal@(item.OfferId)" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailLabel">Program Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div style="text-align: justify;" class="modal-body p-5">
+                <div class="clearfix">
+                    <p class="float-end" style="font-size: large;">
+                            <b>Price: </b> @(item.Price)₺
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <b>Admin Answer:</b> @(item.AdminAnswer)
+                    </p>
+                </div>
+                    <div>
+                        <p>
+                            <b>Your Answer:</b> @(item.CustomerAnswer)
+                        </p>
+                    </div>
+                <br>
+                    <div style="background-color: #eee;padding: 10px;">
+                    @Html.Raw(item.Program)
+                </div>
+@*
+                <table id="scroll-horizontal-datatable" class="table w-100  table-striped">
+                    <tbody>
+                        <tr>
+                            <td class="p-4">Day 1</td>
+                            <td class="p-4">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, perferendis natus nesciunt praesentium ipsa a ratione rerum non, nisi nam illo numquam, quas impedit fugit aliquam? Maiores suscipit molestias architecto.</p>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum, iusto? Est reprehenderit placeat officiis hic consequatur eaque tempora eligendi repudiandae atque nulla error saepe quos nisi accusantium ratione, voluptas ducimus.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-4">Day 2</td>
+                            <td class="p-4">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente quisquam porro eum repellat corrupti quod temporibus. Fuga ut consequatur corporis optio vitae a dolorum atque, dolor possimus, quam, dignissimos vel.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-4">Day 3</td>
+                            <td class="p-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum ipsum doloribus aut modi! Natus eius aspernatur assumenda incidunt dolorum facilis consectetur sequi molestiae voluptatem pariatur quasi, excepturi corporis, magni saepe.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4">Transfer From Airport</td>
+                            <td class="p-4">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt repudiandae esse quia a rem repellendus ex corrupti facere.</p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+*@
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modals:End -->
+}
+@foreach (var item in Model.OfferList)
+{
+<!-- Modal Comment -->
+    <div class="modal fade" id="editOfferModal@(item.OfferId)" tabindex="-1" aria-labelledby="editOfferModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailLabel">Edit Offer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div style="text-align: justify;" class="modal-body">
+                <form action="/Tour/CustomMadeTourRequestEdit" method="post">
+                <div class="clearfix m-4">
+                    <div class="row">
+                        <label class="mb-2"> <b>Update Request</b> </label>
+                        <textarea style="font-size:medium;" class="form-control" name="CustomerAnswer" cols="30" rows="7"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <input type="hidden" value="@(item.OfferId)" name="OfferId">
+                            <input type="hidden" value="@(item.requestId)" name="RequestId">
+                    <button type="submit" class="btn btn-primary btn--sm float-end mb-4">Send Update Request</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modals:End -->
+}
+@foreach (var item in Model.OfferList)
+{
+<!-- Modal Comment -->
+<div class="modal fade" id="confirmOfferModal@(item.OfferId)" tabindex="-1" aria-labelledby="editOfferModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailLabel">Confirm Offer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div style="text-align: justify;" class="modal-body">
+                    <form action="/Tour/CustomMadeTourRequestComfirm" method="post">
+                <div class="clearfix m-4">
+                    <div class="row">
+                        <label class="mb-2"> <b>Not</b> </label>
+                        <textarea style="font-size:medium;" class="form-control" name="CustomerAnswer" cols="30" rows="7"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <input type="hidden" value="@(item.OfferId)" name="OfferId">
+                            <input type="hidden" value="@(item.requestId)" name="RequestId">
+                    <button type="submit" class="btn btn-primary btn--sm float-end mb-4">Send Confirm</button>
+                </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modals:End -->
+}

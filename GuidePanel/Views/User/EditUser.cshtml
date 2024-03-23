@@ -1,0 +1,62 @@
+﻿@using Dto.ApiPanelDtos.UserDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model EditUserDto
+@{
+    ViewData["Title"] = "EditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/User/Index">User List</a>
+        > Edit User
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Edit User Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="UserID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="name" class="form-label fw-bold">
+                        Name: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input readonly asp-for="Name" type="text" id="name" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="name" class="form-label fw-bold">
+                        Surname: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input readonly asp-for="Surname" type="text" id="name" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="roles" class="form-label fw-bold">
+                        Roles:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="form-select" asp-for="Roles">
+                        @foreach (var role in (List<SelectListOptionDto>)ViewBag.Roles)
+                        {
+                            <option value="@role.OptionID">@role.Option</option>
+                        }
+                    </select>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Edit User End-->
+    </div>
+</div>

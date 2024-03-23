@@ -1,0 +1,55 @@
+﻿@using Core.StaticClass;
+@using Dto.ApiPanelDtos.ContactInfoDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddContactInfoDto
+@{
+    ViewData["Title"] = "AddContactInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/ContactInfo/Index">Contact Info List</a>
+        > Add Contact Information 
+        </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required fields
+        </p>
+        <!---Add FAQ Start-->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="faqcategory" class="form-label fw-bold">
+                        Information Type:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="TypeID" class="form-select" id="faqcategory" required>
+                        <option selected disabled value="">Select...</option>
+                        @foreach (var type in ((List<SelectListOption>)ViewBag.typeList))
+                        {
+                            <option value="@type.ID">@type.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Information: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for="Value" type="text" id="order" class="form-control">
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Add FAQ End-->
+    </div>
+</div>
+

@@ -1,0 +1,59 @@
+﻿@using Dto.ApiPanelDtos.InfoCardDtos;
+
+@{
+    ViewData["Title"] = "AddInfoCard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model AddInfoCardDto
+<div class="card">
+    <h4 class="card-header">
+        <a href="/InfoCard/Index">Card List</a>
+        > Add Information Card
+      </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Card Info Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagname" class="form-label fw-bold">
+                        Title:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for=Title class="form-control">
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tagicon" class="form-label fw-bold">
+                        Icon:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="file" name="Icon"
+                           placeholder="Dosya seçilmedi.">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="tagname" class="form-label fw-bold">
+                        Content:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea class="form-control" asp-for="Content" rows="2"></textarea>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit Card Info End-->
+
+    </div>
+</div>
+

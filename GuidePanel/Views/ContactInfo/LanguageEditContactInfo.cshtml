@@ -1,0 +1,46 @@
+﻿@using Dto.ApiPanelDtos.ContactInfoDtos;
+@model LanguageEditContactInfoDto
+@{
+    ViewData["Title"] = "LanguageEditContactInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+
+        <h4 class="float-start">
+            <a href="/ContactInfo/Index">Contact Info List</a>
+            > Edit Contact Information
+            </h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required fields
+        </p>
+        <!---Add FAQ Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="ContactInfoLanguageItemID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Information: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for="Value" type="text" id="order" class="form-control">
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Add FAQ End-->
+    </div>
+</div>
+

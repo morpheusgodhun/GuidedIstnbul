@@ -1,0 +1,43 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@model LanguageEditAdditionalServiceOptionDto
+@{
+    ViewData["Title"] = "LanguageEditOption";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="float-start">Edit Form Information Field</h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <!--Edit Additional Service Price Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="OptionLanguageItemID" />
+            <input hidden asp-for="AdditionalServiceID" />
+            <div class="row mt-2 mb-3">
+
+                <div class="col-sm-12 col-md-12  mb-3 mr-1">
+                    <label for="option-name" class="form-label fw-bold">
+                        Option Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" asp-for="OptionName" type="text" id="option-name">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+
+        </form>
+        <!--Edit Additional Service Prices End-->
+
+    </div>
+</div>
+

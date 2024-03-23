@@ -1,0 +1,84 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<AdditionalServiceFormInputListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "FormInputList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/AdditionalService/Index/" >Service List > </a>
+        @Model.DataModel.FirstOrDefault().AdditionalServiceName</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/AdditionalService/AddFormInput/@ViewBag.AdditionalServiceID">
+                        Add Form Information
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th>Property Name</th>
+                    <th>Input Type</th>
+                    <th>Order</th>
+                    <th>Is Required</th>
+            </thead>
+            <tbody>
+                @foreach (var formInput in Model.DataModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/AdditionalService/EditFormInput/@formInput.FormInputID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/AdditionalService/LanguageEditFormInput/@formInput.FormInputID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (formInput.Status)
+                            {
+                                <a href="/AdditionalService/ToggleFormInputStatus/@formInput.FormInputID" class="btn btn-success w-100"> Active</a>
+                            }else
+                            {
+                                <a href="/AdditionalService/ToggleFormInputStatus/@formInput.FormInputID" class="btn btn-danger w-100"> Passive</a>
+                            }
+                        </td>
+                        <td>@formInput.PropertyName</td>
+                        <td>@formInput.Type</td>
+                        <td>@formInput.Order</td>
+                        @if (@formInput.IsRequired)
+                        {
+                            <td>Required</td>
+                        }else
+                        {
+                            <td>Not Required</td>
+                        }
+                        
+                    </tr>
+                }
+                
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

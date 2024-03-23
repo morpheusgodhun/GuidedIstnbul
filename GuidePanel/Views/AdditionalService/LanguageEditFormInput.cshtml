@@ -1,0 +1,50 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@model LanguageEditAdditionalServiceFormInputDto
+@{
+    ViewData["Title"] = "LanguageEditFormInput";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+
+        <h4 class="float-start">
+            <a href="/AdditionalService/FormInputList/@Model.AdditionalServiceInputLanguageItemID">Service List</a>
+            > Edit Form Information Field > @Model.PropertyName</h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Form Information Field Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="AdditionalServiceInputLanguageItemID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 mb-3 mr-1">
+                    <label for="property-name" class="form-label fw-bold">
+                        Property Name: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="PropertyName" class="form-control">
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+        <!--Add Form Information Field End-->
+
+    </div>
+</div>
+

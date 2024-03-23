@@ -1,0 +1,128 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<AdditionalServiceOptionListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "OptionList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Additional Service Option List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/AdditionalService/AddOption/@ViewBag.AdditionalServiceID">
+                        Add Option
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%">Update</th>
+                    <th style="width: 0%">Status</th>
+                    <th style="width: 0%">Price</th>
+                    <th style="width: 0%">Form Input</th>
+                    <th>Option Name</th>
+                    <th>Order</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var option in Model.DataModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/AdditionalService/EditOption/@option.OptionID/@ViewBag.AdditionalServiceID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/AdditionalService/LanguageEditOption/@option.OptionID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (option.Status)
+                            {
+                                <a href="/AdditionalService/ToggleOptionStatus/@option.OptionID/@ViewBag.AdditionalServiceID" class="btn btn-success w-100"> Active</a>
+                            }
+                            else
+                            {
+                                <a href="/AdditionalService/ToggleOptionStatus/@option.OptionID/@ViewBag.AdditionalServiceID" class="btn btn-danger w-100"> Passive</a>
+                            }
+                        </td>
+                        <td><a href="/AdditionalService/OptionPriceList/@option.OptionID" class="btn btn-warning w-100"> Price</a></td>
+                        @if (option.FormInputs.Count > 0)
+                        {
+                            <td><button data-bs-toggle="modal" data-bs-target="#form-input-@option.OptionID" class="btn btn-dark w-100">Form Inputs</button></td>
+                        }
+                        else
+                        {
+                            <td><button disabled data-bs-target="#form-input-@option.OptionID" class="btn btn-dark w-100">No Input</button></td>
+                        }
+                        <td>@option.OptionName</td>
+                        <td>@option.Order</td>
+
+                        
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    @foreach (var option in Model.DataModel)
+    {
+        <div class="modal fade" id="form-input-@option.OptionID" aria-hidden="true"
+             aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div id="deneme" class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Form Input List</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <table id="form-input-@option.OptionID" class="table w-100 nowrap table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Property Name</th>
+                                        <th>Input Type</th>
+                                        <th>Order</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (option.FormInputs.Count>0)
+                                    {
+                                        @foreach (var formInput in option.FormInputs.OrderBy(x=> x.Order))
+                                        {
+                                            <tr>
+                                                <td>@formInput.PropertyName</td>
+                                                <td>@formInput.Type</td>
+                                                <td>@formInput.Order</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+    }
+</div>
+

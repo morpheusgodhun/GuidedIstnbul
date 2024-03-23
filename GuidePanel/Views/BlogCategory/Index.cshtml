@@ -1,0 +1,80 @@
+﻿@using Dto.ApiPanelDtos.BlogCategoryDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<BlogCategoryListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <h4 class="card-header">Blog Category List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="float-end btn btn-secondary" href="/BlogCategory/AddBlogCategory">
+                        Add Blog Categroy
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th>Blog Category Name</th>
+                    <th>Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var blogCategory in Model.DataModel.OrderBy(x=>x.Order))
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/BlogCategory/EditBlogCategory/@blogCategory.BlogCategoryID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="/BlogCategory/LanguageEditBlogCategory/@blogCategory.BlogCategoryID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                    
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (blogCategory.Status)
+                            {
+                                <a href="/BlogCategory/ToggleBlogCategoryStatus/@blogCategory.BlogCategoryID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                    <a href="/BlogCategory/ToggleBlogCategoryStatus/@blogCategory.BlogCategoryID" class="btn btn-danger w-100">Passive</a>
+                            }
+                           
+                        </td>
+                        <td>
+                            @blogCategory.BlogCategoryName
+                        </td>
+                        <td>
+                            @blogCategory.Order
+                        </td>
+
+                    </tr>
+                }
+                
+
+            </tbody>
+
+
+        </table>
+    </div>
+</div>
+

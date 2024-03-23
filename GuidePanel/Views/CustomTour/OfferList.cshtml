@@ -1,0 +1,240 @@
+﻿@using Dto.ApiPanelDtos.CustomTourDtos
+@model (List<OfferListDto> offers,string RequestId)
+@{
+    ViewData["Title"] = "RequestList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card">
+    <h4 class="card-header">Offer History</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a href="/CustomTour/AddOffer/@Model.RequestId.ToString()">
+                        <button style="float: right;" type="button"
+                                class="btn btn-secondary">
+                            New Offer
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Offer Date</th>
+                    <th style="width: 0%;">Program</th>
+                    <th style="width: 0%;">Request</th>
+                    <th>Offer</th>
+                    <th>Offer Status</th>
+                    <th>Answer</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var offer in Model.offers)
+                {
+                    <tr>
+                        <td>
+                            @offer.Date
+                        </td>
+                        <td>
+                            @if (String.IsNullOrEmpty(offer.Program))
+                            {
+                                <button type="button" class="btn btn-secondary">
+                                    Not Set
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#program-detail@(offer.OfferId)">
+                                    Program
+                                </button>
+                            }
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#request-detail@(offer.OfferId)">
+                                Request Detail
+                            </button>
+                        </td>
+                        <td>@offer.Price</td>
+                        <td>@offer.OfferStatus</td>
+                        <td>
+                            @if(!String.IsNullOrWhiteSpace(offer.CustomerAnswer)){
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#answer@(offer.OfferId)">
+                                    Answer
+                                </button>
+                            }else{
+                                <button disabled type="button" class="btn btn-danger">
+                                    Not Answered
+                                </button>
+                            }
+                            
+                        </td>
+
+                    </tr>
+                }
+
+                <!-- Revised Offer , Accepted , Answer Waiting -->
+            </tbody>
+
+        </table>
+        @foreach (var offer in Model.offers)
+        {
+        <!-- Program Detail modal start -->
+            <div class="modal fade" id="program-detail@(offer.OfferId)"
+             aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-lg  modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">
+                            Program Detail
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div>
+                                <b>Admin Message :</b> @Html.Raw(offer.AdminAnswer)
+                            </div>
+                            <br><hr>
+                            <!-- start page title -->
+                            <div>
+                                @Html.Raw(offer.Program)
+                            </div>
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!-- Program Detail modal end -->
+        }
+
+        @foreach (var offer in Model.offers)
+        {
+            <!-- Request Detail modal start -->
+            <div class="modal fade" id="request-detail@(offer.OfferId)"
+             aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-lg  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">
+                                Request Detail
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <!-- start page title -->
+                                <table id="scroll-horizontal-datatable"
+                                   class="table w-100  table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 30%;">Destinations</td>
+                                            <td>
+                                                @Html.Raw( String.Join(", ",offer.RequestDetail.Destinations) )
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Arrival Date</td>
+                                            <td>@offer.RequestDetail.ArrivalDate</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Deparature Date</td>
+                                            <td>@offer.RequestDetail.DeperatureDate</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of Adults</td>
+                                            <td>@offer.RequestDetail.NumberOfAldult</td>
+                                        </tr>
+                                        @* <tr>
+                                    <td>Number of Children (0-6)</td>
+                                    <td>1</td>
+                                    </tr>
+                                    <tr>
+                                    <td>Number of Children (7-12)</td>
+                                    <td>1</td>
+                                    </tr>*@
+                                        <tr>
+                                            <td>Sender Name</td>
+                                            <td>@offer.RequestDetail.SenderName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sender Mail</td>
+                                            <td>@offer.RequestDetail.SenderEmail</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sender Phone Number</td>
+                                            <td>@offer.RequestDetail.SenderPhone</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Country</td>
+                                            <td>@offer.RequestDetail.Country</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Language</td>
+                                            <td>@offer.RequestDetail.Language</td>
+                                        </tr>
+                                        <tr>
+                                            <td>How did you find us?</td>
+                                            <td>@offer.RequestDetail.HowFindUs </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Special Request</td>
+                                            <td>@offer.RequestDetail.CustomerNote</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Interested With</td>
+                                            <td>
+                                                @Html.Raw( String.Join(", ", offer.RequestDetail.AlsoInteresteds ) )
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <!-- Request Detail modal end -->
+        }
+
+        @foreach (var offer in Model.offers)
+        {
+        <!-- Answer Detail modal start -->
+            <div class="modal fade" id="answer@(offer.OfferId)" aria-labelledby="exampleModalToggleLabel"
+             tabindex="-1">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">
+                            Customer Answer
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <!-- start page title -->
+                            @*<p><span class="fw-bold">Answer Date:</span> 17.07.2021</p>*@
+                            <p class="mb-3">
+                                @offer.CustomerAnswer
+                            </p>
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!-- Answer Detail modal end -->
+        }
+    </div>
+</div>

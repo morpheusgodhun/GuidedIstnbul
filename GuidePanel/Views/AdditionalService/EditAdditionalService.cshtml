@@ -1,0 +1,99 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@model EditAdditionalServiceDto
+@{
+    ViewData["Title"] = "EditAdditionalService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/AdditionalService/Index">Service List</a>
+        > Edit Additional Service > @Model.Name</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!-- Edit Additional Service Start -->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="AdditionalServiceID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="additional-service-name" class="form-label fw-bold">
+                        Additional Service Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input readonly asp-for="Name" type="text"
+                           id="additional-service-name" class="form-control">
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+
+                    <div class="row">
+                        <label for="" class="form-label fw-bold">
+                            Per Person/Group:<span class="text-danger fw-bold">*</span>
+                        </label>
+                    </div>
+                    <div class="d-inline-block mb-3 me-2">
+                        <input class="form-check-input" type="radio" asp-for="IsPerPerson"
+                               id="per-person" value="true">
+                        <label class="form-check-label" for="per-person">Person</label>
+                    </div>
+                    <div class="d-inline-block mb-3">
+                        <input class="form-check-input" type="radio" asp-for="IsPerPerson"
+                               id="group" value="false">
+                        <label class="form-check-label" for="group">Group</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+
+                    <div class="row">
+                        <label for="" class="form-label fw-bold">
+                            Per Day/Per Product:<span class="text-danger fw-bold">*</span>
+                        </label>
+                    </div>
+                    <div class="d-inline-block mb-3 me-2">
+                        <input class="form-check-input" type="radio" asp-for="IsPerDay"
+                               id="per-day" value="true">
+                        <label class="form-check-label" for="per-day">Day</label>
+                    </div>
+                    <div class="d-inline-block mb-3">
+                        <input class="form-check-input" type="radio" asp-for="IsPerDay"
+                               id="per-group" value="false">
+                        <label class="form-check-label" for="per-group">Product</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 ">
+                    <div class="row">
+                        <label for="" class="form-label fw-bold">
+                            Number of participants based on:<span class="text-danger fw-bold">*</span>
+                        </label>
+                    </div>
+                    <div class="d-inline-block mb-3 me-2">
+                        <input class="form-check-input" type="radio" asp-for="IsSpecialNumber" id="according" value="false">
+                        <label class="form-check-label" for="according">
+                            Number of participants
+                        </label>
+                    </div>
+                    <div class="d-inline-block mb-3 ">
+                        <input class="form-check-input" type="radio" asp-for="IsSpecialNumber" id="special-number" value="true">
+                        <label class="form-check-label" for="special-number">
+                            Special Number
+                        </label>
+                    </div>
+
+                </div>
+                <!-- Button -->
+                <div class="col-sm-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!-- Edit Additional Service End -->
+
+    </div>
+</div>
+

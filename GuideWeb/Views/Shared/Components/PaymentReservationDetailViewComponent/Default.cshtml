@@ -1,0 +1,476 @@
+﻿@using DTO;
+@using Dto.ApiWebDtos.ApiToWebDtos.Discount
+@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@using Dto.ApiWebDtos.WebToApiDtos;
+@model (PaymentReservationDetailDto paymentReservationDetailDto, ProductNameDto ProductNameDto, PaymentAgentInfoDto paymentAgentInfoDto,PaymentShowDetailDto paymentDetail)
+
+@{
+    int discount = @Model.paymentAgentInfoDto.DefaultTourDiscount;
+
+    discount = @Model.paymentAgentInfoDto.SpecialDiscount == 0 ? 0
+            : @Model.paymentAgentInfoDto.SpecialDiscount == -1 ? discount
+            : @Model.paymentAgentInfoDto.SpecialDiscount;
+}
+
+<div class="col-12 col-lg-3 pt-5">
+    <div class="booking-form-box payment_res_det">
+        <br />
+        <h3 style="color:orange">Reservation Detail</h3>
+        <div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <strong>Start Date</strong>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <span>@Model.paymentReservationDetailDto.StartDate</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <strong>Start Time</strong>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <span>@Model.paymentReservationDetailDto.StartTime</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 v">
+                    <strong>Guest(s) Number</strong>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <span>@Model.paymentReservationDetailDto.ParticipantNumber</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 v">
+                    <strong>Day</strong>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <span>@Model.paymentReservationDetailDto.DayNumber</span>
+                </div>
+            </div>
+        </div>
+        <br /> <br />
+
+        <h3 style="color:orange">Product Detail</h3>
+        <div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <strong>Tour</strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8 mt-2">
+                    <span>@Model.ProductNameDto.ProductName</span>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-4 col-lg-4 mt-2">
+                    <span>@Helpers.Wprice(@Model.paymentReservationDetailDto.TourPrice)</span>
+                </div>
+            </div>
+            @foreach (var product in Model.paymentReservationDetailDto.Products)
+            {
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <strong class="nowrap">@product.AdditionalServiceName</strong> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-8 col-lg-8 mt-2">
+                        <span>@product.AdditionalServiceOptionName (@product.ParcitipantNumber)</span> 
+                    </div>
+                    <div style="text-align:end" class="col-sm-12 col-md-4 col-lg-4 mt-2">
+                        <span>@Helpers.Wprice(product.Price)</span>
+                    </div> 
+                </div>
+            }
+        </div>
+        <br /> <br />
+        @if (ViewBag.RenderCouponCode)
+        {
+            <h3 style="color:orange">Coupon Code</h3>
+          
+            <div class="col-md-12">
+                <div class="search-box-single destination-box postition-relative" style="display: flex;
+                        flex-direction: row;
+                        align-items: flex-start;
+                        position: relative;
+                        margin-bottom: 25px;
+                        padding: 0 20px;
+                        border: 1px solid #eee;
+                        transition: all 0.45s ease;">
+                    <div class="searchbox-icon" style="padding-top: 8px;">
+                        <i class="fas fa-barcode"></i>
+                    </div>
+                    <div class="searchbox-input" style="width: 100%;">
+                        <input placeholder="Enter your coupon code.." type="text" name="couponCode" id="couponCode" />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="col-md-12 mb-4 d-flex align-items-center justify-content-between">
+                    <div id ="couponResponseMessage">
+                    </div>
+                    <button type="button" class="eg-btn btn--primary btn--sm submit-btn applyCoupon"  title="Apply Coupon" id ="applyCouponBtn">
+                        Apply
+                    </button>
+                </div>
+                <div style="display: none;" id="discount-amount">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                                <strong style="display:none" class="nowrap">Discount Amount</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                            <span class="nowrap" style="display:none" id="discount-amount-price"></span>
+                        </div>
+                        <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                             <button type="submit" class="eg-btn btn-danger btn--sm submit-btn removeCoupon" id ="applyCouponBtn">
+                        Remove Coupon
+                    </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+
+        <span style="display:none"><s id="totalPrice">@Helpers.Wprice(@Model.paymentReservationDetailDto.TotalPrice)</s></span>
+        <span style="display:none" id="discountedPriceValue"></span>
+
+        <h3 style="color:orange">Price Detail</h3>
+        <div id="sPriceDetail">
+
+
+            @*
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <strong id="sTotalPriceText">Total Price</strong>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <span id="sTotalPrice"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <strong>Deposit Price</strong>
+                </div>
+                <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                    <span>@Helpers.Wprice(@Model.paymentReservationDetailDto.DepositoPrice)</span>
+                </div>
+            </div>
+
+
+            <div id="sDiscountList">
+                <hr />
+            </div>
+
+            *@
+            
+
+
+           
+@*
+            @if (discount > 0)
+            {
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <strong>--Total Price</strong>
+                    </div>
+                    <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <span ><s id ="totalPrice">@Helpers.Wprice(@Model.paymentReservationDetailDto.TotalPrice)</s></span>
+                    </div>
+                </div>
+
+                <div class="row" id="">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <strong>Agent Discount</strong>
+                    </div>
+                    <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <span>@(Model.paymentReservationDetailDto.TotalPrice - (Model.paymentReservationDetailDto.TotalPrice * discount / 100)) $ (%@discount)</span>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <strong>++Total Price</strong>
+                    </div>
+                    <div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2">
+                        <span id ="totalPrice">@Helpers.Wprice(@Model.paymentReservationDetailDto.TotalPrice)</span> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 mt-2 discountedPrice" style="display:none;">
+                        <strong>Discounted Price</strong>
+                    </div>
+                    <div style="text-align:end; display:none;" class="col-sm-12 col-md-6 col-lg-6 mt-2 discountedPrice">
+                        <span id = "discountedPriceValue"></span>
+                    </div>
+                </div>
+            }
+            *@
+            
+
+
+        </div>
+        <br /> <br />
+
+        <h3 style="color:orange">Cancellation Policy</h3>
+        <div>
+            <div class="col-md-12" style=" text-align: justify;">
+                @Html.Raw( @Model.paymentReservationDetailDto.CancellationPolicy)
+            </div>
+
+        </div>
+        <br /> <br />
+    </div>
+
+
+    <script>
+        var priceFormatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+        var paymentDetail = @Html.Raw(Json.Serialize(Model.paymentDetail));
+
+        function SetPriceDetail() {
+
+            document.querySelector(`#sPriceDetail`).innerHTML = '';
+            
+            if (paymentDetail.discounts.length > 0){
+
+                let t1 = `<div class="row"><div class="col-sm-12 col-md-6 col-lg-6 mt-2"><strong>Total Price</strong></div><div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2"><span><s>${priceFormatter.format(paymentDetail.totalPrice)}</s></span></div></div>`;
+
+                document.querySelector(`#sPriceDetail`).innerHTML += t1;
+
+                for (let i = 0; i < paymentDetail.discounts.length; i++) {
+                    let pd = paymentDetail.discounts[i];
+                    let paymentDiscountsRow = `<div class="row"><div class="col-sm-12 col-md-6 col-lg-6 mt-2"><strong>${pd.name}</strong></div><div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2"><span>-${priceFormatter.format(pd.amount)}</span></div></div>`;
+                    document.querySelector(`#sPriceDetail`).innerHTML += paymentDiscountsRow;
+                }
+
+                document.querySelector(`#sPriceDetail`).innerHTML += '<hr>';
+
+                let t3 = `<div class="row"><div class="col-sm-12 col-md-6 col-lg-6 mt-2"><strong>Last Total Price</strong></div><div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2"><span>${priceFormatter.format(paymentDetail.lastTotalPrice)}</span></div></div>`;
+
+                let t2 = `<div class="row"><div class="col-sm-12 col-md-6 col-lg-6 mt-2"><strong>Deposito Price</strong></div><div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2"><span>@(Helpers.Wprice(@Model.paymentReservationDetailDto.DepositoPrice))</span></div></div>`;
+
+                document.querySelector(`#sPriceDetail`).innerHTML += t3;
+                document.querySelector(`#sPriceDetail`).innerHTML += t2;
+
+            }else{
+
+                let t1 = `<div class="row"><div class="col-sm-12 col-md-6 col-lg-6 mt-2"><strong>Total Price</strong></div><div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2"><span>${priceFormatter.format(paymentDetail.totalPrice)}</span></div></div>`;
+
+                let t2 = `<div class="row"><div class="col-sm-12 col-md-6 col-lg-6 mt-2"><strong>Deposito Price</strong></div><div style="text-align:end" class="col-sm-12 col-md-6 col-lg-6 mt-2"><span>@(Helpers.Wprice(@Model.paymentReservationDetailDto.DepositoPrice))</span></div></div>`;
+
+                document.querySelector(`#sPriceDetail`).innerHTML += t1;
+                document.querySelector(`#sPriceDetail`).innerHTML += t2;
+         
+            }
+
+        }
+
+        SetPriceDetail();
+
+
+            @if(User.IsInRole("Agent") && Model.paymentAgentInfoDto.WithoutPay)
+            {
+            <text>document.querySelector(`#payment2`).innerHTML = '<a href="/Payment/CompleteWithoutPayment/@Model.paymentReservationDetailDto.ReservationId" class="action-button" style="width:auto;">Reservation Without Payment</a>'; </text>
+            }
+    </script>
+
+
+@*
+
+    <div class="booking-form-box banner-form mt-0">
+
+        <div class="col-md-12 mt-3">
+            <ul class="info-list-1">
+                <li><span>Total Price Including Vat</span><span>$1826,10</span></li>
+                <li><span>Deposit Fee Including Vat</span><span>$396</span></li>
+            </ul>
+        </div>
+        <div class="col-md-12 mt-3">
+            <button type="submit" class="w-100 eg-btn btn--primary btn--sm submit-btn">
+                Reservation
+                Without Payment
+            </button>
+        </div>
+        <div class="col-md-12 mt-3">
+            <button type="submit" class="w-100 eg-btn btn--primary btn--sm submit-btn">
+                Pay With
+                Card
+            </button>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="search-box-single destination-box postition-relative">
+                <div class="searchbox-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="searchbox-input">
+                    <select class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                        <option value="0">$</option>
+                        <option value="1">€</option>
+                        <option value="2">₺</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-5">
+            <p class="text-lg-start"><b>Cancellation Policy</b> </p>
+            <p style="font-size: medium; text-align: justify;">
+                Lorem ipsum dolor sit amet consectetur
+                adipisicing elit. Et, nulla?
+            </p>
+        </div>
+    </div> 
+  *@
+
+
+</div>
+
+
+
+
+<script>
+
+      
+
+
+    //DiscountType 1 amount 2 percentage
+
+    document.onreadystatechange = () => {
+
+        if (document.readyState === 'complete') {
+
+        const totalPriceElement = document.getElementById("totalPrice");
+        const jsonObjStr = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.paymentReservationDetailDto.PaymentDiscountDto))
+        if (jsonObjStr)
+                documentLoadApplyDiscountFunc(jsonObjStr);
+            
+
+        function documentLoadApplyDiscountFunc(discountObj) {
+            const discountType = discountObj.DiscountType
+            const discountAmount = discountObj.DiscountAmount
+            const couponCode = discountObj.CouponCode
+
+            applyDiscount({
+                discountType: discountType,
+                discountAmount: discountAmount
+            });
+            $("#couponCode").val(couponCode)
+        }           
+            
+        function applyDiscount(discount) {
+            const totalPriceDecimal = getTotalPriceDecimal();
+            const discountAmount = discount.discountAmount;
+            if (discount.discountType == 1) {
+                console.log("amount");
+                var appliedDiscountAmount = discountAmount;
+                var discountAppliedTotalPrice = totalPriceDecimal - discountAmount;
+            }
+            if (discount.discountType == 2) {
+                console.log("percentage");
+                var appliedDiscountAmount = (totalPriceDecimal * discountAmount / 100);
+                var discountAppliedTotalPrice = totalPriceDecimal - appliedDiscountAmount;
+            }
+            $("#couponCode").prop("disabled", true);
+            showDiscountedSection(appliedDiscountAmount, discountAppliedTotalPrice);             
+        }
+
+
+        function showDiscountedSection(appliedDiscountAmount,newTotalPrice) {
+            const couponResponseMessage = document.getElementById("couponResponseMessage")
+
+            totalPriceElement.style.textDecoration = "line-through";
+            $("#discount-amount").show();
+
+            document.getElementById("discount-amount-price").innerHTML = `$ ${appliedDiscountAmount}`;
+            document.getElementById("discountedPriceValue").innerHTML = `$ ${newTotalPrice}`;
+            $('.discountedPrice').show();
+            //$('#discount-amount-price').show();
+
+            couponResponseMessage.innerHTML = "Coupon code applied !";
+            couponResponseMessage.style.color = "green"; 
+            document.getElementById("applyCouponBtn").style.display = "none";
+        }
+
+        function getTotalPriceDecimal() {
+                let totalPriceString = totalPriceElement.innerHTML.replace(',', '.');
+                // let decimalPart = totalPriceString.split('.')[1];                           
+                // let decimalValue = decimalPart ? parseInt(decimalPart, 10) : 0;
+                let totalPriceDecimal = parseFloat(totalPriceString);
+                return totalPriceDecimal
+        }
+
+        $(document).on('click', '.applyCoupon', function () {
+            
+            var getDiscount = {
+                reservation: $("#ReservationId").val(),
+                couponCode: $("#couponCode").val()
+            };
+
+            $.ajax({
+                url: '/Payment/GetCouponDiscount',
+                type: "POST",
+                data: getDiscount,
+                success: function (result) {
+                    if (result.errors) {
+                        const error = result.errors[0];
+                        console.log(error)
+                        couponResponseMessage.innerHTML = error
+                        couponResponseMessage.style.color = "red"; 
+                    }
+
+                    if (result.data){
+                            console.log("result.data.paymentDetail", result.data.paymentDetail);
+                            applyDiscount(result.data);
+                           paymentDetail = result.data.paymentDetail;
+                            SetPriceDetail();
+                            
+
+                    }
+                            
+                          
+                }
+            });                    
+        });
+
+        $(document).on('click', '.removeCoupon', function () {
+            var removeDiscount = {
+                reservationId: $("#ReservationId").val(),
+                couponCode: $("#couponCode").val()
+            };
+
+            $.ajax({
+                url: '/Payment/RemoveCouponDiscount',
+                type: "POST",
+                data: removeDiscount,
+                success: function (result) {
+                        console.log(result)
+                    if (result.data) {
+                        const totalPriceElement = document.getElementById("totalPrice");
+                        totalPriceElement.style.textDecoration = 'none';
+
+                        $("#discount-amount").hide();
+                        $("#couponResponseMessage").empty();
+                        $('.discountedPrice').hide();
+                        $('#discount-amount-price').empty();
+                        $("#applyCouponBtn").show();
+                        $("#couponCode").prop("disabled", false);
+                        $("#couponCode").empty();
+                        $("#couponCode").val('');
+
+                            location.reload();
+                    }
+                }
+            });
+
+        });
+
+    }
+};
+</script>

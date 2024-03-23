@@ -1,0 +1,46 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Payment.Results
+@using GuideWeb.Helpers;
+@model PaymentGatewayResult
+@{
+    ViewData["Title"] = "Payment Success";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string mid = Model.Parameters["mid"].ToString();
+    string posnetId = Model.Parameters["posnetID"].ToString();
+    string posnetData = Model.Parameters["posnetData"].ToString();
+    string posnetData2 = Model.Parameters["posnetData2"].ToString();
+    string digest = Model.Parameters["digest"].ToString();
+    string vftCode = Model.Parameters["vftCode"].ToString();
+    string merchantReturnURL = Model.Parameters["merchantReturnURL"].ToString();
+    string lang = Model.Parameters["lang"].ToString();
+    string url = Model.Parameters["url"].ToString();
+    string openANewWindow = Model.Parameters["openANewWindow"].ToString();
+    string actionUrl = Model.Parameters["actionUrl"].ToString();
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            <div class="booking-form-box pb-0">
+                <form method="post" action="">
+                    <input name="mid" type="hidden" id="mid" value="@mid">
+                    <input name="posnetID" type="hidden" id="PosnetID" value="@posnetId">
+                    <input name="posnetData" type="hidden" id="posnetData" value="@posnetData">
+                    <input name="posnetData2" type="hidden" id="posnetData2" value="@posnetData2">
+                    <input name="digest" type="hidden" id="sign" value="@digest">
+                    <input name="vftCode" type="hidden" id="vftCode" value="@vftCode">
+                    <input name="merchantReturnURL" type="hidden" id=" merchantReturnURL" value="@merchantReturnURL">
+                    <input name="lang" type="hidden" id="lang" value="@lang">
+                    <input name="url" type="hidden" id="url" value="@url">
+                    <input name="openANewWindow" type="hidden" id="openANewWindow" value="@openANewWindow">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+
+<script language="JavaScript" src="/assets/js/posnet.js"></script>
+
+}

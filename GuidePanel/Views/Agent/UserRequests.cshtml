@@ -1,0 +1,65 @@
+﻿@using Core.StaticValues
+@using Dto.ApiPanelDtos.AgentDtos
+@model List<AgentUserRequestListDto>
+<div class="row">
+    <div class="col-12">
+        <div class="card mt-2">
+            <div class="card-header">
+                <h4 class="header-title mb-1 mt-1">Agent User Requests</h4>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-body ">
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 1 -->
+                        <!-- rejected veya approved ise actionları kapat -->
+                        @foreach (var request in Model)
+                        {
+                            <tr class="odd">
+                                <td>
+                                    @if (request.ApproveStatus == AgentUserRequestStatus.AgentUserRequestApproveStatus.Waiting.ToString
+                                   ())
+                                    {
+                                        <a href="ApproveUserRequest/?requestId=@request.RequestId" class="btn btn-success ">Approve</a>
+                                        <a href="RejectUserRequest/?requestId=@request.RequestId" class="btn btn-danger ">Reject</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success" style="pointer-events: none" disabled>Approve</a>
+                                        <a class="btn btn-danger " style="pointer-events: none" disabled>Reject</a>
+                                    }
+                                </td>
+                                <td>
+                                    @request.UserName
+                                </td>
+                                <td>
+                                    @request.Email
+                                </td>
+                                <td>
+                                    @request.Role
+                                </td>
+                                <td>
+                                    @request.ApproveStatus
+                                </td><td>
+                                    @request.CreatedDate
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

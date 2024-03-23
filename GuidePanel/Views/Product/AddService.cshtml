@@ -1,0 +1,210 @@
+﻿@using Dto.ApiPanelDtos.ProductDtos.AddProductDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddServiceDto
+@{
+    ViewData["Title"] = "AddService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    function indexSequencer() {
+        //Her silme ve ekleme işleminde indexler tekrardan sıralanır.
+        $('.additionalService>div').each(function (i) {
+            $(this).find('.delete-btn').attr('id', i);
+            $(this).attr('id', `${i}`);
+            $(this).find('.additionalServiceInput-serviceID').attr('name', `AdditionalServices[${i}].AdditionalServiceID`);
+
+            $(this).find('.additionalServiceInput-optionIDs').attr('name', `AdditionalServices[${i}].OptionIDs[]`);
+            $(this).find('.additionalServiceInput-optionIDs').attr('id', `service-option-${i}`);
+            $(this).find('.additionalServiceInput-order').attr('name', `AdditionalServices[${i}].Order`);
+            $(this).find('.additionalServiceInput-required').attr('name', `AdditionalServices[${i}].IsRequired`);
+            $(this).find('.additionalServiceInput-comission').attr('name', `AdditionalServices[${i}].IsComissionValid`);
+            $(this).find('.additionalServiceInput-multiselect').attr('name', `AdditionalServices[${i}].IsMultiSelect`);
+        });
+    }
+    function addAdditionalService() {
+
+        indexSequencer();
+
+        let additionalSelect = "";
+        var jsonObj = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AdditionalServiceSelectList) as String)
+                        for (i = 0; i < jsonObj.length; i++) {
+            additionalSelect = additionalSelect + `<option value='${jsonObj[i].OptionID}' >${jsonObj[i].Option}</option>`;
+        }
+
+
+        let j = $('.additionalService>div').length;
+        let html = ` <div id='${j}' class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='cancellation-policy' class='form-label fw-bold'> Additional Service:<span class='text-danger fw-bold'>*</span> </label> <div class='row'> <div class='col-11 me-0 pe-0'> <select onchange="optionSelectList(this.value,this.parentNode.parentNode.parentNode.id)" name='AdditionalServices[${j}].AdditionalServiceID' class='form-select additionalServiceInput-serviceID' id='segment'> <option selected disabled>Select...</option> ${additionalSelect} </select> </div> <div class='col-1 ms-0 ps-0'> <button onclick="deleteDiv(this.parentNode.parentNode.parentNode.id)" type='button' class='btn btn-danger delete-btn float-end h-100 w-100'> x </button> </div> </div> <div class='row mt-2'> <div class='col-11 me-0 pe-0'> <label for='service-option-${j}' class='form-label fw-bold'>Options</label> <select class='js-example-basic-multiple additionalServiceInput-optionIDs' id='service-option-${j}' name='AdditionalServices[${j}].OptionIDs[]' multiple='multiple'>  </select> </div> </div> <div class='row mt-2'> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='order-${j}' class='form-label fw-bold'>Order</label> <input name='AdditionalServices[${j}].Order' type='number' id='order-${j}' class='form-control additionalServiceInput-order'> </div> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='' class='form-label fw-bold d-block'> Is required:<span class='text-danger fw-bold'>*</span> </label> <input name='AdditionalServices[${j}].IsRequired' class='form-check-input additionalServiceInput-required' type='checkbox' value='true' id='required-${j}'> <label class='form-check-label' for='required-${j}'> Required </label> </div> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='' class='form-label fw-bold d-block'> Comission Rate<span class='text-danger fw-bold'>*</span> </label> <input name='AdditionalServices[${j}].IsComissionValid' class='form-check-input additionalServiceInput-comission' type='checkbox' value='true' id='comissionRate-${j}'> <label class='form-check-label' for='comissionRate-${j}'> Valid </label> </div> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='' class='form-label fw-bold d-block'> Multi Select:<span class='text-danger fw-bold'>*</span> </label> <input name='AdditionalServices[${j}].IsMultiSelect' class='form-check-input additionalServiceInput-multiselect' type='checkbox' value='true' id='multiSelect-${j}'> <label class='form-check-label' for='multiSelect-${j}'> Available </label> </div>`
+        $("#additionalServiceDiv").append(html)
+        $('.js-example-basic-multiple').select2();
+
+    };
+
+    function deleteDiv(divID){
+        
+        document.getElementById(`${divID}`).remove();
+        indexSequencer();
+    }
+    function optionSelectList(additionalServiceID, count) {
+
+        $.ajax({
+            url: '/Product/AdditionalServiceOptionSelectList',
+            data: {
+                id: additionalServiceID
+            },
+            success: function (result) {
+                
+                $(`#service-option-${count}`).empty();
+
+                $(result).each(function (i) {
+                    let newOption = new Option(result[i].option, result[i].optionID);
+                    const select = document.querySelector(`#service-option-${count}`);
+                    select.add(newOption, undefined);
+                });
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        })
+    }
+
+</script>
+
+<div class="card">
+    <h4 class="card-header">Add Service</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Tour Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="ProductID" value="@ViewBag.ProductID" />
+            <div id="serviceDiv">
+                <div class="row">
+                    <div class="text-center mb-3">
+                        <h2>Service Information</h2>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="content" class="form-label">
+                            Short Description:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea id="content" asp-for="ShortDescription" rows="2"
+                                  class="form-control col-md-6" required> </textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 mb-3 mr-1">
+                            <label for="" class="form-label fw-bold">
+                                Content:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <textarea required asp-for="Content" id="editor1" rows="4" cols="4"> </textarea>
+                            <script>
+                                CKEDITOR.replace('editor1');
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="subDiv">
+                    <div class="row">
+                        <div class="clear-fix">
+                            <button type="button" onclick="addAdditionalService()" class="btn btn-warning float-end">
+                                Add Additional Service
+                            </button>
+
+                        </div>
+                        <div class="text-center mb-3">
+                            <h3>Additional Services</h3>
+                        </div>
+                    </div>
+                    <div id="additionalServiceDiv" class="row additionalService">
+                        <div id="0" class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                            <label for="cancellation-policy" class="form-label fw-bold">
+                                Additional Service:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <div class="row">
+                                <div class="col-11 me-0 pe-0">
+                                    <select onchange="optionSelectList(this.value,this.parentNode.parentNode.parentNode.id)" name="AdditionalServices[0].AdditionalServiceID" class="form-select additionalServiceInput-serviceID" required>
+                                        <option selected disabled value="">Select...</option>
+                                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.AdditionalServiceSelectList)
+                                        {
+                                            <option value="@tag.OptionID">@tag.Option</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-1 ms-0 ps-0">
+                                    <button onclick="deleteDiv(this.parentNode.parentNode.parentNode.id)" type="button" class="delete-btn btn btn-danger float-end h-100 w-100">x</button>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-11 me-0 pe-0">
+                                    <label for="service-option"
+                                           class="form-label fw-bold">Options</label>
+                                    <select name="AdditionalServices[0].OptionIDs[]" class="js-example-basic-multiple additionalServiceInput-optionIDs" id="service-option-0" multiple="multiple">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="tour-title"
+                                           class="form-label fw-bold">Order</label>
+                                    <input name="AdditionalServices[0].Order" type="number" id="tour-title" class="form-control additionalServiceInput-order" required>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="" class="form-label fw-bold d-block">
+                                        Is required:<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input name="AdditionalServices[0].IsRequired" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="required">
+                                    <label class="form-check-label" for="required">
+                                        Required
+                                    </label>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="" class="form-label fw-bold d-block">
+                                        Comission Rate<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input name="AdditionalServices[0].IsComissionValid" class="form-check-input additionalServiceInput-comission" type="checkbox" value="true" id="discountRate">
+                                    <label class="form-check-label" for="discountRate">
+                                        Valid
+                                    </label>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="" class="form-label fw-bold d-block">
+                                        Multi Select:<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input name="AdditionalServices[0].IsMultiSelect" class="form-check-input additionalServiceInput-multiselect" type="checkbox" value="true" id="multiSelect">
+                                    <label class="form-check-label" for="multiSelect">
+                                        Available
+                                    </label>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Button -->
+
+            <div id="Add-Service-Button">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">Save</button>
+                </div>
+            </div>
+
+
+        </form>
+        <!--Tour Add End-->
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

@@ -1,0 +1,53 @@
+﻿@model AddTemplateDto
+@{
+    ViewData["Title"] = "AddDiscount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Mail/Index">Mail List</a> > Add Template Item
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Tour Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Template:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="TemplateNo" required>
+                        @foreach (var tag in (List<SelectListOption>)ViewBag.MailTemplateNos)
+                        {
+                            <option value="@tag.ID">@tag.Value</option>
+                        }
+                    </select>
+                </div>
+               </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--Tour Add End-->
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+

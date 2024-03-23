@@ -1,0 +1,109 @@
+﻿@using Dto.ApiPanelDtos.ReservationDtos;
+@model List<ReservationListDto>
+@{
+    ViewData["Title"] = "UncomplatedReservationList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Reservation List</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%">Detail</th>
+                    <th>Booking Time</th>
+                    <th>Rez No</th>
+                    <th>Booking Status</th>
+                    
+                    <th>Booker</th>
+                    <th>Start Date</th>
+                    <th>Product Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-success" href="/Reservation/ReservationFormDetail/@reservation.ReservationId">
+                                Detail
+                            </a>
+                        </td>
+                            <td>@reservation.BookingTime</td>
+                        <td>@reservation.ReservationCode</td>
+                        <td>@reservation.BookingStatus</td>
+                        <td>@reservation.Booker</td>
+                        <td>@reservation.StartDateTime</td>
+                        <th>@reservation.ProductName</th>
+
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+        <!--Reservations List End -->
+        <!-- Send Comment Mail modal-->
+        <div class="modal fade" id="send-comment-mail" tabindex="-1" role="dialog"
+             aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center" id="myLargeModalLabel">
+                            Mail
+                            Content
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="m-0 p-0">
+                            <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Participant</th>
+                                        <th>Status</th>
+                                        <th class="text-center">Tripadvisor</th>
+                                        <th class="text-center">Survey</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>Ecmel SADIKOĞLU </td>
+                                    <td><span class="text-success text-center">(glad)</span></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>Metin ÖNAL</td>
+                                    <td><span class="text-danger">(not glad)</span></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td>Sümeyye ÜNAL</td>
+                                    <td><span class="text-success text-center">(glad)</span></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                    <td><input class="form-check-input d-flex m-auto" type="checkbox" value=""></td>
+                                </tr>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 mt-2 me-2">
+                                    <button class="btn btn-primary float-end"
+                                            data-bs-dismiss="modal"
+                                            aria-hidden="true" type="submit">
+                                        Send Mail
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+

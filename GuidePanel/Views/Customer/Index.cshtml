@@ -1,0 +1,42 @@
+﻿@using Dto.ApiPanelDtos.CustomerDtos
+@model List<CustomerListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        Customers List
+    </h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    @* <a class="btn btn-secondary float-end" href="/User/AddUser">
+                    Add User
+                    </a> *@
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 12%;">Membership Status</th>
+                    <th style="width: 30%;">Name Surname</th>
+                    <th style="width: 30%;">E-mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <th>@user.MembershipStatus</th>
+                        <th>@user.NameSurname</th>
+                        <th>@user.Email</th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

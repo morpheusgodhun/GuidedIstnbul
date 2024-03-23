@@ -1,0 +1,275 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Home;
+@using GuideWeb.Helpers
+@model GetCustomMadeTourDto
+@* <style>
+    .iti--allow-dropdown input, .iti--allow-dropdown input[type=text], .iti--allow-dropdown input[type=tel], .iti--separate-dial-code input, .iti--separate-dial-code input[type=text], .iti--separate-dial-code input[type=tel] {
+        width: auto !important;
+        height: 50px !important;
+        background-color: var(--white) !important;
+        color: var(--text-primary) !important;
+        transition: all 0.45s ease !important;
+        border-color: #ff000000 !important;
+    }
+
+    .iti__selected-flag {
+        z-index: 1 !important;
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        height: 100% !important;
+        padding: 0 0px 0px 0px !important;
+    }
+</style> *@
+<div class="custom_tour_reservation_section mt-70">
+    <div class="container">
+        <div class="section-title1 mb-2">
+            <span>@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.Pretitle")</span>
+            <h2>@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.Title")</h2>
+        </div>
+        <div class="rez_box booking-form-box">
+            <div class="row">
+                <form class="banner-form" action="/Tour/CustomMadeTourRequest" method="post">
+                    <div class="col-sm-6 col-lg-3 float-start">
+                        <div class="form-group">
+                            <div class="d-flex justify-content-center ">
+                                <span class="rez_box_head">
+                                    <small>1</small>
+                                    @Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.DestinationTitle")
+                                </span>
+                            </div>
+
+                            <div class="col-12 p-0 rez_box_check">
+                                @foreach (var destination in Model.Destinations)
+                                {
+                                    <div class="col-12 float-start">
+                                        @*Buraya bak,En az birini seçmesi gerekir hale gelmeli (yuşa)*@
+                                        <label>
+                                            <input value="@destination.OptionID" name="DestinationIDs" id="destination-@destination.OptionID" type="checkbox" />
+                                            <span></span>
+                                        </label>
+                                        <p><label class="w-100" for="destination-@destination.OptionID"> @destination.Option</label></p>
+
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 float-start">
+                        <div class="d-flex justify-content-center ">
+                            <span class="rez_box_head">
+                                <small>2</small>
+                                @Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.TourInfoTitle")
+                            </span>
+                        </div>
+                        <div class="search-box-single destination-box postition-relative">
+                            <div class="searchbox-icon">
+                                <i class="fa fa-solid fa-plane-arrival"></i>
+                            </div>
+                            <div class="searchbox-input">
+                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.ArrivalDatePlaceHolder")" type="text" name="ArrivalDate" id="datepicker"
+                                       autocomplete="off" class="calendar hasDatepicker">
+                            </div>
+                        </div>
+                        <div class="search-box-single destination-box postition-relative">
+                            <div class="searchbox-icon">
+                                <i class="fa fa-sharp fa-solid fa-plane-departure"></i>
+                            </div>
+                            <div class="searchbox-input">
+                                <input required placeholder="@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.DepartureDatePlaceHolder")" type="text" name="DeperatureDate" id="datepicker2"
+                                       autocomplete="off" class="calendar hasDatepicker">
+                            </div>
+                        </div>
+                        <div class="search-box-single">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div class="searchbox-input">
+                                <input required type="number" name="NumberOfAldult" placeholder="@Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.AdultCountPlaceHolder")">
+                            </div>
+                        </div>
+                        @*<div class="search-box-single">
+                        <div class="searchbox-icon">
+                        <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="searchbox-input">
+                        <input type="number" placeholder="@Model.ConstantValues.FirstOrDefault(x=>x.Key == "Home.CustomMade.ChildCountPlaceHolder").Value (0-6)">
+                        </div>
+                        </div>
+                        <div class="search-box-single">
+                        <div class="searchbox-icon">
+                        <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="searchbox-input">
+                        <input type="number" placeholder="@Model.ConstantValues.FirstOrDefault(x=>x.Key == "Home.CustomMade.ChildCountPlaceHolder").Value (7-12)">
+                        </div>
+                        </div>*@
+                    </div>
+                    <div class="col-sm-6 col-lg-3 float-start">
+                        <div class="d-flex justify-content-center ">
+                            <span class="rez_box_head">
+                                <small>3</small>
+                                @Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.ContactDetailTitle")
+                            </span>
+                        </div>
+                        <div class="search-box-single destination-box">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-pencil-fill"></i>
+                            </div>
+                            <div class="searchbox-input">
+                                <input required type="text" name="CustomerName" placeholder="@Helpers.Wcv(Model.ConstantValues ,"Home.CustomMade.NamePlaceHolder") *">
+                            </div>
+                        </div>
+                        <div class="search-box-single destination-box">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div class="searchbox-input">
+                                <input required type="text" name="CustomerEmail" placeholder="@Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.EmailPlaceHolder") *">
+                            </div>
+                        </div>
+                        <div class="search-box-single destination-box ps-0 searchbox-input">
+                            @* <input required type="text" name="CustomerPhone" id="phone" > *@
+
+                            <input required id="phone" name="CustomerPhone" type="tel" required placeholder="@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.PhonePlaceHolder") *"  />
+                        </div>
+                        <div class="search-box-single destination-box select-widget">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-globe"></i>
+                            </div>
+                            @*<select name="CountryID" class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                            <option disabled selected >
+                            @Model.ConstantValues.FirstOrDefault(x=>x.Key == "Home.CustomMade.SelectCountryPlaceHolder").Value
+                            </option>
+                            @foreach (var country in Model.Countries)
+                            {
+                            <option value="@country.ID">@country.Value</option>
+                            }
+
+                            </select>*@
+                            <select required name="CountryID" class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                                <option value="">@Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.SelectCountry")</option>
+                                @foreach (var country in Model.Countries)
+                                {
+                                    if (country.Value == "United States of America")
+                                    {
+                                        <option selected value="@country.ID">@country.Value</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@country.ID">@country.Value</option>
+                                    }
+                                }
+                            </select>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="search-box-single destination-box select-widget">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-globe"></i>
+                            </div>
+                            @*<select name="LanguageID" class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                            <option disabled selected> @Model.ConstantValues.FirstOrDefault(x=>x.Key == "Home.CustomMade.SelectLanguagePlaceHolder").Value</option>
+                            @foreach (var language in Model.Languages)
+                            {
+                            <option value="@language.ID">@language.Value</option>
+                            }
+                            </select>*@
+                            <select required name="LanguageID" class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                                <option value="">@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.SelectLanguage") </option>
+                                @foreach (var language in Model.Languages)
+                                {
+                                    <option value="@language.ID">@language.Value</option>
+                                }
+                            </select>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 float-start">
+                        <div class="d-flex justify-content-center ">
+                            <span class="rez_box_head">
+                                <small>4</small>
+                                @Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.InformationTitle")
+                            </span>
+                        </div>
+                        <div class="search-box-single destination-box select-widget">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-newspaper"></i>
+                            </div>
+                            @*<select name="HowFindUsID" class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                            <option disabled selected>@Model.ConstantValues.FirstOrDefault(x=>x.Key == "Home.CustomMade.HowFindUsPlaceHolder").Value</option>
+                            @foreach (var option in Model.HowFindUs)
+                            {
+                            <option value="@option.OptionID">@option.Option</option>
+                            }
+                            </select>*@
+                            <select required name="HowFindUsID" class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                                <option value=""> <span class="d-none d-lg-block">@Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.HowDidYouFindUs")</span> </option>
+
+                                @foreach (var option in Model.HowFindUs)
+                                {
+                                    <option value="@option.OptionID">@option.Option</option>
+                                }
+                            </select>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="search-box-single">
+                            <div class="searchbox-icon">
+                                <i class="bi bi-chat-left-text-fill"></i>
+                            </div>
+                            <div class="searchbox-input">
+                                <textarea name="CustomerNote" rows="4" placeholder="@Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.SpecialRequestPlaceHolder") "></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4 style="font-size: 1.8rem; font-weight: bold;">@Helpers.Wcv(Model.ConstantValues,"Home.CustomMade.InterestedTitle")</h4>
+                        </div>
+                        <div class="col-12 p-0 rez_box_check">
+                            @foreach (var interest in Model.Interests)
+                            {
+                                <div class="col-12  float-start">
+                                    <label>
+                                        <input value="@interest.OptionID" name="AlsoInterestedIDs" id="interest-@interest.OptionID" type="checkbox">
+                                        <span></span>
+                                    </label>
+                                    <p><label class="w-100" for="interest-@interest.OptionID"> @interest.Option</label></p>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row d-block">
+                        <div class="col-md-4 m-auto">
+                            <button type="submit" class="eg-btn btn--primary btn--lg" title="Send">@Helpers.Wcv(Model.ConstantValues, "Home.CustomMade.SendNowButton") </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    const phoneInputField = document.querySelector("#phone");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+@* </script> *@
+<script>
+    const phoneInputElement = document.querySelector("#phone");
+
+    phoneInputElement.addEventListener("change", (event) => {
+        var selectedflag = document.getElementsByClassName("iti__selected-flag")[0];
+        var selectedCountryCodeArray = selectedflag.title.split(': ');
+        var selectedCountryCode = selectedCountryCodeArray[selectedCountryCodeArray.length - 1];
+
+        var userPhoneInput = event.target.value;
+        var fullInput = `(${selectedCountryCode})-${userPhoneInput}`;
+        console.log(fullInput)
+
+        // document.getElementById('hiddenphone').value = fullInput;
+    });
+</script> 

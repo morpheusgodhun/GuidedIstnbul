@@ -1,0 +1,105 @@
+﻿@using System.Security.Claims
+@using Core.StaticClass
+@using Dto.ApiWebDtos.GeneralDtos;
+@model (UserViewModel member,CustomPageConstantValueDto customPage)
+@{
+    string language = ViewData["language"].ToString();
+}
+<div class="topbar d-xl-flex d-none">
+    <div class="container-lg container-fluid d-flex justify-content-between align-items-center">
+        <div class="topbar-left">
+            <ul class="topbar-info-list">
+                <li>
+                    <i class="bi bi-whatsapp"></i><a href="https://wa.me/905425919925?text=Hello%20I%27m%20reaching%20you%20through%20guidedistanbultours.com" title="WhatsApp +90 542 591 99 25" target="_blank">+90 542 591 99 25 </a>
+                </li>
+                <li>
+                    <i class="bi bi-envelope"></i><a title="Send mail to Guided Istanbul Tours" href="mailto:info@guidedistanbultours.com">info@guidedistanbultours.com</a>
+                </li>
+            </ul>
+        </div>
+        <div class="topbar-right">
+            <ul class="topbar-right-list">
+                @if (LanguageList.AllLanguages.Count>1)
+                {
+                <li>
+                    <span>Language</span> <img src="~/assets/images/icons/flag-@(ViewData["language"]).png" alt="flag">
+                    <ul class="topbar-sublist">
+
+                     @foreach (var lan in LanguageList.AllLanguages)
+                        {
+                            if (ViewData["language"] != lan.UrlPrefix)
+                            {
+                                <li><a onclick="changeLanguage(@lan.Id)">@lan.Name</a> <img src="~/assets/images/icons/flag-@(lan.UrlPrefix.ToLower()).png" alt="@lan.Name Language" title="@lan.Name Language"></li>
+                            }
+                        }
+
+                    </ul>
+                </li>
+               }
+                <li>
+                    @if (Model.member.Role != "Guest")
+                    {
+                        <span>My Account</span>
+                        <ul class="topbar-sublist d-inline-block">
+                            <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"profile-member")" title="Profile Member">@Helpers.Wcv(Model.customPage.ConstantValues,"ProfileMember.Title")</a></li>
+                            @if (User.IsInRole("Guide"))
+                            {
+                                if (User.HasClaim(c => c.Type == "Permission" && c.Value == "Guide"))
+                                {
+                                    <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"profile-guide")" title="Profile Guide">@Helpers.Wcv(Model.customPage.ConstantValues,"ProfileGuide.Title")</a></li>
+                                }
+                            }
+                            <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"my-reservation")" title="My Reservation">@Helpers.Wcv(Model.customPage.ConstantValues,"MyReservation.Title")</a></li>
+                            @*<li class="nowrap"><a href="/Guide/TourServed/1">Tour I Served</a></li>*@
+                            @if (User.HasClaim(x => x.Type == "Agent"))
+                            {
+                                <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"agent-reservations")" title="Agent Reservation">@Helpers.Wcv(Model.customPage.ConstantValues,"AgentReservations.Title")</a></li>
+                            }
+                            @if (User.IsInRole("Agent"))
+                            {
+                                if (User.HasClaim(c => c.Type == "Permission" && c.Value == "Agent"))
+                                {
+                                    @*<li class="nowrap"><a href="/Agent/Reservation/1">Reservations</a></li>*@
+                                    <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"user-management")" title="User Management">@Helpers.Wcv(Model.customPage.ConstantValues,"UserManagement.Title")</a></li>
+                                    <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"agent-information")" title="Agent Information">@Helpers.Wcv(Model.customPage.ConstantValues,"AgentInformation.Title")</a></li>
+                                }
+                            }
+                            <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"logout")" title="Logout">@Helpers.Wcv(Model.customPage.ConstantValues,"Logout.Title")</a></li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>My Account</span>
+                        <ul class="topbar-sublist d-inline-block">
+                            <li class="nowrap"><a href="@Helpers.PrepareUrl(language,"login")" title="Login">@Helpers.Wcv(Model.customPage.ConstantValues,"Login.LoginButton")</a></li>
+                            <li class="nowrap"><a href="@Helpers.PrepareUrl(language,Model.customPage.SlugDict["registerSlug"])" title="Register">@Helpers.Wcv(Model.customPage.ConstantValues,"Register.RegisterButton")</a></li>
+                        </ul>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+<script>
+        // function changeLanguage(languageId) {
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/Home/ChangeLanguage",
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         data: {
+        //             LanguageId: languageId
+        //         },
+        //         success: function (result) {
+        //             window.location.reload();
+        //         },
+        //         error: function (error) {
+        //             console.error("AJAX isteği başarısız oldu:", error);
+        //         }
+        //     });
+        // }
+
+</script>
+}

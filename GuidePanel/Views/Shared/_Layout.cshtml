@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+@await Html.PartialAsync("/Views/Layout/HeadPartial.cshtml")
+
+<body class="loading" data-layout-color="light" data-leftbar-theme="dark" data-layout-mode="fluid"
+      data-rightbar-onstart="true">
+    <div class="wrapper">
+        @await Html.PartialAsync("/Views/Layout/LeftSidebarPartial.cshtml")
+        <div class="content-page">
+            <div class="content">
+                <!-- Topbar Start -->
+                @await Html.PartialAsync("/Views/Layout/TopbarPartial.cshtml")
+                <!-- end Topbar -->
+                <div class="container-fluid">
+                    
+                    <div class="row" style=" margin-top:20px">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <!-- content -->
+            @await Html.PartialAsync("/Views/Layout/FooterPartial.cshtml")
+        </div>
+    </div>
+    <!-- END wrapper -->
+    <!-- Right Sidebar -->
+    @await Html.PartialAsync("/Views/Layout/RightSidebarPartial.cshtml")
+    <!-- /End-bar -->
+    @await Html.PartialAsync("/Views/Layout/ScriptPartial.cshtml")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

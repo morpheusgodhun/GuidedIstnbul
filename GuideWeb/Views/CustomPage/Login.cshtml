@@ -1,0 +1,107 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.GeneralPages;
+@using Dto.ApiWebDtos.GeneralDtos;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@model (GetLoginDto login,CustomPageConstantValueDto customPage)
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string language = ViewData["language"].ToString();
+    var messages=TempData["ErrorMessages"] as IEnumerable<string>;
+
+}
+
+<div class="container">
+    <div class="row mt-120 mb-120">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="bg-white shadow rounded my-5">
+                <div class="row">
+                    <div class="col-md-7 pe-0">
+                        <div class="form-left h-100 py-5 px-5 booking-form-box">
+                            <fieldset>
+                                <div class="form-card">
+                                 
+                                    <div class="text-center">
+                                        <h1>@Helpers.Wcv(Model.login.ConstantValues, "Login.Title")</h1>
+                                    </div>
+                                    <form action="/Auth/Login" method="post" id="msform" class="banner-form">
+                                    
+
+                                        <div asp-validation-summary="ModelOnly" class="text-danger">
+                                        </div>
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="far fa-envelope-open"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.login.ConstantValues,"Login.EmailPlaceholder")" type="email"
+                                                       name="Email" />
+                                            </div>
+                                        </div>
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-key"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="@Helpers.Wcv(Model.login.ConstantValues, "Login.PasswordPlaceholder")" type="password"
+                                                       name="Password" />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex" id="forgot-register">
+                                            <a href="@Helpers.PrepareUrl(language,"forgot-password")" style="color: orange;">
+                                                @Helpers.Wcv(Model.login.ConstantValues,"Login.ForgotPassword")
+                                            </a>
+                                            <p>
+                                                @Helpers.Wcv(Model.login.ConstantValues,"Login.NotMember")<a style="color: orange;" href="@Helpers.PrepareUrl(language,"register")">
+                                                    @Helpers.Wcv(Model.login.ConstantValues,"Login.Register")
+                                                </a>
+                                            </p>
+                                        </div>
+
+                                        <br />
+                                        <div class="g-recaptcha float-start" data-sitekey="@ViewBag.Sitekey"></div>
+
+                                        <div class="col-lg-12 clearfix">
+
+
+                                            <button type="submit"
+                                                    class="float-end mt-3 eg-btn btn--primary btn--lg submit-btn" title="Login">
+                                                @Helpers.Wcv(Model.login.ConstantValues, "Login.LoginButton")
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <br />
+                                    <!--Burası açılacak-->
+                                    @if (messages != null)
+                                    {
+                                        <div class="text-danger">
+                                            <ul>
+                                                @foreach (var error in messages)
+                                                {
+                                                    <li>@error</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="col-md-5 ps-0 d-none d-md-block">
+                        <div class="form-right h-100 text-white text-center d-flex align-items-center">
+                            <img src="/assets/images/logo-lg.png" class="img-fluid p-5" alt="Guided Istanbul Tours" title="Guided Istanbul Tours" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+
+
+
+}
+

@@ -1,0 +1,337 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Tour;
+@using GuideWeb.Helpers;
+@model GetTourFilterDto
+@{
+    ViewData["Title"] = "TourFilter";
+    ViewData["PrivateTitle"] = Model.Page.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="inner-banner-section" style="background-image: url(@Resource.ImagePath/@Model.Page.BannerImagePath);">
+    <img src="/assets/images/bg/inner-banner-vctr.png" class="inner-banner-vector" alt="Filter">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-md-10 col-sm-12">
+                <div class="breadcrumb-area">
+                    <span>@Model.Page.Subtitle</span>
+                    <h1>@Model.Page.Title</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="destination-details-section pt-120 pb-120">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-3 d-lg-block d-none">
+                <div class="tour-package-sidebar">
+                    <div class="tour-package-widget">
+                        <h4 class="package-widget-title">Categories @*@Helpers.Wcv(Model.ConstantValues,"TourFilter.CategoryTitle")*@</h4>
+                        <div class="select-widget">
+                            <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <div class="col-12 col-sm-12 col-md-12 float-start">
+                                        <label>
+                                            <input value="@category.OptionID" name="Categories" class="fl-category" id="ck-category-@category.OptionID" type="checkbox" />
+                                            <span></span>
+                                        </label>
+                                        <p><label class="w-100" for="ck-category-@category.OptionID"> @category.Option</label></p>
+                                    </div>
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="tour-package-widget">
+                        <h4 class="package-widget-title">Destinations @*@Helpers.Wcv(Model.ConstantValues,"TourFilter.DurationTitle")*@</h4>
+                        <div class="select-widget">
+                            <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                @foreach (var destination in Model.Destinations)
+                                {
+                                    <div class="col-6 col-sm-6 col-md-6 float-start">
+                                        <label>
+                                            <input value="@destination.OptionID" name="Destinations" class="fl-destination" id="ck-destination-@destination.OptionID" type="checkbox" />
+                                            <span></span>
+                                        </label>
+                                        <p><label class="w-100" for="ck-destination-@destination.OptionID"> @destination.Option</label></p>
+                                    </div>
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    @*                    <div class="tour-package-widget">
+                    <h4 class="package-widget-title">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "TourFilter.DurationTitle").Value</h4>
+                    <div class="select-widget">
+                    <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                    @foreach (var duration in Model.Durations)
+                    {
+                    <div class="col-6 col-sm-6 col-md-6 float-start">
+                    <label>
+                    <input value="@duration.OptionID" name="DurationID" id="duration-@duration.OptionID" type="checkbox" />
+                    <span></span>
+                    </label>
+                    <p><label class="w-100" for="duration-@duration.OptionID"> @duration.Option</label></p>
+                    </div>
+                    }
+
+                    </div>
+                    <div class="clearfix"></div>
+                    </div>
+                    </div>*@
+                    <div class="tour-package-widget">
+                        <h4 class="package-widget-title">Specials @*@Helpers.Wcv(Model.ConstantValues,"TourFilter.SpecialTitle")*@</h4>
+                        <div class="select-widget">
+                            <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                @foreach (var special in Model.Specials)
+                                {
+                                    <div class="col-12 col-sm-12 col-md-12 float-start">
+                                        <label>
+                                            <input value="@special.OptionID" name="Specials" class="fl-special" id="ck-special-@special.OptionID" type="checkbox" />
+                                            <span></span>
+                                        </label>
+                                        <p><label class="w-100" for="ck-special-@special.OptionID"> @special.Option</label></p>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="tour-package-widget">
+                        <h4 class="package-widget-title">Tour Types @*@Helpers.Wcv(Model.ConstantValues,"TourFilter.SegmentTitle")*@</h4>
+                        <div class="select-widget">
+                            <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                @foreach (var type in Model.Types)
+                                {
+                                    <div class="col-6 col-sm-6 col-md-6 float-start">
+                                        <label>
+                                            <input value="@type.OptionID" name="TourTypes" class="fl-type" id="ck-type-@type.OptionID" type="checkbox" />
+                                            <span></span>
+                                        </label>
+                                        <p><label class="w-100" for="ck-type-@type.OptionID"> @type.Option</label></p>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="tour-package-widget">
+                        <h4 class="package-widget-title">Moths @*@Helpers.Wcv(Model.ConstantValues,"TourFilter.SegmentTitle")*@</h4>
+                        <div class="select-widget">
+                            <div class="search-box-single d-block overflow-hidden destination-box rez_box_check">
+                                @foreach (var month in Model.Months)
+                                {
+                                    <div class="col-6 col-sm-6 col-md-6 float-start">
+                                        <label>
+                                            <input value="@month.OptionID" name="Months" class="fl-month" id="ck-month-@month.OptionID" type="checkbox" />
+                                            <span></span>
+                                        </label>
+                                        <p><label class="w-100" for="ck-month-@month.OptionID"> @month.Option</label></p>
+                                    </div>
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="eg-btn btn--primary btn--md submit-btn float-end w-100" onclick="filter()" title="Filter">
+                        @Helpers.Wcv(Model.ConstantValues,"TourFilter.FilterButton")
+                    </button>
+
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="tour-package-widget">
+                    <div class="row">
+                        <div class="col-lg-8 ">
+                            <h4 class="package-widget-title mb-0 mt-3">@Helpers.Wcv(Model.ConstantValues,"TourFilter.TopRatedLabel")</h4>
+                        </div>
+                        <div class="col-lg-4  ">
+                            <select class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                                <option>@Helpers.Wcv(Model.ConstantValues,"TourFilter.StarIncreasing")</option>
+                                <option>@Helpers.Wcv(Model.ConstantValues,"TourFilter.StarDecreasing")</option>
+                                <option>@Helpers.Wcv(Model.ConstantValues,"TourFilter.PriceIncreasing")</option>
+                                <option>@Helpers.Wcv(Model.ConstantValues,"TourFilter.PriceDecreasing")</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                @if (false)
+                {
+                    <div class="tour-package-sidebar-mobile">
+                        <div class="package-sidebar-close">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
+
+                        <div class="tour-package-widget">
+                            <div class="check-box-item">
+                                <h5>@Helpers.Wcv(Model.ConstantValues,"TourFilter.CategoryTitle")</h5>
+                                <div class="checkbox-container">
+                                    <div class="checkbox-container">
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <label class="container">
+                                                @category.Option
+                                                <input id="category-@category.OptionID" type="checkbox">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @*                        <div class="check-box-item">
+                        <h5>@Model.ConstantValues.FirstOrDefault(x=>x.Key == "TourFilter.CityTitle").Value</h5>
+                        <div class="checkbox-container">
+                        <div class="checkbox-container">
+                        @foreach (var city in Model.Cities)
+                        {
+                        <label class="container">
+                        @city.Option
+                        <input id="city-@city.OptionID" type="checkbox">
+                        <span class="checkmark"></span>
+                        </label>
+                        }
+                        </div>
+                        </div>
+                        </div>*@
+                            <div class="check-box-item">
+                                <h5>@Helpers.Wcv(Model.ConstantValues,"TourFilter.DurationTitle")</h5>
+                                <div class="checkbox-container">
+                                    <div class="checkbox-container">
+                                        @foreach (var destination in Model.Destinations)
+                                        {
+                                            <label class="container">
+                                                @destination.Option
+                                                <input id="destination-@destination.OptionID" type="checkbox">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="check-box-item">
+                                <h5>@Helpers.Wcv(Model.ConstantValues,"TourFilter.SpecialTitle")</h5>
+                                <div class="checkbox-container">
+                                    <div class="checkbox-container">
+                                        @foreach (var special in Model.Specials)
+                                        {
+                                            <label class="container">
+                                                @special.Option
+                                                <input id="special-@special.OptionID" type="checkbox">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="check-box-item">
+                                <h5>@Helpers.Wcv(Model.ConstantValues,"TourFilter.SegmentTitle")</h5>
+                                <div class="checkbox-container">
+                                    <div class="checkbox-container">
+                                        @foreach (var type in Model.Types)
+                                        {
+                                            <label class="container">
+                                                @type.Option
+                                                <input id="type-@type.OptionID" type="checkbox">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-lg-none d-flex">
+                        <div class="col-12">
+                            <div class="package-filter-area text-end">
+                                <div class="filter-button">
+                                    <img src="/assets/images/icons/filter-icon.svg" alt="filter">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row g-4" id="tourlist">
+                    @*@await Component.InvokeAsync("FilterTourListViewComponent", Model);*@
+                    @*@await Html.PartialAsync("_filterResult.cshtml", Model)*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var url_string = window.location;
+            var url = new URL(url_string);
+            return url.searchParams.get(sParam) ?? "";
+        };
+
+        function clickFilter(IdName, Ids) {
+            var kk = Ids.split(",");
+            for (var i = 0; i < kk.length; i++) {
+                /*console.log("#" + IdName + kk[i]);
+                console.log($("#" + IdName + kk[i]));*/
+                $("#" + IdName + kk[i]).prop("checked", true);
+            }
+
+        }
+
+        function checkedValues(classname) {
+            var checked = [];
+            var inputElements = null;
+
+            inputElements = document.getElementsByClassName(classname);
+            for (var i = 0; inputElements[i]; ++i) {
+                if (inputElements[i].checked) {
+                    checked.push(inputElements[i].value);
+                }
+            }
+            return checked;
+        }
+
+        function filter() {
+            var category = checkedValues('fl-category');
+            var destination = checkedValues('fl-destination');
+            var special = checkedValues('fl-special');
+            var type = checkedValues('fl-type');
+            var month = checkedValues('fl-month');
+
+            if (typeof (history.pushState) != "undefined") {
+                window.history.pushState(null, null, "?Destinations=" + destination.join() + "&Months=" + month.join() + "&TourTypes=" + type.join() + "&Categories=" + category.join() + "&Specials=" + special.join())
+            }
+
+            var filterData = {
+                Destinations: destination,
+                Months: month,
+                TourTypes: type,
+                Categories: category,
+                Specials: special
+            }
+            $.ajax({
+                url: '/Tour/TourFilterList',
+                type: "POST",
+                data:  filterData ,
+                success: function (data) {
+                    $('#tourlist').empty().html(data);
+                }
+            });
+        }
+
+
+        clickFilter("ck-category-", getUrlParameter('Categories'));
+        clickFilter("ck-destination-", getUrlParameter('Destinations'));
+        clickFilter("ck-special-", getUrlParameter('Specials'));
+        clickFilter("ck-type-", getUrlParameter('TourTypes'));
+        clickFilter("ck-month-", getUrlParameter('Months'));
+
+        filter();
+
+    </script>
+
+}

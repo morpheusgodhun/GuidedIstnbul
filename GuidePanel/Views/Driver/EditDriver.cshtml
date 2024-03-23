@@ -1,0 +1,59 @@
+﻿@using Dto.ApiPanelDtos.DriverDtos
+@using Dto.ApiWebDtos.GeneralDtos;
+@model EditDriverDto
+@{
+    ViewData["Title"] = "EditDriver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Driver/Index">Driver List</a>
+        > Edit Driver > @Model.Name @Model.Surname</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <form method="post">
+            <input hidden asp-for="UserId" />
+            <div class="row">
+               
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="capacity" class="form-label fw-bold">
+                        Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Name type="text" id="name" class="form-control">
+                </div> 
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="capacity" class="form-label fw-bold">
+                        Surname:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Surname type="text" id="surname" class="form-control">
+                </div>
+              
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tursab-plate-number" class="form-label fw-bold">
+                        Email:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Email type="text" id="email" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tursab-plate-number" class="form-label fw-bold">
+                        Phone Number:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=PhoneNumber type="text" id="phone-number" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <!--Submit Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        Update
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

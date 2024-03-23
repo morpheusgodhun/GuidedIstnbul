@@ -1,0 +1,62 @@
+﻿@using Dto.ApiPanelDtos.AdditionalServiceDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddAdditionalServiceOptionDto
+@{
+    ViewData["Title"] = "AddOption";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/AdditionalService/OptionList/@ViewBag.AdditionalServiceID">Option List</a>
+        > Add Option</h4>
+    <div class="card-body">
+        <!--Edit Additional Service Price Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="AdditionalServiceID" value="@ViewBag.AdditionalServiceID" />
+            <div class="row mt-2">
+                <div class="col-sm-12 col-md-12  mb-3 mr-1">
+                    <label for="option-name" class="form-label fw-bold">
+                        Option Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" asp-for="OptionName" id="option-name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <label for="form-information-fields" class="form-label fw-bold d-block">
+                        Form Information Fields:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="form-information-fields"
+                            asp-for="FormInputIDs" multiple="multiple">
+                        @foreach (var formInput in (List<SelectListOptionDto>)ViewBag.FormInputs)
+                        {
+                            <option value="@formInput.OptionID">@formInput.Option</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-12 col-md-12  mb-3 mr-1">
+                    <label for="option-name" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" asp-for="Order" id="option-order" type="number">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+
+        </form>
+        <!--Edit Additional Service Prices End-->
+
+    </div>
+</div>

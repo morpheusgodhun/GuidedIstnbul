@@ -1,0 +1,63 @@
+﻿@using Dto.ApiPanelDtos.ConstantValueDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddConstantValueDto
+@{
+    ViewData["Title"] = "AddConstantValue";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="float-start">
+            <a href="/ConstantValue/Index">Constant Value List</a>
+            > Add Constant Value</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Edit Fixed Value Start-->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="key" class="form-label fw-bold">
+                        Key:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" class="form-control" asp-for="Key">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="key" class="form-label fw-bold">
+                        Value:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" class="form-control" asp-for="Value">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="faqcategory" class="form-label fw-bold">
+                        Page:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="PageID" class="form-select" id="faqcategory">
+                        <option selected disabled>Select...</option>
+                        @foreach (var faqCategory in ((List<SelectListOptionDto>)ViewBag.PageSelectList))
+                        {
+                            <option value="@faqCategory.OptionID">@faqCategory.Option</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Edit Fixed Value End-->
+
+    </div>
+</div>
+

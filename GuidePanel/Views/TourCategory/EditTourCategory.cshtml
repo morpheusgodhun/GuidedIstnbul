@@ -1,0 +1,99 @@
+﻿@using Dto.ApiPanelDtos.TourCategoryDtos;
+@using GuidePanel.Helpers;
+@model EditTourCategoryDto
+@{
+    ViewData["Title"] = "EditTourCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/TourCategory/Index">Tour Category List</a>
+        > Edit Tour Category > @ViewBag.TourCategoryName
+    </h4>
+    <div class="card-body">
+        <!--Edit Tour Category Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="TourCategoryID" />
+            <input hidden asp-for="IconPath" />
+            @*<input hidden asp-for="BannerImagePath" />*@
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 ">
+                    <label for="icon" class="form-label fw-bold">
+                        Icon:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-icon" class="float-end">
+                        Current Icon
+                    </button>
+                    <!-- current icon Modal-->
+                    <div class="modal fade" id="current-icon" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Icon</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.IconPath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- current icon Modal-->
+                    <input name="Icon" class="form-control" type="file" id="icon"
+                           placeholder="file not selected.">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 ">
+                    <label for="icon" class="form-label fw-bold">
+                        Banner Image:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-banner-image" class="float-end">
+                        Current Image
+                    </button>
+                    <!-- current icon Modal-->
+                    <div class="modal fade" id="current-banner-image" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Banner Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.BannerImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- current icon Modal-->
+                    <label for="image" class="form-label fw-bold">
+                        Banner Image (1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input  name="BannerImage" class="form-control" type="file" id="bannerImagePath"
+                           placeholder="file not selected.">
+                    @*name="BannerImage"*@
+                    @*asp-for=BannerImagePath*@
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit Tour Category End-->
+    </div>
+</div>
+

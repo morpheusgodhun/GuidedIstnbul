@@ -1,0 +1,86 @@
+﻿@using Dto.ApiPanelDtos.SubscriberDtos;
+@model List<SubscriberListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Subscriber List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <button type="button" class="float-end btn btn-secondary " data-bs-toggle="modal"
+                            data-bs-target="#export-excel">
+                        Export To Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- export excel Modal-->
+        <div class="modal fade" id="export-excel" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Export To Excel</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table id="scroll-horizontal-datatable1" class="table w-100 nowrap table-striped">
+
+                            <tr>
+                                <td>Export ALL Subscribers</td>
+                                <td style="width:0%"><a href="/Subscriber/ExportAllSubscribers" class="btn btn-primary w-100">Export</a></td>
+                            </tr>
+                            <tr>
+                                <td>Export Active Subscribers</td>
+                                <td style="width:0%"><a href="/Subscriber/ExportActiveSubscribers" class="btn btn-primary w-100">Export</a></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- export excel Modal-->
+
+
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Status</th>
+                    <th style="width: 10%;">Membership Date</th>
+                    <th style="width: 82%;">E-mail</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 1 -->
+                @foreach (var subscriber in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (subscriber.Status)
+                            {
+                                <a href="/Subscriber/ToggleSubscriberStatus/@subscriber.SubscriberID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/Subscriber/ToggleSubscriberStatus/@subscriber.SubscriberID" class="btn btn-danger w-100">Passive</a>
+                            }  
+                        </td>
+                        <th>@subscriber.MembershipDate.ToString("dd-MMM-yyyy")</th>
+                        <th>@subscriber.Email</th>
+                        
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+

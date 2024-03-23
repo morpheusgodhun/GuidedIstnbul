@@ -1,0 +1,230 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Profile;
+@model GetProfileAgentDto
+
+@{
+    ViewData["Title"] = "AgentInformation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row mt-60 mb-60">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="bg-white shadow rounded my-5">
+                <div class="row">
+                    <div class="col-md-12 px-0">
+                        <div class="form-left h-100 py-0 px-5 booking-form-box">
+                            <fieldset>
+
+                                <div class="form-card">
+
+                                    <form method="post" enctype="multipart/form-data" id="msform" class="banner-form row" action="/Profile/AgentInformation">
+                                        @*<input hidden value="@Model.AgentID" name="AgentID" />
+                                        <div class="row clearfix">
+                                            <label hidden>@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileAgentIDLabel").Value @Model.AgentID</label>
+                                        </div>
+                                        <div class=" mb-5 mt-5">
+                                            <h1 class="text-center">@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileAgentTitle").Value</h1>
+                                        </div>*@
+                                        <div class="row">
+
+
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-id-card-alt"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues, "ProfileAgentTitlePlaceholder")" type="text" name="AgentTitle" value="@Model.AgentTitle"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="far fa-envelope-open"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentEmailPlaceholder")" type="email"
+                                                               name="Email" value="@Model.Email" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative ps-0">
+                                           
+                                                    <div class="searchbox-input d-flex">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentPhonePlaceholder")" type="text" name="Phone" value="@Model.Phone"
+                                                               class="masked phone" id ="phone" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentContactPersonPlaceholder")" type="text"
+                                                               name="ContactPerson" value="@Model.ContactPerson" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-globe"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <select name="CountryID" class="defult-select-drowpown" data-placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentCountryPlaceholder")"
+                                                                id="activity-dropdown">
+                                                            <option>@Helpers.Wcv(Model.ConstantValues, "ProfileAgentCountryPlaceholder")</option>
+                                                            @foreach (var Country in Model.CountryOptions)
+                                                            {
+                                                                if (Model.CountryID == Country.ID.ToString())
+                                                                {
+                                                                    <option selected value="@Country.ID">@Country.Value</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@Country.ID">@Country.Value</option>
+                                                                }
+                                                            }
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+@*                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-atlas"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <select name="CityID" class="defult-select-drowpown" data-placeholder="@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileAgentCityPlaceholder").Value"
+                                                                id="activity-dropdown">
+                                                            <option>@Model.ConstantValues.FirstOrDefault(x=>x.Key == "ProfileAgentCityPlaceholder").Value</option>
+                                                            @foreach (var city in Model.CityOptions)
+                                                            {
+                                                                @if (Model.CityID == city.OptionID)
+                                                                {
+                                                                    <option selected value="@city.OptionID">@city.Option</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@city.OptionID">@city.Option</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-briefcase"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentTaxAdministrationPlaceholder")" type="text" name="TaxAdministration" value="@Model.TaxAdministration" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-barcode"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentTaxNumberPlaceholder")" type="text" name="TaxNumber" value="@Model.TaxNumber" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-user-tie"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentCompanyManagerPlaceholder")" type="text"
+                                                               name="CompanyManager" value="@Model.CompanyManager" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-barcode"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentTradeRegistryNumberPlaceholder")" type="text"
+                                                               name="TradeRegistryNumber" value="@Model.TradeRegistryNumber" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="search-box-single destination-box postition-relative">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-mouse"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <input placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentWebsiteLinkLabelPlaceholder")" type="text" name="WebsiteLink" value="@Model.WebsiteLink" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 fw-bold pt-3">
+                                                <label for="" class="float-start">@Helpers.Wcv(Model.ConstantValues,"ProfileAgentLogoLabel")</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="search-box-single destination-box postition-relative p-0">
+                                                    <div class="searchbox-input">
+                                                        <input style="height: 47px;" class="p-0" type="file"
+                                                               name="Logo" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="search-box-single">
+                                                    <div class="searchbox-icon">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    </div>
+                                                    <div class="searchbox-input">
+                                                        <textarea name="Address" rows="6"
+                                                                  placeholder="@Helpers.Wcv(Model.ConstantValues,"ProfileAgentAddressPlaceholder")">@Model.Address</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="mb-4 col-lg-12 clearfix">
+                                                <button type="submit"
+                                                        class="float-end eg-btn btn--primary btn--lg submit-btn">
+                                                    @Helpers.Wcv(Model.ConstantValues, "ProfileAgentSaveButton")
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

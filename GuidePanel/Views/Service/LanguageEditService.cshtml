@@ -1,0 +1,76 @@
+﻿@using Dto.ApiPanelDtos.ProductDtos.ServiceDtos;
+@model LanguageEditServiceDto
+@{
+    ViewData["Title"] = "LanguageEditService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+
+        <h4 class="float-start">
+            <a href="/Service/Index">Service List</a>
+            > Edit Service
+        </h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required fields
+        </p>
+        <!--Add Tour Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="ProductLanguageID" />
+            <input hidden asp-for="ServiceLanguageID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Service Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input readonly asp-for="ProductName" type="text" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Display Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for="DisplayName" type="text" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Slug:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Slug type="text" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="content" class="form-label">
+                        Short Description:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea asp-for="ShortDescription" id="content" rows="2" class="form-control col-md-6"> </textarea>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="" class="form-label fw-bold">
+                            Content:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea required asp-for="Content" id="editor1" rows="4" cols="4"></textarea>
+                        <script>
+                            CKEDITOR.replace('editor1');
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

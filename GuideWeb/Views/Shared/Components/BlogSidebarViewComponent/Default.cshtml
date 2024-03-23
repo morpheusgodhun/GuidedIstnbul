@@ -1,0 +1,76 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Blog;
+@using GuideWeb.Helpers;
+@model GetBlogSidebarPartialDto
+@{
+    string languagePrefix = ViewData["language"].ToString();
+}
+
+<div class="col-lg-4">
+    <div class="blog-sidebar ps-lg-4">
+        <br>
+        <div class="blog-widget">
+            <h4 class="blog-widget-title">@Helpers.Wcv(Model.ConstantValues,"BlogSideBar.TrendingBlogs")</h4>
+            <div class="trending-post">
+                <ul class="trending-post-list">
+                    @foreach (var TrendBlog in Model.TrendBlogs)
+                    {
+                        <li>
+                            <div class="trending-post-single">
+                                <div class="row w-100">
+                                    <div class="package-image col-4">
+                                        <img style="width: 100%;" src="@Resource.ImagePath/@TrendBlog.ImagePath"
+                                             class="img-fluid m-auto" alt="@TrendBlog.Title" title="@TrendBlog.Title">
+                                    </div>
+                                    <div class="post-content col-8"> 
+                                        <h6>
+                                            <a href="@Helpers.PrepareUrl(languagePrefix,TrendBlog.Slug)" title="@TrendBlog.Title">
+                                                <!--/Blog/BlogDetail/TrendBlog.BlogID-->
+                                                @TrendBlog.Title
+                                            </a>
+                                        </h6>
+                                        <span class="post-date">@TrendBlog.Date.ToString("dd.MM.yyyy")</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="blog-widget">
+            <h4 class="blog-widget-title">@Helpers.Wcv(Model.ConstantValues, "BlogSideBar.Categories")</h4>
+            <div class="tour-category">
+                <ul class="tour-category-list">
+                    @foreach (var category in Model.BlogCategories.OrderBy(x => x.Order))
+                    {
+                        <li><a href="@Helpers.PrepareUrl(languagePrefix,category.Slug)">@category.Name</a></li>
+                        //
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="blog-widget">
+            <h4 class="blog-widget-title">@Helpers.Wcv(Model.ConstantValues, "BlogSideBar.Tags")</h4>
+            <div class="tour-category">
+                @foreach (var tag in Model.BlogTags)
+                {
+                    <span class="tag-button">
+                        <a href="@Helpers.PrepareUrl(languagePrefix,tag.Slug)">@tag.Name</a>
+                        
+                    </span>
+                }
+            </div>
+        </div>
+        <div class="blog-widget">
+            <div class="sidebar-social-area">
+                <h4 class="blog-widget-title">@Helpers.Wcv(Model.ConstantValues, "BlogSideBar.FollowUs")</h4>
+                <ul class="sidebar-social-list">
+                    <li><a href="#" title="Guided Istanbul Tours Facebook"><i class="bx bxl-facebook"></i></a></li>
+                    <li><a href="#" title="Guided Istanbul Tours Tripadvisor"><i class="fa fa-tripadvisor"></i></a></li>
+                    <li><a href="#" title="Guided Istanbul Tours Instagram"><i class="bx bxl-instagram"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

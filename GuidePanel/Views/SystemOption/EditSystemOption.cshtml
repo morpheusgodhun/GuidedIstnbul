@@ -1,0 +1,53 @@
+﻿@using Core.StaticClass;
+@using Dto.ApiPanelDtos.SystemOptionDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model EditSystemOptionDto
+@{
+    ViewData["Title"] = "EditSystemOption";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/SystemOption/Index">System Option List</a>
+        > Edit System Option > @ViewBag.SystemOptionName
+    </h4>
+    <div class="card-body">
+        <!--Edit System Options Management Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="SystemOptionID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="system-option-category" class="form-label fw-bold">
+                        System Option
+                        Categories:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select required class="form-select" asp-for="SystemOptionCategoryID">
+                        @foreach (var category in (List<SelectListOption>)ViewBag.SystemOptionCategories)
+                        {
+                            <option value="@category.ID">@category.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="system-option-order" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required type="number" asp-for="Order" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit System Options Management End-->
+    </div>
+</div>
+

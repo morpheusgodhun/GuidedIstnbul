@@ -1,0 +1,55 @@
+﻿@using Dto.ApiPanelDtos.ProductDtos.TourDtos;
+@model AddTourFaqDto
+@{
+    ViewData["Title"] = "AddTourFaq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Tour/Index">Tour List</a>
+        > <a href="/Tour/TourFaqList/@ViewBag.TourID">Tour FAQ List</a>
+        > Add Tour F.A.Q
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Add FAQ Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden name="ProductID" value="@ViewBag.TourID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="title" class="form-label fw-bold">
+                        Question:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Question type="text" id="title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="example-select2" class="form-label fw-bold">
+                        Answer:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea asp-for="Answer" rows="3" class="form-control col-md-6"> </textarea>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                <label for="order" class="form-label fw-bold">
+                    Order: <span class="text-danger fw-bold">*</span>
+                </label>
+                <input asp-for=Order type="number" id="order" class="form-control">
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Add FAQ End-->
+    </div>
+</div>
+

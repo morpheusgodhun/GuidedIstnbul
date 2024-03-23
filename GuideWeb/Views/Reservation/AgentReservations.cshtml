@@ -1,0 +1,51 @@
+﻿
+@using Core.StaticValues
+@model GetAgentReservationsDto
+@{
+    ViewData["Title"] = "AgentReservations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="feature-section2 mt-60">
+    <div class="row mb-60">
+        <div class="col text-center">
+            <h1>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Title")</h1>
+        </div>
+    </div>
+    </div>
+<div class="container mt-5 mb-120">
+    <div class="table-responsive">
+        <table id="scroll-horizontal-datatable" class="text-center table w-100 nowrap table-striped p-2">
+            <thead>
+                <tr>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.ReservationCodeLabel")</th>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.DateLabel")</th>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.UsernameLabel")</th>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.TypeLabel")</th>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.DetailLabel")</th>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.StatusLabel")</th>
+                    <th>@Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.PriceLabel")</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model.Reservations)
+                {
+                    <tr>
+                        <td>@reservation.ReservationCode</td>
+                        <td>@reservation.Date</td>
+                        <td>@reservation.Username</td>
+                        <td>@reservation.ReservationType</td>
+                        <td>
+                            <a href="/Reservation/ReservationDetail/@reservation.ReservationID" class="btn btn-info btn--sm w-100"  title="Reservation Detail">
+                                @Helpers.Wcv(Model.ConstantValues,"AgentReservations.Table.DetailButton")
+                                @*@Model.ConstantValues.FirstOrDefault(x => x.Key == "AgentReservations.Table.DetailButton").Value*@
+                            </a>
+                            @*<button class="btn btn-info btn--sm w-100" data-bs-toggle="modal" data-bs-target="#detailModal"></button>*@
+                        </td>
+                        <td>@reservation.ReservationStatus</td>
+                        <td>@reservation.ReservationPrice</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

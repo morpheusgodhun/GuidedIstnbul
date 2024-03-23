@@ -1,0 +1,219 @@
+﻿@using Dto.ApiPanelDtos.PersonPolicyDtos;
+@using Dto.ApiPanelDtos.ProductDtos.TourDtos;
+@model List<TourPriceListDto>
+@{
+    ViewData["Title"] = "TourDetailPrice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="header-title mb-3">
+            <a href="/Tour/Index">Tour List</a>
+            > Tour Detail > @ViewBag.ProductName
+        </h4>
+        @await Component.InvokeAsync("TourDetailHeader")
+
+        @*    <ul class="nav nav-tabs nav-bordered mb-3">
+        <li class="nav-item">
+        <a href="/Tour/TourDetail/@ViewBag.ProductID" class="nav-link ">
+        <i class="mdi mdi-information-outline d-md-none d-block"></i>
+        <span class="d-none d-md-block">General Info</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="/Tour/TourDetailImage/@ViewBag.ProductID" class="nav-link">
+        <i class="mdi mdi-account-circle d-md-none d-block"></i>
+        <span class="d-none d-md-block">Images</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="/Tour/TourDetailPrice/@ViewBag.ProductID" class="nav-link active">
+        <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+        <span class="d-none d-md-block">Pricing - Number of Days</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="/Tour/TourDetailAdditionalService/@ViewBag.ProductID" class="nav-link">
+        <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+        <span class="d-none d-md-block">Pricing - Additional Service</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="/Tour/TourDetailBlog/@ViewBag.ProductID" class="nav-link">
+        <i class="mdi mdi-newspaper d-md-none d-block"></i>
+        <span class="d-none d-md-block">Blog</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="/Tour/TourDetailSellLimit/@ViewBag.ProductID" class="nav-link">
+        <i class="mdi mdi-currency-usd d-md-none d-block"></i>
+        <span class="d-none d-md-block">Sell Limit</span>
+        </a>
+        </li>
+        </ul>*@
+        <div class=" mt-3 mb-2 clearfix">
+            @if (ViewBag.IsAskForPriceActive)
+            {
+                <a href="/Tour/ToggleAskForPrice/@ViewBag.ProductID" class="btn btn-success px-3 ms-2">Ask For Price</a>
+            }
+            else
+            {
+                <a href="/Tour/ToggleAskForPrice/@ViewBag.ProductID" class="btn btn-danger px-3 ms-2">Ask For Price</a>
+            }
+        </div>
+        <div class="card">
+            <h4 class="card-header">Price List</h4>
+            <div class="card-body">
+                <div class="clearfix">
+                    <div class="row justify-content-end">
+                        <div class="mb-4">
+                            <button data-bs-toggle="modal" data-bs-target="#add-price" type="button" class="btn btn-secondary float-end">
+                                Add Price
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+                    <thead>
+                        <tr>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Priority</th>
+                            @if ((bool)ViewBag.IsPerPerson)
+                            {
+                                <th>Price</th>
+                            }
+                            else
+                            {
+                                @foreach (var personPolicy in ((List<PersonPolicyDto>)ViewBag.PersonPolicyList).OrderBy(x => x.Order).ThenBy(x => x.PersonPolicyID))
+                                {
+                                    <th> (@personPolicy.FromPerson - @personPolicy.ToPerson) Person</th>
+                                }
+                            }
+                            <th style="width: 0%">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var price in Model)
+                        {
+                            <tr>
+                                <td>@price.FromDate.ToString("dd-MM-yyyy")</td>
+                                <td>@price.ToDate.ToString("dd-MM-yyyy")</td>
+                                <td>@price.Priority</td>
+                                @if ((bool)ViewBag.IsPerPerson)
+                                {
+                                    <td>@price.Prices.FirstOrDefault().Price</td>
+                                }
+                                else
+                                {
+                                    @foreach (var priceDto in ((List<PersonPolicyDto>)ViewBag.PersonPolicyList).OrderBy(x => x.Order).ThenBy(x => x.PersonPolicyID))
+                                    {
+                                        <td>@price.Prices.FirstOrDefault(x => x.PersonPolicyID == priceDto.PersonPolicyID)?.Price</td>
+                                    }
+                                }
+                                <td><a href="/Tour/DeleteTourPrice/@price.PriceID/@ViewBag.ProductID" class="btn btn-danger w-100">Delete</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- Add Price Modal -->
+        <div id="add-price" class="modal fade" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Add Tour Price
+                    </div>
+                    <div class="modal-body p-2">
+                        <form method="post" action="/Tour/AddTourPrice">
+                            <input hidden name="TourID" value="@ViewBag.TourID" />
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                                    <label for="fromDate" class="form-label fw-bold">
+                                        From Date<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="date" name="FromDate" id="fromDate" class="form-control">
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                                    <label for="toDate" class="form-label fw-bold">
+                                        To Date<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="date" name="ToDate" id="toDate" class="form-control">
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                                    <label for="blogcategoryname" class="form-label fw-bold">
+                                        Priority<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="number" name="Priority" class="form-control">
+                                </div>
+                                @if ((bool)ViewBag.IsPerPerson)
+                                {
+                                    <input hidden name="Prices[0].PersonPolicyID" value="@null" />
+                                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                                        <label for="blogcategoryname" class="form-label fw-bold">
+                                            Price:<span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <input type="number" name="Prices[0].Price" class="form-control">
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    int i = 0;
+                                    @foreach (var personPolicy in ((List<PersonPolicyDto>)ViewBag.PersonPolicyList).OrderBy(x => x.Order).ThenBy(x => x.PersonPolicyID))
+                                    {
+                                        <input hidden name="Prices[@i].PersonPolicyID" value="@personPolicy.PersonPolicyID" />
+                                        <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                                            <label for="blogcategoryname" class="form-label fw-bold">
+                                                (@personPolicy.FromPerson - @personPolicy.ToPerson) Person Price:<span class="text-danger fw-bold">*</span>
+                                            </label>
+                                            <input type="number" name="Prices[@i].Price" class="form-control">
+                                        </div>
+                                        i++;
+                                    }
+                                }
+                            </div>
+                            <div class="row">
+                                <!-- Button -->
+                                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                    <button type="submit"
+                                            class="btn btn-dark rounded-pill px-5 mt-3">
+                                        ADD
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!-- /. Add Price Modal -->
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('toDate').onchange = checkDates
+        document.getElementById('fromDate').onchange = checkDates
+
+        function checkDates() {
+            var fromDate = document.getElementById('fromDate');
+            var toDate = document.getElementById('toDate');
+
+            if (fromDate.value > toDate.value) {
+                toDate.value = '';
+                toDate.style.border = '1px solid red';
+            }
+            else {
+                toDate.style.border = fromDate.style.border;
+            }
+        }
+    </script>
+
+}

@@ -1,0 +1,135 @@
+﻿@using Dto.ApiPanelDtos.CustomPageManagementDto;
+@model LanguageEditCustomPageDto
+@{
+    ViewData["Title"] = "EditLanguageCustomPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+
+        <h4 class="float-start">
+            <a href="/CustomPage/Index">Custom Page List</a>
+            > Edit Custom Page > @Model.DisplayName
+            </h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Edit Custom Help Page Management Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="PageLanguageItemID"/>
+            <div class="row">
+                <!-- PAge Name -->
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="pagename" class="form-label fw-bold">
+                        Page Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" disabled value="@Model.PageName" id="pagename" class="form-control">
+                </div>
+                <!-- Display Name -->
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="pagename" class="form-label fw-bold">
+                        Display Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" value="@Model.DisplayName" name="DisplayName" id="displayName" class="form-control" onkeyup="convertTo()">
+                </div>
+                <!-- Slug -->
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="slug" class="form-label fw-bold">
+                        Slug:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" name="Slug" value="@Model.Slug" id="slug" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="pagename" class="form-label fw-bold">
+                        Title:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Title" id="pagename" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="pagename" class="form-label fw-bold">
+                        Subtitle:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Subtitle" id="pagename" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="SitemapInclude" class="form-label fw-bold d-block">
+                        Sitemap Include:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for="SitemapInclude" class="form-check-input" type="checkbox" value="true"
+                           id="SitemapInclude">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="" class="form-label fw-bold">
+                        Content:<span class="text-danger fw-bold">*</span>
+                    </label> 
+                    <textarea name="Content" id="editor1" rows="4" cols="4">
+                        @Html.Raw(Model.Content)
+                    </textarea>
+                    <script>
+                        CKEDITOR.replace('editor1');
+                    </script>
+                </div>
+            </div>
+            <div class="row">
+               
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+
+            </div>
+        </form>
+        <!--Edit Custom Page Management End-->
+
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+        function convertTo() {
+
+            var deger = $('#displayName').val().trim();
+
+            var chacters = {
+                Ç: 'c',
+                Ö: 'o',
+                Ş: 's',
+                İ: 'i',
+                I: 'i',
+                Ü: 'u',
+                Ğ: 'g',
+                ç: 'c',
+                ö: 'o',
+                ş: 's',
+                ı: 'i',
+                ü: 'u',
+                ğ: 'g',
+                " ": '-'
+            };
+            var stringtoarray = deger.split('');
+            for (var i = 0; i < stringtoarray.length; i++) {
+                stringtoarray[i] = chacters[stringtoarray[i]] || stringtoarray[i];
+            }
+
+            var arraytostring = stringtoarray.join('');
+            var cleanMessage = arraytostring.replace(/\./g, "-").replace(/\//g, "-").replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+            $('#slug').val(cleanMessage);
+
+        }
+    </script>
+
+
+}
+

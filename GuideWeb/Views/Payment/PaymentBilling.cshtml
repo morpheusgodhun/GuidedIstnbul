@@ -1,0 +1,214 @@
+﻿@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@model ReservationBillingInformationDto
+@{
+    ViewData["Title"] = "PaymentBilling";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            <div class="booking-form-box pb-0">
+                    <ul id="progressbar" class="payment_form_progressbar">
+                        <li id="account"><strong>Participants</strong></li>
+                        @*<li class="active" id="personal"><strong>Billing Information</strong></li>*@
+                        <li id="payment"><strong>Payment Information</strong></li>
+                    </ul>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <br>
+                    <!-- fieldsets -->
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2 class="steps">Step 2 - 2</h2>
+                                </div>
+                            </div>
+
+
+                            <div class="tab-container-one">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    @if (Model.IsIndividual)
+                                    {
+                                        <li class="nav-item active">
+                                            <a class="nav-link active" href="#home" role="tab"
+                                               aria-controls="home" data-bs-toggle="tab">Individual</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#profile" role="tab"
+                                               aria-controls="profile" data-bs-toggle="tab">Corporate</a>
+                                        </li>
+                                    }else
+                                    {
+                                        <li class="nav-item active">
+                                            <a class="nav-link " href="#home" role="tab"
+                                               aria-controls="home" data-bs-toggle="tab">Individual</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#profile" role="tab"
+                                               aria-controls="profile" data-bs-toggle="tab">Corporate</a>
+                                        </li>
+                                    }
+
+                                </ul>
+                                <div class="tab-content">
+
+                                <div class="tab-pane @(Model.IsIndividual ? "active" : "")" id="home" role="tabpanel"
+                                         aria-labelledby="home-tab">
+                                        
+                                        <form id="msform" class="banner-form" method="post">
+                                            <input hidden asp-for="ReservationId">
+                                            <input hidden name="IsIndividual" value="true">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-id-card-alt"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input asp-for=Fullname type="text" placeholder="Name & Surname*">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-id-card"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input type="text" asp-for="TcOrPassportNo" placeholder="T.R. Identity No/PassportNo *">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="far fa-envelope-open"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input placeholder="Your E-mail Address" type="email"
+                                                                   asp-for="EmailIndividual" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-phone-alt"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input placeholder="Your Phone Number" type="text"
+                                                                  asp-for="PhoneIndividual" class="masked phone" id="phone"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="bi bi-chat-left-text-fill"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <textarea asp-for="AddressIndividual" rows="6" placeholder="Address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="next action-button" title="Next">Next</button>
+                                                    <a href="/Payment/PaymentParticipant/@Model.ReservationId" class="text-center float-end previous action-button-previous">Previous</a>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                <div class="tab-pane @(Model.IsIndividual ? "" : "active")" id="profile" role="tabpanel"
+                                         aria-labelledby="profile-tab">
+                                        <form id="msform" class="banner-form" method="post">
+                                            <input hidden asp-for="ReservationId">
+                                            <input hidden name="IsIndividual" value="false">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-briefcase"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input placeholder="Tax Administration" type="text"
+                                                                   asp-for="TaxAdministration" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-barcode"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input placeholder="Tax Number" type="text" asp-for="TaxNumber" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="search-box-single">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-map-marker-alt"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <textarea asp-for="AddressCorporate" rows="6"
+                                                                      placeholder="Address"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="far fa-envelope-open"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input placeholder="Company E-mail Address" type="email"
+                                                                   asp-for="EmailCorporate" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="search-box-single destination-box postition-relative">
+                                                        <div class="searchbox-icon">
+                                                            <i class="fas fa-phone-alt"></i>
+                                                        </div>
+                                                        <div class="searchbox-input">
+                                                            <input placeholder="Company Phone Number" type="text"
+                                                                   asp-for="PhoneCorporate" class="masked phone" id ="phone" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="next action-button" title="Next">Next</button>
+                                                    <a href="/Payment/PaymentParticipant/@Model.ReservationId" class=" text-center float-end previous action-button-previous">Previous</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+            </div>
+        </div>
+        @await Component.InvokeAsync("PaymentReservationDetailViewComponent" , new {reservationId = Model.ReservationId.ToString()} )
+    </div>
+</div>
+

@@ -1,0 +1,60 @@
+﻿@using Dto.ApiPanelDtos.TourCategoryDtos;
+@model LanguageEditTourCategoryDto
+@{
+    ViewData["Title"] = "LanguageEditTourCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="float-start">
+            <a href="/TourCategory/Index">TourCategory List</a>
+            > Edit Tour Category
+        </h4>
+        <h4 class="float-end">@Model.LanguageName</h4>
+    </div>
+    <div class="card-body">
+        <!--Edit Tour Category Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="TourCategoryLanguageID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tourcatogoryname" class="form-label fw-bold">
+                        Tour Category
+                        Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="CategoryName" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tourcatogoryname" class="form-label fw-bold">
+                        Slug:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Slug" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="" class="form-label fw-bold">
+                        Content:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea required asp-for="Content" id="editor1" rows="4" cols="4"></textarea>
+                    <script>
+                        CKEDITOR.replace('editor1');
+                    </script>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit Tour Category End-->
+    </div>
+</div>
+

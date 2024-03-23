@@ -1,0 +1,29 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.PageComponets;
+@using GuideWeb.Helpers;
+@model GetDiscoverPotentialCardDto
+@{
+    string prefix = ViewData["language"].ToString();
+}
+<div class="video-section mt-120" style="@Resource.ImagePath/video-bg.jpg">
+    <div class="container">
+        <div class="row justify-content-center align-items-center g-4">
+            <div class="col-lg-7 col-md-12">
+                <div class="video-section-content">
+                    <h2>@Model.ConstantValues.Where(x=>x.Key == "DiscoverPotential.Title").FirstOrDefault().Value</h2>
+                    <p class="para">@Model.ConstantValues.Where(x=>x.Key == "DiscoverPotential.Content").FirstOrDefault().Value </p>
+                    <a href="@Helpers.PrepareUrl(prefix,Model.DiscoverPotentialSlug)" class="eg-btn btn--primary btn--lg" title="Discover More">@Model.ConstantValues.Where(x => x.Key == "DiscoverPotential.DiscoverMoreButton").FirstOrDefault().Value</a>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-10 d-flex justify-content-lg-end justify-content-center">
+                <div class="video-wrapper">
+                    <div class="video-play">
+                        <a href="@Model.ConstantValues.Where(x=>x.Key == "DiscoverPotential.YoutubeLink").FirstOrDefault().Value" class="popup-youtube video-icon">
+                            <i class="bx bx-play" alt="Watch Video" title="Watch The Video"></i>
+                        </a>
+                    </div>
+                    <span class="watch-video">@Helpers.Wcv(Model.ConstantValues, "DiscoverPotential.WatchNow")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@using Dto.ApiPanelDtos.CertificateManagementDtos;
+@using GuidePanel.Helpers;
+@model List<CertificateListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Certificate List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Certificate/AddCertificate">
+                            Add Certificate
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--Edit Tag Start-->
+        <!-- start page title -->
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 7%;">Delete</th>
+                    <th style="width: 7%;">Status</th>
+                    <th style="width: 7%;">Order</th>
+                    <th style="width: 6%;">Image</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var certificate in Model)
+                {
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal-@certificate.CertificateID">
+                                Delete
+                            </button>
+                        </td>
+                        <td>
+                            @if (certificate.Status)
+                            {
+                                <a href="/Certificate/ToggleCertificateStatus/@certificate.CertificateID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/Certificate/ToggleCertificateStatus/@certificate.CertificateID" class="btn btn-danger w-100">Passive</a>
+                            }
+                            
+                        </td>
+                        <td>
+                            <a href="/Certificate/OrderUpCertificate/@certificate.CertificateID/@(certificate.Order - 1)" class="btn btn-warning">Down</a>
+                            @certificate.Order
+                            <a href="/Certificate/OrderUpCertificate/@certificate.CertificateID/@(certificate.Order + 1)" class="btn btn-warning">Up</a>
+                        </td>
+                        <td>
+                            <img src="@Resource.ImagePath/@certificate.ImagePath" alt="@certificate.Title" style="width: 40px;">
+                        </td>
+                        <td>
+                            @certificate.Title
+                        </td>
+
+                    </tr>
+
+                    <div class="modal fade" id="deleteModal-@certificate.CertificateID" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Warning</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure to delete the certificate?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="/Certificate/DeleteCertificate/@certificate.CertificateID" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+               
+
+            </tbody>
+
+        </table>
+        <!--Edit Tag End-->
+
+    </div>
+</div>
+

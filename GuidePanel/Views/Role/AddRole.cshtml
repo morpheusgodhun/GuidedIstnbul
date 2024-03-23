@@ -1,0 +1,56 @@
+﻿@using Dto.ApiPanelDtos.RoleDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddRoleDto
+@{
+    ViewData["Title"] = "AddRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Role/Index">Role List</a>
+        > Add Role
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Add Role Start-->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="rolename" class="form-label fw-bold">
+                        Role Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="RoleTemplateName" class="form-control">
+
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="pages" class="form-label fw-bold">
+                        Pages:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="pages" asp-for="RoleIDs"
+                            multiple="multiple">
+                        @foreach (var panelPage in (List<SelectListOptionDto>)ViewBag.AllowSelectList)
+                        {
+                            <option value="@panelPage.OptionID">@panelPage.Option</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Add Role End-->
+
+    </div>
+</div>

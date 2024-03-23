@@ -1,0 +1,181 @@
+﻿@using Dto.ApiPanelDtos.ProductDtos.ServiceDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@using GuidePanel.Helpers;
+@model EditServiceDto
+@{
+    ViewData["Title"] = "EditService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Service/Index">Service List</a>
+        > Edit Service > @ViewBag.ProductName
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Tour Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="ProductID" />
+            <!-- Eğer image'ler boş gelirse önceki değerleri kaybetmesin diye. -->
+            <input hidden asp-for="BannerImagePath" />
+            <input hidden asp-for="CardImagePath" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Service Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input readonly asp-for="ProductName" type="text" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">Youtube Link:</label>
+                    <input asp-for="YoutubeLink" type="text" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Banner Image:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-banner-image" class="float-end">
+                        Current Image
+                    </button>
+                    <!-- current icon Modal-->
+                    <div class="modal fade" id="current-banner-image" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Banner Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.BannerImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="image" class="form-label fw-bold">
+                        Banner Image (1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input name="BannerImage" type="file" id="tour-title" class="form-control">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Card Image:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <button type="button" style="border:none" data-bs-toggle="modal"
+                            data-bs-target="#current-card-image" class="float-end">
+                        Current Image
+                    </button>
+                    <!-- current icon Modal-->
+                    <div class="modal fade" id="current-card-image" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Current Banner Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Resource.ImagePath/@Model.CardImagePath" class="w-100">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="image" class="form-label fw-bold">
+                        Card Image (380x270):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input name="CardImage" type="file" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="cancellation-policy" class="form-label fw-bold">
+                        Cancellation Policy:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=CancellationPolicyID class="form-select" id="cancellation-policy">
+                        <option selected disabled>Select...</option>
+                        @foreach (var cancellationPolicy in (List<SelectListOptionDto>)ViewBag.CancellationPolicySelectList)
+                        {
+                            <option value="@cancellationPolicy.OptionID">@cancellationPolicy.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Tags:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for=TagIDs class="js-example-basic-multiple" id="tour-cities" multiple="multiple">
+                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.TagSelectList)
+                        {
+                            <option value="@tag.OptionID">@tag.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">Cut-off Time:</label>
+                    <div class="row">
+                        <div class="col">
+                            <input asp-for=CutOfDay type="number" id="tour-title" class="form-control" placeholder="Day">
+                        </div>
+                        <div class="col">
+                            <input asp-for=CutOfHour type="number" id="tour-title" class="form-control" placeholder="Hour">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Customer Deposito Amount
+                    </label>
+                    <input asp-for=CustomerDeposito value="@Model.CustomerDeposito.ToString().Replace(",", ".")" type="number" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Agent Deposito Amount
+                    </label>
+                    <input asp-for="AgentDeposito" value="@Model.AgentDeposito.ToString().Replace(",", ".")" type="number" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Day of Payment
+                    </label>
+                    <input asp-for="DayOfPayment" value="@Model.DayOfPayment.ToString().Replace(",", ".")" type="number" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Minimum Payout Percent
+                    </label>
+                    <input asp-for=MinimumPayoutPercent value="@(Model.MinimumPayoutPercent.ToString().Split(",")[0])" type="number" id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="" class="form-label fw-bold d-block">
+                        Activate Child Policy:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for="IsChildPolicyActive" class="form-check-input" type="checkbox" value="true" id="childPolicy">
+                    <label class="form-check-label" for="childPolicy">
+                        Activate
+                    </label>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

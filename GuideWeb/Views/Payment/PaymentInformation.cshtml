@@ -1,0 +1,228 @@
+﻿@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@using GuideWeb.Helpers;
+@model ReservationPaymentInformationDto
+@{
+    ViewData["Title"] = "PaymentInformation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string languagePrefix = ViewData["language"].ToString();
+
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            <div class="booking-form-box pb-0">
+                <ul id="progressbar" class="payment_form_progressbar">
+                    <li id="account"><strong>Participants</strong></li>
+                    @*<li id="personal"><strong>Billing Information</strong></li>*@
+                    <li class="active" id="payment"><strong>Payment Information</strong></li>
+                </ul>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <br>
+                <!-- fieldsets -->
+                <fieldset>
+                    <div>
+                        <div class="row">
+                            <div class="container text-center">
+                                <span id="payable">
+                                    <label for="totalPrice">Total Price ( @Helpers.Wprice((decimal)Model.LastTotalPrice) )</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="payment-title">
+                                <h1>Payment Information</h1>
+                            </div>
+                        </div>
+                        <div class="row mt-5 mb-5">
+                            <div class="col-lg-4 offset-md-1">
+                                <img class="w-100 mt-5" src="@Resource.ImagePath/cc-sample.png" alt="credit-card">
+                            </div>
+                            <div class="col-lg-5 offset-md-1">
+                                <form method="post" id="payment-form" class="banner-form" action="/Payment/PaymentInformation">
+                                    <input asp-for="ReservationId" hidden />
+                                    <div class="row">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="Card Holder Name" type="text" asp-for="CardHolderName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="Card Number" type="number" maxlength="16" asp-for="CardNumber" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input hidden asp-for="LastTotalPrice" value="@Model.LastTotalPrice" />
+                                    <input hidden asp-for="TotalPrice" value="@Model.TotalPrice" />
+                                    <input hidden asp-for="DepositoPrice" value="@Model.DepositoPrice" />
+                                    <div class="row">
+                                        <div class="col p-0">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    <input required placeholder="Month" min="1" max="12" type="number" asp-for="Month" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col pe-0">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    @{
+                                                        var currentYear = DateTime.Now.Year;
+                                                    }
+                                                    <input required placeholder="Year" min="@currentYear" max="@currentYear + 8" type="number" asp-for="Year" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required maxlength="3" placeholder="Security Code" type="number" asp-for="SecurityCode" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row clearfix">
+                                        <div class="searchbox-icon ">
+                                            <input id="deposit" class="float-start vertical-half" type="checkbox" asp-for="IsDeposit" />
+                                            <label for="deposit" class="float-start ms-3 ">Pay Just Deposit Price ( @Helpers.Wprice((decimal)Model.DepositoPrice) )</label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row clearfix">
+                                        <div class="searchbox-icon ">
+                                            <input id="Cancellation" class="float-start vertical-half"
+                                                   type="checkbox" name="Cancellation" required />
+                                            <label for="Cancellation" class="float-start ms-3 ">
+                                                I accept <a class="orange" href="@Helpers.PrepareUrl(languagePrefix,"cancellation-policy")">Cancellation Policy</a>
+                                            </label>
+                                            <input id="TermsAndConditions" class="float-start vertical-half"
+                                                   type="checkbox" name="TermsAndConditions" required />
+                                            <label for="Terms" class="float-start ms-3 ">
+                                                I accept <a class="orange" href="@Helpers.PrepareUrl(languagePrefix,"terms-and-conditions")">Terms And Conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <br /><br />
+
+                                    <div id="completePaymentButton" style="display:flex">
+                                        @*  bunu javascript ile componentin içinden eklemeye karar verdim*@
+                                        <div id="payment2">
+                                        @*@if (User.IsInRole("Agent"))
+                                        {
+                                            <a href="/Payment/CompleteWithoutPayment/@Model.ReservationId" class="eg-btn btn--secondary btn--sm submit-btn action-button" style="width:auto;">Reservation Without Payment</a>
+                                        }*@
+                                        </div>
+                                        <button type="submit" class="eg-btn btn--primary btn--lg submit-btn action-button" alt="Complete Purchase" title="Complete Purchase" style="width:auto;">Complete Purchase</button>
+
+                                        @*<a href="/Payment/PaymentBilling/@Model.ReservationId" class=" text-center float-end previous action-button-previous">Previous</a>*@
+                                        @*<a href="/Payment/PaymentParticipant/@Model.ReservationId" class=" text-center float-end previous action-button-previous">Previous</a>*@
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        @await Component.InvokeAsync("PaymentReservationDetailViewComponent", new { reservationId = Model.ReservationId.ToString() })
+    </div>
+</div>
+
+<div class="modal fade" id="payment-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <iframe style="width:100%;height:500px;border:none" frameborder="0"></iframe>
+                <div id="iframeV2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+   @* <script src="~/assets/js/posnet.js"></script>*@
+    @*    <script>
+
+        //var htmldata="";
+        //$(document).on("submit", "form", function (e) {
+        //    e.preventDefault();
+
+        //    //submit payment form params
+        //    fetch("@Url.Action("PaymentInformation", "Payment")", {
+        //        body: new URLSearchParams(new FormData(document.getElementById("payment-form"))),
+        //        headers: {
+        //            "Content-Type": "application/x-www-form-urlencoded"
+        //        },
+        //        method: "POST"
+        //    })
+        //        .then(response => response.json())
+        //        .then(data => {
+        //            htmldata=data;
+        //            console.log(htmldata);
+        //            var htmlContent = data.data.gatewayResult.htmlFormContent;
+        //            $("#payment-modal #iframeV2").html(htmlContent);
+        //                // $("#payment-modal iframe").attr("src","https://setmpos.ykb.com/3DSWebService/YKBPaymentService" );
+        //                // $("#payment-modal iframe").attr("src","https://posnettest.yapikredi.com.tr/PosnetWebService/XML"e" );
+        //                //$("#payment-modal").modal("show");
+        //        })
+        //            //debugger;
+
+        //            //if (response ) {
+        //            //    var htmlContent = response.GatewayResult.htmlFormContent;
+        //            //    $("#payment-modal iframe").attr("srcdoc", htmlContent);
+        //            //    // $("#payment-modal iframe").attr("src","https://setmpos.ykb.com/3DSWebService/YKBPaymentService" );
+        //            //    // $("#payment-modal iframe").attr("src","https://posnettest.yapikredi.com.tr/PosnetWebService/XML"e" );
+        //            //    $("#payment-modal").modal("show");
+        //            //    console.log(response)
+        //            //} else {
+        //            //    alert(response.errorMessage);
+        //            //}
+
+
+        //        //.catch(function (error) {
+        //        //    alert("Ödeme sırasında bir hata oluştu.");
+        //        //});
+        //});
+
+        // $(window).on("message", function (e) { //success
+        //     var data = e.originalEvent.data;
+        //     if (data) {
+        //         if (data.success && data.orderNumber) {
+        //             window.location = `Url.Action("Completed", "Payment")/${data.orderNumber}`;
+        //         } else {
+        //             alert(data.errorMessage);
+        //         }
+        //     } else {
+        //         alert("Ödeme sırasında bir hata oluştu.");
+        //     }
+
+        //     $("#payment-modal iframe").attr("src", "");
+        //     $("#payment-modal").modal("hide");
+        // });
+
+    </script>
+*@
+}

@@ -1,0 +1,74 @@
+﻿@using Dto.ApiPanelDtos.ContactInfoDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<ContactInfoListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Contact Information List</h4>
+    <div class="card-body">
+        <div class="clearfix mb-4">
+            <a href="/ContactInfo/AddContactInfo" class="btn btn-secondary float-end">Add Contact Information</a>
+        </div>
+        <!--Edit Tag Start-->
+        <!-- start page title -->
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Update</th>
+                    <th style="width: 7%;">Status</th>
+                    <th class="text-center" style="width: 0%;">Type</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var info in Model.DataModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-primary">
+                                    Update
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/ContactInfo/LanguageEditContactInfo/@info.ContactInfoID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (info.Status)
+                            {
+                                <a href="/ContactInfo/ToggleContactInfoStatus/@info.ContactInfoID" class="btn btn-success w-100">Active</a>
+                            }
+                            else
+                            {
+                                <a href="/ContactInfo/ToggleContactInfoStatus/@info.ContactInfoID" class="btn btn-danger w-100">Passive</a>
+                            }
+
+                        </td>
+                        <td class="text-center">
+                            @info.Type
+                        </td>
+                        <td >
+                            @info.Value
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+        <!--Edit Tag End-->
+
+    </div>
+</div>
+

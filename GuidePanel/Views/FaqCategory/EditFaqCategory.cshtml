@@ -1,0 +1,43 @@
+﻿@using Dto.ApiPanelDtos.FaqCategoryDtos;
+@model EditFaqCategoryDto
+@{
+    ViewData["Title"] = "EditFaqCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/FaqCategory/Index">F.A.Q Category List</a>
+        > Edit F.A.Q Category > @Model.FaqCategoryName </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add FAQ Category Start-->
+        <!-- start page title -->
+        <form method="post" >
+            <input hidden asp-for="FaqCategoryID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="orderinput" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Order type="number" id="orderinput" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Edit FAQ Category End-->
+
+    </div>
+</div>
+

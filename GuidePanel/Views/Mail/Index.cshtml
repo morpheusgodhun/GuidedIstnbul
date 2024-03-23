@@ -1,0 +1,42 @@
+﻿@model List<SelectListOption>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Mail List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Mail/AddMailTemplateItem">
+                        Add Mail
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Action</th>
+                    <th style="width: 0%;">TemplateName</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var mail in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="/Mail/AddMailTemplate/@mail.ID" class="btn btn-primary ">Create</a>
+                        </td>
+                        <td>
+                            @mail.Value
+                        </td>   
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,66 @@
+﻿@using Dto.ApiPanelDtos.Driver
+@model List<DriverListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Driver List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Driver/AddDriver">
+                        Add Driver
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th>Name Surname</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Vehicle Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var driver in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/Driver/EditDriver/@driver.Id">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (driver.Status)
+                            {
+                                <a href="/Driver/ToggleDriverStatus/@driver.Id" class="btn btn-success w-100"> Active</a>
+                            }
+                            else
+                            {
+                                <a href="/Driver/ToggleDriverStatus/@driver.Id" class="btn btn-danger w-100"> Passive</a>
+                            }
+
+                        </td>
+                        <td>
+                            @{
+                                string driverName = $"{@driver.Name} {driver.Surname}";
+                            }
+                            @driverName
+                        </td>
+                        <td>@driver.Email</td>
+                        <td>@driver.PhoneNumber</td>
+                        <td>@driver.VehicleType</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

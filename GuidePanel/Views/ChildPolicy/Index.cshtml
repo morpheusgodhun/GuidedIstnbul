@@ -1,0 +1,62 @@
+﻿@using Dto.ApiPanelDtos.ChildPolicyDtos;
+@model List<ChildPolicyListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Child Policy List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/ChildPolicy/AddChildPolicy">
+                        Add Child Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th style="width: 0%;" class="text-center">Order</th>
+                    <th class="text-center">From Age</th>
+                    <th class="text-center">To Age</th>
+                    <th class="text-center">Percent</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var childPolicy in Model.OrderBy(x=>x.Order))
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/ChildPolicy/EditChildPolicy/@childPolicy.ChildPolicyID">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (childPolicy.Status)
+                            {
+                                <a href="/ChildPolicy/ToggleChildPolicyStatus/@childPolicy.ChildPolicyID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/ChildPolicy/ToggleChildPolicyStatus/@childPolicy.ChildPolicyID" class="btn btn-danger w-100">Passive</a>
+                            }
+                        </td>
+                        <td class="text-center">@childPolicy.Order</td>
+                        <td class="text-center">@childPolicy.FromAge</td>
+                        <td class="text-center">@childPolicy.ToAge</td>
+                        <td class="text-center">%@childPolicy.PayPercent</td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

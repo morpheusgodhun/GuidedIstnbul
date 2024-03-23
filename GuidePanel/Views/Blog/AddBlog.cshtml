@@ -1,0 +1,186 @@
+﻿@using Dto.ApiPanelDtos.BlogDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddBlogDto
+@{
+    ViewData["Title"] = "AddBlog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Blog/Index">Blog List</a>
+        > Add Blog
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Add UBlog Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategory" class="form-label fw-bold">
+                        Blog Category: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="blogCategory" asp-for="BlogCategoryIDs" required>
+                        @foreach (var blogCategory in (List<SelectListOptionDto>)ViewBag.BlogCategories)
+                        {
+                            <option value="@blogCategory.OptionID">@blogCategory.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tags" class="form-label fw-bold">
+                        Tags:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="tags" asp-for="TagIDs"
+                            multiple="multiple" required>
+                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.Tags)
+                        {
+                            <option value="@tag.OptionID">@tag.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="most-recommended-tours" class="form-label fw-bold">
+                        Most Recommended Tours:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="most-recommended-tours"
+                            asp-for="RecommendedTourIDs" multiple="multiple">
+                        @foreach (var tour in (List<SelectListOptionDto>)ViewBag.Tours)
+                        {
+                            <option value="@tour.OptionID">@tour.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="image" class="form-label fw-bold">
+                        Date:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="date" asp-for="Date" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="image" class="form-label fw-bold">
+                        Card Image (865x575):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="file" name="CardImage"
+                           placeholder="file not selected." required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="image" class="form-label fw-bold">
+                        Banner Image (1903x650):<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="file" name="BannerImage"
+                           placeholder="file not selected." required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="title" class="form-label fw-bold">
+                        Title:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="BlogTitle" class="form-control" required id="blogTitle" onkeyup="convertTo()">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="slug" class="form-label fw-bold">
+                        Slug:
+                        <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="Slug" class="form-control" required id="slug">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-12 mb-3 mr-1">
+                    <label for="short-description" class="form-label fw-bold">
+                        Short Description:
+                        <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea asp-for="ShortDescription" rows="3"
+                              class="form-control" required> </textarea>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="" class="form-label fw-bold">
+                            Content Part 1:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea required asp-for="Content1" id="editor1" rows="4" cols="4"> </textarea>
+                        <script>
+                            var cke1 = CKEDITOR.replace('editor1', {
+                                filebrowserUploadUrl: '/Blog/UploadContentImage1',
+                                filebrowserUploadMethod: 'form'
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="" class="form-label fw-bold">
+                            Content Part 2:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea required asp-for="Content2" id="editor2" rows="4" cols="4"> </textarea>
+                        <script>
+                            var cke2 = CKEDITOR.replace('editor2', {
+                                filebrowserUploadUrl: '/Blog/UploadContentImage2',
+                                filebrowserUploadMethod: 'form'
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="SitemapInclude" class="form-label fw-bold d-block">
+                        Sitemap Include:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for="SitemapInclude" class="form-check-input" type="checkbox" value="true"
+                           id="SitemapInclude">
+                  
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Add Blog End-->
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function convertTo() {
+
+            var deger = $('#blogTitle').val().trim();
+
+            var chacters = {
+                Ç: 'c',
+                Ö: 'o',
+                Ş: 's',
+                İ: 'i',
+                I: 'i',
+                Ü: 'u',
+                Ğ: 'g',
+                ç: 'c',
+                ö: 'o',
+                ş: 's',
+                ı: 'i',
+                ü: 'u',
+                ğ: 'g',
+                " ": '-'
+            };
+            var stringtoarray = deger.split('');
+            for (var i = 0; i < stringtoarray.length; i++) {
+                stringtoarray[i] = chacters[stringtoarray[i]] || stringtoarray[i];
+            }
+
+            var arraytostring = stringtoarray.join('');
+            var cleanMessage = arraytostring.replace(/\./g, "-").replace(/\//g, "-").replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+            $('#slug').val(cleanMessage);
+
+        }
+</script>
+
+}

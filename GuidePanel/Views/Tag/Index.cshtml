@@ -1,0 +1,102 @@
+﻿@using Dto.ApiPanelDtos.LanguageDtos;
+@using Dto.ApiPanelDtos.TagManagementDtos;
+@using GuidePanel.Helpers;
+@model (List<TagListDto> DateModel, List<LanguageListDto> LangaugeModel)
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Tag List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="col-1 mb-4">
+                    <a href="/Tag/AddTag" type="button"
+                       class="btn btn-secondary float-end">Add Tag</a>
+                </div>
+            </div>
+        </div>
+        <!--Edit Tag Start-->
+        <!-- start page title -->
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Update</th>
+                    <th style="width: 7%;">Status</th>
+                    <th style="width: 6%;">Tag Icon</th>
+                    <th>Tag Name</th>
+                    <th>Tag Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tag in Model.DateModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Tag/EditTag/@tag.TagID" type="button"
+                                   class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/Tag/LanguageEditTag/@tag.TagID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (tag.Status)
+                            {
+                                <a href="/Tag/ToggleTagStatus/@tag.TagID" class="btn btn-success w-100">Active</a>
+                            }
+                            else
+                            {
+                                <a href="/Tag/ToggleTagStatus/@tag.TagID" class="btn btn-danger w-100">Passive</a>
+                            }
+
+                        </td>
+                        <td>
+                            <img src="@Resource.ImagePath/@tag.IconPath" alt="@tag.TagName" style="width: 40px;">
+                        </td>
+                        <td>
+                            @tag.TagName
+                        </td>
+                        <td>
+                            @{
+                                int i = 0;
+                            }
+                            @foreach (var category in tag.TagCategories)
+                            {
+                                i++;
+                                @if (i == tag.TagCategories.Count)
+                                {
+                                    <span>@category</span>
+                                }
+                                else
+                                {
+                                    <span>@category, </span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+        <!--Edit Tag End-->
+
+    </div>
+</div>
+

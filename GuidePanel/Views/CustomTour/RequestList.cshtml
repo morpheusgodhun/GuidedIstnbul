@@ -1,0 +1,262 @@
+﻿@using Dto.ApiPanelDtos.CustomTourDtos;
+@model List<CustomTourRequestListItemDto>
+@{
+    ViewData["Title"] = "RequestList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Custom Tour Request List</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Offer</th>
+                    <th style="width: 0%;">Request Detail</th>
+                    <th style="width: 0%;">Program</th>
+                    <th style="width: 0%;">Mail Content</th>
+                    <th>Sender Name</th>
+                    <th>Sender Mail</th>
+                    <th>Offer Price</th>
+                    <th>Offer Status</th>
+                    <th style="width: 0%;">Reservation</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-warning" href="/CustomTour/OfferList/@request.RequestId">Offer History</a>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#request-detail@(request.RequestId)">
+                                Request Detail
+                            </button>
+                        </td>
+                        <td>
+                            @if (String.IsNullOrEmpty(request.Program))
+                            {
+                                <button type="button" class="btn btn-secondary">
+                                    Not Set
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#program-detail@(request.RequestId)">
+                                    Program
+                                </button>
+                            }
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#mail-content@(request.RequestId)">
+                                Mail Content
+                            </button>
+                            @*  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#mail-content@(request.RequestId)">
+                        content yok
+                        </button> *@
+
+                        </td>
+                        <td>@request.SenderName</td>
+                        <td>@request.SenderEmail</td>
+                        @if (request.Price != null && request.Price > 0)
+                        {
+                            <td>@request.Price$</td>
+                        }
+                        else
+                        {
+                            <td>Not Offered</td>
+                        }
+
+                        <td>@request.OfferStatus</td>
+                        <td>
+                            <a class="btn btn-success" asp-action="AddProduct" asp-controller="Product" asp-route-Id="@request.RequestId.ToString()">Create Custom Tour</a>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        @foreach (var request in Model)
+        {
+            <!-- Program Detail modal start -->
+            <div class="modal fade" id="program-detail@(request.RequestId)"
+                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-lg  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">
+                                Program Detail
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <!-- start page title -->
+                                <div>
+                                    @Html.Raw(request.Program)
+                                </div>
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <!-- Program Detail modal end -->
+        }
+        @foreach (var request in Model)
+        {
+            <!-- Request Detail modal start -->
+            <div class="modal fade" id="request-detail@(request.RequestId)"
+                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-lg  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">
+                                Request Detail
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <!-- start page title -->
+                                <table id="scroll-horizontal-datatable"
+                                       class="table w-100  table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 30%;">Destinations</td>
+                                            <td>
+                                                @Html.Raw(String.Join(", ", request.RequestDetail.Destinations))
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Arrival Date</td>
+                                            <td>@request.RequestDetail.ArrivalDate</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Deparature Date</td>
+                                            <td>@request.RequestDetail.DeperatureDate</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of Adults</td>
+                                            <td>@request.RequestDetail.NumberOfAldult</td>
+                                        </tr>
+                                        @* <tr>
+                                    <td>Number of Children (0-6)</td>
+                                    <td>1</td>
+                                    </tr>
+                                    <tr>
+                                    <td>Number of Children (7-12)</td>
+                                    <td>1</td>
+                                    </tr>*@
+                                        <tr>
+                                            <td>Sender Name</td>
+                                            <td>@request.SenderName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sender Mail</td>
+                                            <td>@request.SenderEmail</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sender Phone Number</td>
+                                            <td>@request.RequestDetail.SenderPhone</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Country</td>
+                                            <td>@request.RequestDetail.Country</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Language</td>
+                                            <td>@request.RequestDetail.Language</td>
+                                        </tr>
+                                        <tr>
+                                            <td>How did you find us?</td>
+                                            <td>@request.RequestDetail.HowFindUs </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Special Request</td>
+                                            <td>@request.RequestDetail.CustomerNote</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Interested With</td>
+                                            <td>
+                                                @Html.Raw(String.Join(", ", request.RequestDetail.AlsoInteresteds))
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <!-- Request Detail modal end -->
+            <!-- Mail Content modal start -->
+
+            <div class="modal fade" id="mail-content@(request.RequestId)"
+                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-lg  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">
+                                Mail Content
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="page-title-box">
+                                    <h6 class="font-10 fst-italic mb-3">
+                                        Asterisk (<span class="text-danger fw-bold">*</span>)
+                                        required fields
+                                    </h6>
+                                </div>
+                                <form method="post" asp-action="SaveMailContent" asp-controller="CustomTour">
+                                    <div class="row">
+                                        <div class="col-sm-12 mb-3 mr-1">
+                                            <label for="mailContent"
+                                                   class="form-label fw-bold">
+                                                Mail Content :
+                                                <span class="text-danger fw-bold">*</span>
+                                            </label>
+                                            @if (!string.IsNullOrEmpty(request.MailContent))
+                                            {
+                                                <textarea class="form-control" name="MailContent">@request.MailContent</textarea>
+                                            }
+                                            else
+                                            {
+                                                <textarea class="form-control" name="MailContent"></textarea>
+
+                                            }
+
+                                            <input type="hidden" name="RequestId" value="@request.RequestId" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                            <button type="submit"
+                                                    class="btn btn-dark rounded-pill px-5 mt-3">
+                                                SAVE
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+            <!-- /.modal -->
+            <!-- Mail Content modal start  -->
+        }
+    </div>
+</div>

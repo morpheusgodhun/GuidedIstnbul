@@ -1,0 +1,93 @@
+﻿@using Dto.ApiPanelDtos.VehicleDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddVehicleDto
+@{
+    ViewData["Title"] = "AddVehicle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Vehicle/Index">Vehicle List</a>
+        > Add Vehicle
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="suppliers" class="form-label fw-bold">
+                        Supplier:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="SupplierID" class="form-select" id="suppliers" required>
+                        <option selected disabled value="">Choose...</option>
+                        @foreach (var supplier in (List<SelectListOptionDto>)ViewBag.SupplierSelectList)
+                        {
+                            <option value="@supplier.OptionID">@supplier.Option</option>
+                        }
+                    </select>
+                </div>
+                </div> 
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="name" class="form-label fw-bold">
+                        Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=VehicleName type="text" id="vehicleName" class="form-control" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="vehicle-type" class="form-label fw-bold">
+                        Vehicle Type:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="VehicleTypeID" class="form-select" id="vehicle-type" required>
+                        <option selected disabled value="">Select...</option>
+                        @foreach (var vehicle in (List<SelectListOptionDto>)ViewBag.VehicleSelectList)
+                        {
+                            <option value="@vehicle.OptionID">@vehicle.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="capacity" class="form-label fw-bold">
+                        Capacity:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=Capacity type="number" id="capacity" class="form-control" required>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="number-plate" class="form-label fw-bold">
+                        Plate Number:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=PlateNumber type="text" id="number-plate" class="form-control" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tursab-plate-number" class="form-label fw-bold">
+                        Tursab Plate Number:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input asp-for=TursabPlateNumber type="text" id="tursab-plate-number" class="form-control" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="vehicle-type" class="form-label fw-bold">
+                        Driver: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="DriverUserId" class="form-select" id="driver" required>
+                        <option selected disabled value="">Select...</option>
+                        @foreach (var driverUser in (List<SelectListOptionDto>)ViewBag.DriverSelectList)
+                        {
+                            <option value="@driverUser.OptionID">@driverUser.Option</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                       Add
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

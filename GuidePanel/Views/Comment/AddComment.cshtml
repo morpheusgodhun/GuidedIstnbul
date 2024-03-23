@@ -1,0 +1,77 @@
+﻿@using Core.StaticClass;
+@using Dto.ApiPanelDtos.CommentDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddCommentDto
+@{
+    ViewData["Title"] = "AddComment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Comment/Index">Comment List</a>
+        > Add Comment</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Comment Start-->
+        <!-- start page title -->
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="pages" class="form-label fw-bold">
+                        Country: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="CountryID" class="form-select" id="country">
+                        <option selected disabled>Select...</option>
+                        @foreach (var country in (List<SelectListOption>)ViewBag.CountryList)
+                        {
+                            if (country.Value == "United States of America")
+                            {
+                                <option selected value="@country.ID">@country.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@country.ID">@country.Value</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="namesurname" class="form-label fw-bold">
+                        Name Surname:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="FullName" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="profile-photo" class="form-label fw-bold">
+                        Profile Photo: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input class="form-control" type="file" name="Image"
+                           placeholder="Select a file....">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="Comment" class="form-label">
+                        Comment:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea asp-for="Comment" rows="4"
+                              class="form-control col-md-6"> </textarea>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Add Comment End-->
+
+    </div>
+</div>
+

@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Find User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Find User</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="email" class="form-label fw-bold">
+                        Email:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="email" id="email-input" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                        <button id="btn-find-user" data-bs-toggle="modal" data-bs-target="#userFind" type="button"
+                                class="btn btn-dark rounded-pill px-5 mt-3">
+                            Find
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

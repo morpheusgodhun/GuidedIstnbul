@@ -1,0 +1,65 @@
+﻿@using Dto.ApiPanelDtos.PersonPolicyDtos;
+@model List<PersonPolicyListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Person Policy List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/PersonPolicy/AddPersonPolicy">
+                        Add Person Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th class="text-center">Order</th>
+                    <th class="text-center">From Person</th>
+                    <th class="text-center">To Person</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var personPolicy in Model.OrderBy(x=>x.Order))
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/PersonPolicy/EditPersonPolicy/@personPolicy.PersonPolicyID">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (personPolicy.Status)
+                            {
+                                <a href="/PersonPolicy/TogglePersonPolicyStatus/@personPolicy.PersonPolicyID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/PersonPolicy/TogglePersonPolicyStatus/@personPolicy.PersonPolicyID" class="btn btn-danger w-100">Passive</a>
+                            }
+                            
+                        </td>
+                        <td class="text-center">@personPolicy.Order</td>
+                        <td class="text-center">@personPolicy.FromPerson</td>
+                        <td class="text-center">@personPolicy.ToPerson</td>
+                        
+                    </tr>
+                }
+                
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+

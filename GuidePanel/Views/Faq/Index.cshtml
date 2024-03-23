@@ -1,0 +1,83 @@
+﻿@using Dto.ApiPanelDtos.FaqManagementDtos;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<FaqListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">F.A.Q List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="float-end btn btn-secondary" href="/Faq/AddFaq">
+                        Add F.A.Q
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Update</th>
+                    <th style="width: 8%;">Status</th>
+                    <th style="width: 4%;">Order</th>
+                    <th>FAQ Category</th>
+                    <th>Question</th>
+@*                    <th>Answer</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var faq in Model.DataModel.OrderBy(x=>x.Order))
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Faq/EditFaq/@faq.FaqID" class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="/Faq/LanguageEditFaq/@faq.FaqID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (faq.Status)
+                            {
+                                <a href="/Faq/ToggleFaqStatus/@faq.FaqID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/Faq/ToggleFaqStatus/@faq.FaqID" class="btn btn-danger w-100">Passive</a>
+                            }
+                        </td>
+                        <th>
+                            @faq.Order
+                        </th>
+                        <td>
+                            @faq.FaqCategory
+                        </td>
+                        <td>
+                            @faq.Question
+                        </td>
+@*                        <td>
+                            @faq.Answer
+                        </td>*@
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

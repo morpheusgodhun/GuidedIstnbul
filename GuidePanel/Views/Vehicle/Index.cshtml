@@ -1,0 +1,72 @@
+﻿@using Dto.ApiPanelDtos.VehicleDtos;
+@model List<VehicleListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Vehicle List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Vehicle/AddVehicle">
+                        Add Vehicle
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    <th style="width: 0%;">Status</th>
+                    <th>Supplier</th>
+                    <th>Driver</th>
+                    <th>Vehicle Type</th>
+                    <th>Capacity</th>
+                    <th>Plate Number</th>
+                    <th>Türsab Plate Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vehicle in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="/Vehicle/EditVehicle/@vehicle.VehicleID">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (vehicle.Status)
+                            {
+                                <a href="/Vehicle/ToggleVehicleStatus/@vehicle.VehicleID" class="btn btn-success w-100"> Active</a>
+                            }else
+                            {
+                                <a href="/Vehicle/ToggleVehicleStatus/@vehicle.VehicleID" class="btn btn-danger w-100"> Passive</a>
+                            }
+                            
+                        </td>
+                        <td>
+                            @vehicle.Supplier
+                        </td>   
+                        <td>
+                            @vehicle.Driver
+                        </td>
+                        <td>
+                            @vehicle.VehicleType
+                        </td>
+                        <td>@vehicle.Capacity</td>
+                        <td>@vehicle.PlateNumber</td>
+                        <td>@vehicle.TursabPlateNumber</td>
+
+                    </tr>
+                }            
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

@@ -1,0 +1,448 @@
+﻿@using Core.StaticClass;
+@using Dto.ApiPanelDtos.ProductDtos.AddProductDtos;
+@using Dto.ApiWebDtos.GeneralDtos;
+@model AddTourDto
+@{
+    ViewData["Title"] = "AddTour";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function indexSequencer() {
+        //Her silme ve ekleme işleminde indexler tekrardan sıralanır.
+        $('.additionalService>div').each(function (i) {
+            $(this).find('.delete-btn').attr('id', i);
+            $(this).attr('id', `${i}`);
+            $(this).find('.additionalServiceInput-serviceID').attr('name', `AdditionalServices[${i}].AdditionalServiceID`);
+
+            $(this).find('.additionalServiceInput-optionIDs').attr('name', `AdditionalServices[${i}].OptionIDs[]`);
+            $(this).find('.additionalServiceInput-optionIDs').attr('id', `service-option-${i}`);
+            $(this).find('.additionalServiceInput-order').attr('name', `AdditionalServices[${i}].Order`);
+            $(this).find('.additionalServiceInput-required').attr('name', `AdditionalServices[${i}].IsRequired`);
+            $(this).find('.additionalServiceInput-comission').attr('name', `AdditionalServices[${i}].IsComissionValid`);
+            $(this).find('.additionalServiceInput-multiselect').attr('name', `AdditionalServices[${i}].IsMultiSelect`);
+        });
+    }
+    function addAdditionalService() {
+
+        indexSequencer();
+
+        let additionalSelect = "";
+        var jsonObj = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AdditionalServiceSelectList) as String)
+                                                        for (i = 0; i < jsonObj.length; i++) {
+            additionalSelect = additionalSelect + `<option value='${jsonObj[i].OptionID}' >${jsonObj[i].Option}</option>`;
+        }
+
+
+        let j = $('.additionalService>div').length;
+        let html = ` <div id='${j}' class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='cancellation-policy' class='form-label fw-bold'> Additional Service:<span class='text-danger fw-bold'>*</span> </label> <div class='row'> <div class='col-11 me-0 pe-0'> <select onchange="optionSelectList(this.value,this.parentNode.parentNode.parentNode.id)" name='AdditionalServices[${j}].AdditionalServiceID' class='form-select additionalServiceInput-serviceID' id='segment'> <option selected disabled>Select...</option> ${additionalSelect} </select> </div> <div class='col-1 ms-0 ps-0'> <button onclick="deleteDiv(this.parentNode.parentNode.parentNode.id)" type='button' class='btn btn-danger delete-btn float-end h-100 w-100'> x </button> </div> </div> <div class='row mt-2'> <div class='col-11 me-0 pe-0'> <label for='service-option-${j}' class='form-label fw-bold'>Options</label> <select class='js-example-basic-multiple additionalServiceInput-optionIDs' id='service-option-${j}' name='AdditionalServices[${j}].OptionIDs[]' multiple='multiple'>  </select> </div> </div> <div class='row mt-2'> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='order-${j}' class='form-label fw-bold'>Order</label> <input name='AdditionalServices[${j}].Order' type='number' id='order-${j}' class='form-control additionalServiceInput-order'> </div> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='' class='form-label fw-bold d-block'> Is required:<span class='text-danger fw-bold'>*</span> </label> <input name='AdditionalServices[${j}].IsRequired' class='form-check-input additionalServiceInput-required' type='checkbox' value='true' id='required-${j}'> <label class='form-check-label' for='required-${j}'> Required </label> </div> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='' class='form-label fw-bold d-block'> Comission Rate<span class='text-danger fw-bold'>*</span> </label> <input name='AdditionalServices[${j}].IsComissionValid' class='form-check-input additionalServiceInput-comission' type='checkbox' value='true' id='comissionRate-${j}'> <label class='form-check-label' for='comissionRate-${j}'> Valid </label> </div> <div class='col-sm-12 col-md-6 col-lg-6 mb-3 mr-1'> <label for='' class='form-label fw-bold d-block'> Multi Select:<span class='text-danger fw-bold'>*</span> </label> <input name='AdditionalServices[${j}].IsMultiSelect' class='form-check-input additionalServiceInput-multiselect' type='checkbox' value='true' id='multiSelect-${j}'> <label class='form-check-label' for='multiSelect-${j}'> Available </label> </div>`
+        $("#additionalServiceDiv").append(html)
+        $('.js-example-basic-multiple').select2();
+
+    };
+
+    function deleteDiv(divID) {
+
+        document.getElementById(`${divID}`).remove();
+        indexSequencer();
+    }
+    function optionSelectList(additionalServiceID, count) {
+
+        $.ajax({
+            url: '/Product/AdditionalServiceOptionSelectList',
+            data: {
+                id: additionalServiceID
+            },
+            success: function (result) {
+
+                $(`#service-option-${count}`).empty();
+
+                $(result).each(function (i) {
+                    let newOption = new Option(result[i].option, result[i].optionID);
+                    const select = document.querySelector(`#service-option-${count}`);
+                    select.add(newOption, undefined);
+                });
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        })
+    }
+
+
+    var checkbox = document.getElementById("IsPersonLimited");
+
+    checkbox.addEventListener("change", function () {
+        var input = document.getElementById("personLimit");
+        input.readOnly = this.checked;
+    });
+</script>
+
+<div class="card">
+    <h4 class="card-header">Add Product</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Tour Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="ProductID" value="@ViewBag.ProductID" />
+            <div id="tourDiv">
+                <div class="row">
+                    <div class="text-center mb-3">
+                        <h2>Tour Information</h2>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="cancellation-policy" class="form-label fw-bold">
+                            Tour Type:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select asp-for=TourTypeID class="form-select" id="tourType" required>
+                            <option selected disabled value="">Select...</option>
+                            @foreach (var tourType in (List<SelectListOptionDto>)ViewBag.TourTypeSelectList)
+                            {
+                                <option value="@tourType.OptionID">@tourType.Option</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="cancellation-policy"
+                               class="form-label fw-bold">
+                            Segment:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select asp-for=SegmentID class="form-select" id="segment" required>
+                            <option selected disabled value="">Select...</option>
+                            @foreach (var segment in (List<SelectListOptionDto>)ViewBag.SegmentSelectList)
+                            {
+                                <option value="@segment.OptionID">@segment.Option</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="cancellation-policy" class="form-label fw-bold">
+                            Starting City:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select asp-for=StartCityID class="form-select" id="startCity" required>
+                            <option selected disabled value="">Select...</option>
+                            @foreach (var city in (List<SelectListOption>)ViewBag.CitySelectList)
+                            {
+                                <option value="@city.ID">@city.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-cities" class="form-label fw-bold">
+                            Destination:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="js-example-basic-multiple" id="destination" asp-for="DestinationIDs"
+                                multiple="multiple" required>
+                            @foreach (var destination in (List<SelectListOptionDto>)ViewBag.DestinationSelectList)
+                            {
+                                <option value="@destination.OptionID">@destination.Option</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-cities" class="form-label fw-bold">
+                            Start Time:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="js-example-basic-multiple" id="startTime" asp-for="StartTimeIDs"
+                                multiple="multiple" required>
+                            @foreach (var startTime in (List<SelectListOption>)ViewBag.StartTimeSelectList)
+                            {
+                                <option value="@startTime.ID">@startTime.Value</option>
+                            }
+                        </select>
+                        <button type="button" onclick="allDayBtnClicked()" id="allDayBtn" class="btn btn-dark mt-1">All</button>
+                        <button type="button" onclick="midDayBtnClicked()" id="midDayBtn" class="btn btn-warning mt-1">Mid Day</button>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="cancellation-policy" class="form-label fw-bold">
+                            Suggested
+                            Start Time:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="form-select" asp-for=SuggestedStartTimeID id="suggestedStartTime">
+                            <option selected disabled>Select...</option>
+                            @foreach (var startTime in (List<SelectListOption>)ViewBag.StartTimeSelectList)
+                            {
+                                <option value="@startTime.ID">@startTime.Value</option>
+                            }
+                        </select>
+                    </div>
+                    @* <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">Duration</label>
+                    <input asp-for=Duration type="number" id="tour-title" class="form-control" required>
+                    </div> *@
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-selectable-durations" class="form-label fw-bold">
+                            Selectable Durations:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="js-example-basic-multiple" id="region" asp-for="SelectableDurations"
+                                multiple="multiple" required>
+                            @for (int i = 1; i <= 35; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-title" class="form-label fw-bold">Duration Text</label>
+                        <input asp-for="DurationText" type="text" id="tour-title" class="form-control" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-title" class="form-label fw-bold">
+                            Tour Starting Point
+                        </label>
+                        <input asp-for=StartPoint type="text" id="tour-title" class="form-control" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-title" class="form-label fw-bold">
+                            Tour Ending Point
+                        </label>
+                        <input asp-for="EndPoint" type="text" id="tour-title" class="form-control" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-cities" class="form-label fw-bold">
+                            Inclusions:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="js-example-basic-multiple" id="inclusions" asp-for="InclusionsIDs" multiple="multiple" required>
+                            @foreach (var inclusion in (List<SelectListOptionDto>)ViewBag.InclusionExclusionSelectList)
+                            {
+                                <option value="@inclusion.OptionID">@inclusion.Option</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-cities" class="form-label fw-bold">
+                            Exclusions:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="js-example-basic-multiple" id="exclusions" asp-for=ExclusionsIDs multiple="multiple" required>
+                            @foreach (var exclusion in (List<SelectListOptionDto>)ViewBag.InclusionExclusionSelectList)
+                            {
+                                <option value="@exclusion.OptionID">@exclusion.Option</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-cities" class="form-label fw-bold">
+                            Sights To See:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select class="js-example-basic-multiple" id="sights-to-see" asp-for=SightsToSeeIDs multiple="multiple" required>
+                            @foreach (var sightToSee in (List<SelectListOptionDto>)ViewBag.SightToSeeSelectList)
+                            {
+                                <option value="@sightToSee.OptionID">@sightToSee.Option</option>
+                            }
+                        </select>
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                        <label for="tour-cities" class="form-label fw-bold">
+                            Tour Category:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select asp-for=TourCategoryIDs class="js-example-basic-multiple" id="category" multiple="multiple">
+                            @foreach (var tourCategory in (List<SelectListOptionDto>)ViewBag.TourCategorySelectList)
+                            {
+                                <option value="@tourCategory.OptionID">@tourCategory.Option</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                            <label for="" class="form-label fw-bold d-inline-block">
+                                Person Limit:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <div class="float-end">
+                                <input asp-for=IsPersonLimited class="form-check-input" type="checkbox" value="true" id="IsPersonLimited">
+                                <label class="form-check-label" for="IsPersonLimited">
+                                    Not Limited
+                                </label>
+                            </div>
+
+                            <input asp-for=PersonLimit type="number" id="personLimit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+
+                        <div class="row">
+                            <label for="" class="form-label fw-bold">
+                                Per Person/Group:<span class="text-danger fw-bold">*</span>
+                            </label>
+                        </div>
+                        <div class="d-inline-block mb-3 me-2">
+                            <input class="form-check-input" type="radio" asp-for="IsPerPerson" id="per-person" value="true">
+                            <label class="form-check-label" for="per-person">Person</label>
+                        </div>
+                        <div class="d-inline-block mb-3">
+                            <input class="form-check-input" type="radio" asp-for="IsPerPerson" id="group" value="false">
+                            <label class="form-check-label" for="group">Group</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+
+                        <div class="row">
+                            <label for="" class="form-label fw-bold">
+                                Per Day/Per Tour:<span class="text-danger fw-bold">*</span>
+                            </label>
+                        </div>
+                        <div class="d-inline-block mb-3 me-2">
+                            <input class="form-check-input" type="radio" asp-for="IsPerDay" id="per-day" value="true">
+                            <label class="form-check-label" for="per-day">Day</label>
+                        </div>
+                        <div class="d-inline-block mb-3">
+                            <input class="form-check-input" type="radio" asp-for="IsPerDay" id="per-group" value="false">
+                            <label class="form-check-label" for="per-group">Tour</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                        <label for="" class="form-label fw-bold">
+                            Content:<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea required asp-for="Content" id="editor1" rows="4" cols="4"></textarea>
+                        <script>
+                            CKEDITOR.replace('editor1');
+                        </script>
+                    </div>
+                </div>
+                <div class="subDiv">
+                    <div class="row">
+                        <div class="clear-fix">
+                            <button type="button" onclick="addAdditionalService()" class="btn btn-warning float-end">
+                                Add Additional Service
+                            </button>
+
+                        </div>
+                        <div class="text-center mb-3">
+                            <h3>Additional Services</h3>
+                        </div>
+                    </div>
+                    <div id="additionalServiceDiv" class="row additionalService">
+                        <div id="0" class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                            <label for="cancellation-policy" class="form-label fw-bold">
+                                Additional Service:<span class="text-danger fw-bold">*</span>
+                            </label>
+                            <div class="row">
+                                <div class="col-11 me-0 pe-0">
+                                    <select onchange="optionSelectList(this.value,this.parentNode.parentNode.parentNode.id)" name="AdditionalServices[0].AdditionalServiceID" class="form-select additionalServiceInput-serviceID">
+                                        <option selected disabled>Select...</option>
+                                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.AdditionalServiceSelectList)
+                                        {
+                                            <option value="@tag.OptionID">@tag.Option</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-1 ms-0 ps-0">
+                                    <button onclick="deleteDiv(this.parentNode.parentNode.parentNode.id)" type="button" class="delete-btn btn btn-danger float-end h-100 w-100">x</button>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-11 me-0 pe-0">
+                                    <label for="service-option"
+                                           class="form-label fw-bold">Options</label>
+                                    <select name="AdditionalServices[0].OptionIDs[]" class="js-example-basic-multiple additionalServiceInput-optionIDs" id="service-option-0" multiple="multiple">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="tour-title"
+                                           class="form-label fw-bold">Order</label>
+                                    <input name="AdditionalServices[0].Order" type="number" id="tour-title" class="form-control additionalServiceInput-order">
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="" class="form-label fw-bold d-block">
+                                        Is required:<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input name="AdditionalServices[0].IsRequired" class="form-check-input additionalServiceInput-required" type="checkbox" value="true" id="required">
+                                    <label class="form-check-label" for="required">
+                                        Required
+                                    </label>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="" class="form-label fw-bold d-block">
+                                        Comission Rate<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input name="AdditionalServices[0].IsComissionValid" class="form-check-input additionalServiceInput-comission" type="checkbox" value="true" id="discountRate">
+                                    <label class="form-check-label" for="discountRate">
+                                        Valid
+                                    </label>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                                    <label for="" class="form-label fw-bold d-block">
+                                        Multi Select:<span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input name="AdditionalServices[0].IsMultiSelect" class="form-check-input additionalServiceInput-multiSelect" type="checkbox" value="true" id="multiSelect">
+                                    <label class="form-check-label" for="multiSelect">
+                                        Available
+                                    </label>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Button -->
+
+            <div id="Add-Service-Button">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">Save</button>
+                </div>
+            </div>
+
+
+        </form>
+        <!--Tour Add End-->
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function midDayBtnClicked() {
+            var startTimeSelectList = document.getElementById("startTime");
+
+            var start = parseTime("08:00");
+            var end = parseTime("15:00");
+
+            Array.from(startTimeSelectList.options).forEach(function (option) {
+                option.selected = false;
+                var optionTime = parseTime(option.innerHTML);
+                if (optionTime >= start && optionTime <= end) {
+                    option.selected = true;
+                    console.log(option.innerHTML);
+                }
+            });
+            destroyAndInitSelectList();
+        }
+        function allDayBtnClicked() {
+
+            var startTimeSelectList = document.getElementById("startTime");
+            startTimeSelectList.options.forEach(opt => opt.selected = true)
+
+            destroyAndInitSelectList();
+        }
+        function destroyAndInitSelectList() {
+            $('#startTime').select2('destroy');
+            $('#startTime').select2();
+        }
+
+        function parseTime(timeString) {
+            var timeParts = timeString.split(":");
+            var parsedDate = new Date(0, 0, 0, timeParts[0], timeParts[1]);
+            return parsedDate;
+        }
+
+    </script>
+}
+

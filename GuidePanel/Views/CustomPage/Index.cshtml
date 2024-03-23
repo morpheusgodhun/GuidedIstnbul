@@ -1,0 +1,86 @@
+﻿@using Dto.ApiPanelDtos.CustomPageManagementDto;
+@using Dto.ApiPanelDtos.LanguageDtos;
+@model (List<CustomPageListDto> DataModel, List<LanguageListDto> LangaugeModel)
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header"> Custom Page List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="float-end btn btn-secondary" href="/CustomPage/AddCustomPage">
+                        Add Custom Page
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Update</th>
+                    <th style="width: 7%;">Statu</th>
+                    <th>Page Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 1 -->
+                @foreach (var customPage in Model.DataModel)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/CustomPage/EditCustomPage/@customPage.PageID" class="btn btn-primary">Update</a>
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var language in Model.LangaugeModel)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="/CustomPage/EditLanguageCustomPage/@customPage.PageID/@language.LanguageID">@language.LanguageName</a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            @if (customPage.Status)
+                            {
+                                if (customPage.IsAllActive)
+                                {
+                                    <button disabled class="btn btn-success w-100">
+                                        Active
+                                    </button>
+                                    
+                                }else
+                                {
+                                    <a href="/CustomPage/ToggleCustomPageStatus/@customPage.PageID" class="btn btn-success w-100">Active</a>
+                                }
+                                
+                            }
+                            else
+                            {
+                                <a href="/CustomPage/ToggleCustomPageStatus/@customPage.PageID" class="btn btn-danger w-100">Passive</a>
+                            }
+
+                        </td>
+                        <td>
+                            @customPage.PageName
+                        </td>
+                    </tr>
+                }
+
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

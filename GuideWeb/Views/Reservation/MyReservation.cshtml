@@ -1,0 +1,793 @@
+﻿@using Core
+@using Core.StaticClass
+@using Core.StaticValues
+@using Dto.ApiWebDtos.ApiToWebDtos.Reservation;
+@model GetMyReservationDto
+@{
+    ViewData["Title"] = "MyReservations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="feature-section2 mt-60">
+    <div class="row mb-60">
+        <div class="col text-center">
+            <h1>@Helpers.Wcv(Model.ConstantValues,"MyReservation.Title")</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 form-left py-5 px-5 booking-form-box">
+                <fieldset>
+                    <div class="form-card border px-3">
+                        <form id="msform" class="banner-form row">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5 col-lg-5">
+                                    <div class="search-box-single destination-box postition-relative">
+                                        <div class="searchbox-input">
+                                            <input placeholder="@Helpers.Wcv(Model.ConstantValues,"MyReservation.ReservationNumberPlaceholder")" type="text" name="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-5 col-lg-5">
+                                    <div class="search-box-single">
+                                        <div class="searchbox-input">
+                                            <select class="defult-select-drowpown" data-placeholder=""
+                                                    id="activity-dropdown">
+                                                <option value="1">@Helpers.Wcv(Model.ConstantValues,"MyReservation.IncomplateReservation")</option>
+                                                <option value="2">@Helpers.Wcv(Model.ConstantValues,"MyReservation.NextReservation")</option>
+                                                <option value="3">@Helpers.Wcv(Model.ConstantValues,"MyReservation.PastReservation")</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-2 col-lg-2">
+                                    <button type="submit"
+                                            class="eg-btn btn--primary btn--md submit-btn float-center" title="Filter">
+                                        @Model.ConstantValues.FirstOrDefault(x => x.Key == "MyReservation.FilterButton").Value
+                                    </button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5 mb-120">
+        <div class="table-responsive">
+            <table id="scroll-horizontal-datatable" class="text-center table w-100 nowrap table-striped p-2">
+                <thead>
+                    <tr>
+                        <th>@Helpers.Wcv(Model.ConstantValues ,"MyReservation.Table.ReservationNumberLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.DateLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues,"MyReservation.Table.TypeLabel")</th>
+                        <th style="width: 0%;">@Helpers.Wcv(Model.ConstantValues,"MyReservation.Table.ActionLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues,"MyReservation.Table.CancelLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.UpdateLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.DetailLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.StatusLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.PriceLabel")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reservation in Model.Reservations)
+                    {
+                        <tr>
+                            <td>@reservation.ReservationNumber</td>
+                            <td>@reservation.Date</td>
+                            <td>@reservation.ReservationType</td>
+                            <td>
+                                @if (reservation.IsPayable)
+                                {
+                                    <a href="/Payment/PaymentParticipant/@reservation.ReservationID" class="btn btn-warning btn--sm w-100">
+                                        @Helpers.Wcv(Model.ConstantValues,"MyReservation.Table.PayButton")
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                @* buradasın
+                            @if (reservation.HasCancelRequest)
+                            {
+                            var request = reservation.EditRequests.Where(x => x.RequestType == (int)Enums.ReservationEditRequestType.Cancel).FirstOrDefault();
+                            string requestStatus = ReservationEditRequestStatus.GetValue(request.RequestStatus);
+                            @* string cancellationReason = SystemOptionCategoryList.CategoryList.Where(x => x.ID == request.ReasonId).FirstOrDefault().Value;
+
+                            <button class="btn btn-danger btn--sm" data-bs-toggle="modal" data-bs-target="#cancelRequestDetail"
+                            data-id="@reservation.ReservationID"
+                            id="showCancelRequestBtn"
+                            data-selectedreason="@request.Reason"
+                            data-reason="@request.ReasonText"
+                            data-status="@requestStatus"
+                            data-answer="@request.AdminAnswer">
+                            @Model.ConstantValues.FirstOrDefault(x => x.Key == "MyReservation.EditRequest.RequestStatus").Value
+                            </button>
+                            }
+                            *@
+
+                                @if (reservation.IsCancelable)
+                                {
+                                    <button class="btn btn-danger btn--sm" title="Resarvation Cancel data-bs-toggle="modal" data-bs-target="#cancelModal" data-id="@reservation.ReservationID" id="cancelModalBtn">
+                                        @Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.CancelButton")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn--sm" disabled>Cancel</button>
+                                }
+                            </td>
+                            <td>
+                                @*   @if (reservation.HasUpdateRequest)
+                            {
+                            var request = reservation.EditRequests.Where(x => x.RequestType == (int)Enums.ReservationEditRequestType.Update).FirstOrDefault();
+                            string requestStatus = ReservationEditRequestStatus.GetValue(request.RequestStatus);
+                            @* string cancellationReason = SystemOptionCategoryList.CategoryList.Where(x => x.ID == request.ReasonId).FirstOrDefault().Value;
+
+                            <button class="btn btn-danger btn--sm" data-bs-toggle="modal" data-bs-target="#updateRequestDetail"
+                            data-id="@reservation.ReservationID"
+                            id="showCancelRequestBtn"
+                            data-reason="@request.ReasonText"
+                            data-status="@requestStatus"
+                            data-answer="@request.AdminAnswer">
+                            @Model.ConstantValues.FirstOrDefault(x => x.Key == "MyReservation.EditRequest.RequestStatus").Value
+                            </button>
+                            }
+                            *@
+                                @if (reservation.IsUpdatable)
+                                {
+                                    <button class="btn btn-success btn--sm" title="Resarvation Update" data-bs-toggle="modal"
+                                            data-bs-target="#updateModal" id="updateModalBtn" data-id="@reservation.ReservationID">
+                                        @Helpers.Wcv(Model.ConstantValues, "MyReservation.Table.UpdateButton")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success btn--sm" disabled>Update</button>
+                                }
+                            </td>
+                            <td>
+                                <a href="/Reservation/ReservationDetail/@reservation.ReservationID" class="btn btn-info btn--sm w-100"  title="Reservation Detail">
+                                    @Model.ConstantValues.FirstOrDefault(x => x.Key == "MyReservation.Table.DetailButton").Value
+                                </a>
+                                @*<button class="btn btn-info btn--sm w-100" data-bs-toggle="modal" data-bs-target="#detailModal"></button>*@
+                            </td>
+                            <td>@( MyReservationStatus.GetValue(reservation.ReservationStatus))</td>
+                            <td>@reservation.ReservationPrice</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modals:     -->
+    <!-- Modal Cancel -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <form method="post" asp-action="CancelReservation" asp-controller="Reservation" enctype="multipart/form-data" id="cancel-form">
+            @Html.Hidden("ReservationId", "", new { @class = "hiddenCancelid" })
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelLabel">
+                            Warning
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-4">
+                            <div>
+                                <p class="text-indent-2">
+                                    @Helpers.Wcv(Model.ConstantValues, "MyReservation.CancelModal.InfoLabel")
+                                </p>
+                                <p class="text-indent-2">
+                                    @Helpers.Wcv(Model.ConstantValues, "MyReservation.CancelModal.ConfirmLabel")
+                                </p>
+                            </div>
+                            <div class="col-sm-12 mb-3">
+                                <select id="cancelReasonDropdown" for="CancellationReasonId" name="CancellationReasonId" required="true" class="form-control">
+                                    <option selected disabled>@Helpers.Wcv(Model.ConstantValues, "MyReservation.CancelModal.ReasonForCancellationPlaceholder")</option>
+                                    @foreach (var cancellationReason in Model.CancellationReasons)
+                                    {
+                                        <option value="@cancellationReason.OptionID">@cancellationReason.Option</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-12 mb-3">
+                                <label><b>@Helpers.Wcv(Model.ConstantValues, "MyReservation.CancelModal.ExplainLabel")</b> </label>
+                                <textarea for="CancellationReasonText" name="CancellationReasonText" id="content" cols="7" rows="4"
+                                          class="form-control input-font" required></textarea>
+                            </div>
+                            <div>
+                                <input class="form-check-input cancelCheck" type="checkbox" value="" id="i-have-read" for="ReadCancellationPolicy" required>
+                                @Html.Hidden("ReadCancellationPolicy", "", new { @class = "policyCheckBox" })
+
+                                <label class="form-check-label" for="i-have-read">
+                                    @Helpers.Wcv(Model.ConstantValues, "MyReservation.CancelModal.ReadCancellationPolicy")
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="justify-content: space-evenly">
+                        <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font" title="No"
+                                data-bs-dismiss="modal">
+                            No
+                        </button>
+                        <button type="submit" id ="cancelSubmitBtn" class="btn btn-success btn-lg ps-5 pe-5 input-font" title="Yes">Yes</button>
+                    </div>
+                    <div class="table-responsive">
+                        <h3 class="modal-title">
+                            @* Past Requests *@
+                        </h3>
+                        <table id="modal-table-cancel" class="text-center order-column w-100 nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Reason</th>
+                                    <th>Request Status</th>
+                                    <th>Admin Answer</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Comment -->
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelLabel">
+                        @Helpers.Wcv(Model.ConstantValues, "MyReservation.CommentModal.Title")
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row m-5 mb-0">
+                        <form>
+                            <fieldset class="m-2">
+                                <label for="rating">
+                                    <b>
+                                        @Helpers.Wcv(Model.ConstantValues,"MyReservation.CommentModal.RateLabel")
+                                    </b>
+                                </label>
+                                <div class="container">
+                                    <div class="star-1"></div>
+                                </div>
+                                <div class="rating">
+                                    <input id="rating1" type="radio" name="rating" value="1">
+                                    <label for="rating1">1</label>
+                                    <input id="rating2" type="radio" name="rating" value="2">
+                                    <label for="rating2">2</label>
+                                    <input id="rating3" type="radio" name="rating" value="3">
+                                    <label for="rating3">3</label>
+                                    <input id="rating4" type="radio" name="rating" value="4">
+                                    <label for="rating4">4</label>
+                                    <input id="rating5" type="radio" name="rating" value="5">
+                                    <label for="rating5">5</label>
+                                </div>
+                            </fieldset>
+                            <div class="m-2 mt-0">
+                                <label for="Comment">
+                                    <b>
+                                        @Helpers.Wcv(Model.ConstantValues,"MyReservation.CommentModal.CommentLabel")
+                                    </b>
+                                </label>
+                                <textarea class="form-control input-font" name="Comment" id="Comment" cols="30"
+                                          rows="6"></textarea>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content: space-evenly">
+                    <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font"
+                            data-bs-dismiss="modal">
+                        @Helpers.Wcv(Model.ConstantValues, "MyReservation.CommentModal.CancelButton")
+                    </button>
+                    <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font">
+                        @Helpers.Wcv(Model.ConstantValues, "MyReservation.CommentModal.SendButton")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Update Requests -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <form method="post" asp-action="UpdateReservation" asp-controller="Reservation" enctype="multipart/form-data" id="update-form">
+            @Html.Hidden("ReservationId", "", new { @class = "hiddenUpdateId" })
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateLabel">Update Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12 mb-3">
+                            <label for="UpdateReasonText"><b>Explain Your Reason</b> </label>
+                            <textarea name="UpdateReasonText" for="UpdateReasonText" id="content" cols="" rows="4" class="form-control input-font" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success btn-lg ps-5 pe-5 input-font" id="updateSubmitBtn">Yes</button>
+                    </div>
+                    <div class="table-responsive">
+                        <h3 class="modal-title">
+                            @* Past Requests *@
+                        </h3>
+                        <table id="modal-table-update" class="text-center order-column w-100 nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Reason</th>
+                                    <th>Request Status</th>
+                                    <th>Admin Answer</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Modal Detail -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailLabel">Detail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#info" role="tab" aria-controls="info"
+                               data-bs-toggle="tab" aria-selected="true">
+                                General
+                                Info
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#program" role="tab" aria-controls="program"
+                               data-bs-toggle="tab" aria-selected="false">Program</a>
+                        </li>
+                    </ul>
+                    <div id="tab-panel-font-size" class="tab-content">
+                        <div class="tab-pane active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                            <div class="row m-3">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Transaction Date:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>14.04.2023</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Reservation Number:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>REZ8756635</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Title:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>2 DAYS PRIVATE EPHESUS AND PAMUKKALE</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Starting City:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>TOUR</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Date:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>Istanbul</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Type:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>23.10.2022 12:30</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2">
+                                        <label for="operator" class="form-label fw-bold h2">Tour Name:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>Private</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Price:</label>
+                                    </div>
+                                    <div class="ccol-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>$500</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Program:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>****************</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Inclusions:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>*******</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Exclusions:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>****</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">
+                                            Tour Additional
+                                            Services:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <label>
+                                            <span class="fw-bold">Language:</span><span class="ms-2">German($100,00)</span>
+                                        </label>
+                                        <label>
+                                            <span class="fw-bold">Yacht:</span><span class="ms-2">
+                                                2-hour Private
+                                                Yacht
+                                                ($500,00)
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Participants:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <label>
+                                            <span class="fw-bold">Transfer:</span><span class="ms-2">
+                                                No
+                                                Transfer(0)
+                                            </span>
+                                        </label>
+                                        <label>
+                                            <span class="fw-bold">Number of days:</span><span class="ms-2">
+                                                2-Day
+                                                Tour($1450,00)
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Pick up Point:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>Divan Hotel</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Reservation Note:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>***</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Payment History:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <label>
+                                            <span class="fw-bold">Full Payment:</span><span class="ms-2">($2000,00)</span>
+                                        </label><br>
+                                        <label>
+                                            <span class="fw-bold">Advance Payment:</span><span class="ms-2">(€396,00)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane " id="program" role="tabpanel" aria-labelledby="program-tab">
+                            <div class="row m-3">
+                                <div class="row mt-3">
+                                    <div class="col-sm-12 col-md-2 col-lg-2">
+                                        <h3>Day 1</h2>
+                                    </div>
+                                    <div class="col-sm-12 col-md-10 col-lg-10 ">
+                                        <p>
+                                            Misafirler sabah otellerinden alınacak ve Troya bölgesine doğru yola
+                                            çıkacaklardır.
+                                        </p>
+                                        <p>Troy(Truva), Tevfikiye Köyü, İntepe, Çanakkale Türkiye, 3 saat.</p>
+                                        <p>Truva Şehir Maketi, İskele Meydanı, Çanakkale 17000 Türkiye, 4 saat.</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12 col-md-2 col-lg-2">
+                                        <h3>Day 2</h2>
+                                    </div>
+                                    <div class="col-sm-12 col-md-10 col-lg-10">
+                                        <p>
+                                            Misafirler sabah otellerinden alınacak ve Troya bölgesine doğru yola
+                                            çıkacaklardır.
+                                        </p>
+                                        <p>Troy(Truva), Tevfikiye Köyü, İntepe, Çanakkale Türkiye, 3 saat.</p>
+                                        <p>Truva Şehir Maketi, İskele Meydanı, Çanakkale 17000 Türkiye, 4 saat.</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12 col-md-2 col-lg-2">
+                                        <h3>Day 3</h2>
+                                    </div>
+                                    <div class="col-sm-12 col-md-10 col-lg-10">
+                                        <p>
+                                            Misafirler sabah otellerinden alınacak ve Troya bölgesine doğru yola
+                                            çıkacaklardır.
+                                        </p>
+                                        <p>Troy(Truva), Tevfikiye Köyü, İntepe, Çanakkale Türkiye, 3 saat.</p>
+                                        <p>Truva Şehir Maketi, İskele Meydanı, Çanakkale 17000 Türkiye, 4 saat.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Show Cancel Request Detail -->
+    <div class="modal fade" id="cancelRequestDetail" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <form enctype="multipart/form-data" id="request-Detail-form">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Cancel Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label><b>Reason :</b> </label>
+                            <input id="cancelRequestReason" type="text" class="form-control input-font" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label><b>Your Reason</b> </label>
+                            <textarea id="cancelRequestReasonText" cols="" rows="4" class="form-control input-font" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label><b>Status :</b> </label>
+                            <input id="cancelStatus" type="text" class="form-control input-font" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label for="AdminAnswer"><b>Admin Answer :</b></label>
+                            <textarea id="cancelAdminAnswer" cols="" rows="4" class="form-control input-font" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Show Update Request Detail -->
+    <div class="modal fade" id="updateRequestDetail" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <form enctype="multipart/form-data" id="request-Detail-form">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label><b>Your Reason</b> </label>
+                            <textarea id="updatelRequestReasonText" cols="" rows="4" class="form-control input-font" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label><b>Status :</b> </label>
+                            <input id="updateStatus" type="text" class="form-control input-font" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-body m-4">
+                        <div class="col-sm-12">
+                            <label for="AdminAnswer"><b>Admin Answer :</b></label>
+                            <textarea id="updateAdminAnswer" cols="" rows="4" class="form-control input-font" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).on("click", "#cancelModalBtn", function () {
+            var passedID = $(this).data('id');
+            $("#cancelModal .hiddenCancelid").val(passedID);
+            var getReservationRequests = {
+                reservationId: passedID
+            };
+            $.ajax({
+                url: '/Reservation/GetReservationCancelRequests/' + passedID,
+                type: 'GET',
+                data: getReservationRequests,
+                dataType: 'json',
+                success: function (data) {
+                    document.getElementById("cancelSubmitBtn").disabled = false;
+
+                    $('#modal-table-cancel').DataTable().destroy();
+                    $('#modal-table-cancel').DataTable().clear();
+                    var responseData = data.data;
+                    console.log(responseData[0]);
+                    $('#modal-table-cancel').DataTable({
+                        "scrollX": false,
+                        "paging": false,
+                        "destroy": true,
+                        "searching": false,
+                        "data": responseData,
+                        "columns": [
+                            { "title": "Reason", "data": "reason" },
+                            { "title": "Request Status", "data": "requestStatus" },
+                            { "title": "Admin Answer", "data": "adminAnswer" },
+                        ]
+                    });
+                    if (responseData[0].requestStatus == "Waiting") {
+                        document.getElementById("cancelSubmitBtn").disabled = true;
+                        // document.getElementById("cancelSubmitBtn").setAttribute('title', "You can't sent cancel request while there is a request in progress."); //çalışmıyor
+                    }
+                },
+                error: function (err) {
+                    // console.log(err);
+                }
+            });
+        });
+
+        $(document).on("click", "#updateModalBtn", function () {
+            document.getElementById("updateSubmitBtn").disabled = false;
+
+            var passedID = $(this).data('id');
+            $("#updateModal .hiddenUpdateId").val(passedID);
+
+            var getReservationRequests = {
+                reservationId: passedID
+            };
+            $.ajax({
+                url: '/Reservation/GetReservationUpdateRequests/' + passedID,
+                type: 'GET',
+                data: getReservationRequests,
+                dataType: 'json',
+                success: function (data) {
+                    $('#modal-table-update').DataTable().destroy();
+                    $('#modal-table-update').DataTable().clear();
+                    var responseData = data.data;
+                    console.log(responseData[0]);
+                    $('#modal-table-update').DataTable({
+                        "scrollX": false,
+                        "paging": false,
+                        "destroy": true,
+                        "searching": false,
+                        "data": responseData,
+                        "columns": [
+                            { "title": "Reason", "data": "reason" },
+                            { "title": "Request Status", "data": "requestStatus" },
+                            { "title": "Admin Answer", "data": "adminAnswer" },
+                        ]
+                    });
+                    if (responseData[0].requestStatus == "Waiting") {
+                        document.getElementById("updateSubmitBtn").disabled = true;
+                        // document.getElementById("updateSubmitBtn").setAttribute('title', "You can't sent update request while there is a request in progress."); //çalışmıyor
+                    }
+                },
+                error: function (err) {
+                    // console.log(err);
+                }
+            });
+        });
+
+
+        var cancelForm = document.getElementById('cancel-form') //read bind to model // olmasa da olur
+        cancelForm.addEventListener('submit', function (event) {
+            var checkBoxChecked = document.getElementById('i-have-read').checked;
+            if (checkBoxChecked) {
+                console.log(checkBoxChecked);
+                $("#cancelModal .policyCheckBox").val(true);
+            }
+        });
+
+
+        //cancel için show request butonuna basınca
+        $(document).ready(function () {
+            $(document).on("click", "#showCancelRequestBtn", OpenCancelRequestModal);
+        });
+
+        function OpenCancelRequestModal() {
+
+            debugger;
+            var reasonText = $(this).data("reason");
+            var requestStatus = $(this).data("status");
+            var adminAnswer = $(this).data("answer");
+            var selectedReason = $(this).data("selectedreason");
+
+            // var parsedItem= JSON.parse(item);
+            // console.log(parsedItem)
+            $('#cancelRequestReason').val(selectedReason);
+            $('#cancelRequestReasonText').html(reasonText);
+            $('#cancelStatus').val(requestStatus);
+            $('#cancelAdminAnswer').html(adminAnswer);
+            $("#cancelRequestDetail").modal();
+        }
+
+        //update için show request butonuna basınca
+        $(document).ready(function () {
+            $(document).on("click", "#showUpdateRequestBtn", OpenUpdateRequestModal);
+        });
+
+        function OpenUpdateRequestModal() {
+            debugger;
+            var reasonText = $(this).data("reason");
+            var requestStatus = $(this).data("status");
+            var adminAnswer = $(this).data("answer");
+
+            // var parsedItem= JSON.parse(item);
+            // console.log(parsedItem)
+            $('#updateRequestReasonText').html(reasonText);
+            $('#updateStatus').val(requestStatus);
+            $('#updateAdminAnswer').html(adminAnswer);
+            $("#updateRequestDetail").modal();
+        }
+    </script>
+
+}

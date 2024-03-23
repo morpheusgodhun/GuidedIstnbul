@@ -1,0 +1,134 @@
+﻿@using Dto.ApiPanelDtos.Discount
+@using Dto.ApiWebDtos.GeneralDtos
+@model EditDiscountDto;
+@{
+    ViewData["Title"] = "Edit Discount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Discount/Index">Discount List</a>
+        > Edit Discount > @Model.DiscountName </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!-- Edit Vehicle Management Start  -->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="Id" />
+            <input hidden asp-for="ImagePath" />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Discount Name:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for=DiscountName id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Tour Categories:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="discount-tourCategories"
+                            asp-for="TourCategoryIds" multiple="multiple">
+                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.TourCategorySelectList)
+                        {
+                            <option value="@tag.OptionID">@tag.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-cities" class="form-label fw-bold">
+                        Product to Benefit:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select class="js-example-basic-multiple" id="tour-cities"
+                            asp-for="ProductToBenefitIds" multiple="multiple">
+                        @foreach (var tag in (List<SelectListOptionDto>)ViewBag.TourSelectList)
+                        {
+                            <option value="@tag.OptionID">@tag.Option</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mt-1">
+                    <label class="form-label fw-bold d-block">
+                        Discount Type:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <div class="d-inline-block">
+                        @foreach (var discountType in (List<SelectListOption>)ViewBag.DiscountTypes)
+                        {
+                            <input asp-for=DiscountType type="radio" value="@discountType.ID" id="tour">
+                            <label for="tour" class="mx-1">@discountType.Value</label>
+                        }
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Coupon Code:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for=CouponCode id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Discount Amount:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for=DiscountAmount id="tour-title" class="form-control" value="@Model.DiscountAmount.ToString("F2")" step="0.01" pattern="\d+(\,\d{2})?">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="tour-title" class="form-label fw-bold">
+                        Max Usage Count:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for=MaxUsageCount id="tour-title" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        Start Date<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="date" asp-for="StartDate" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        End Date<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="date" asp-for="EndDate" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        Using Start Date<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="date" asp-for="UsingStartDate" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="blogcategoryname" class="form-label fw-bold">
+                        Using End Date<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="date" asp-for="UsingEndDate" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="example-select2" class="form-label fw-bold">
+                        Explanation:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <textarea asp-for="Explanation" id="" cols="" rows="10"
+                              class="form-control col-md-6"> </textarea>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="image" class="form-label fw-bold">Image(1903x650):<span class="text-danger fw-bold">*</span></label>
+                    <div>
+                        <img src="../assets/images/profile.png" class="mb-2" style="width: 160px;" alt="">
+                        <input asp-for=ImagePath class="form-control mt-3" type="file" id="image" name="image" placeholder="Choose a file...">
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">
+                        Update
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Edit Vehicle Management End-->
+    </div>
+</div>
+

@@ -1,0 +1,98 @@
+﻿@using Dto.ApiPanelDtos.CommentDtos;
+@model List<CommentListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Comment/Index">Comment List</a>
+        > Add Commen
+        Comment List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Comment/AddComment">
+                        Add Comment
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Update</th>
+                    <th style="width: 8%;">Status</th>
+                    <th style="width: 8%;">Comment</th>
+                    <th>Name Surname</th>
+                    <th>Country</th>
+                   
+                    
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var comment in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <a class="btn btn-primary" href="/Comment/EditComment/@comment.CommentID">
+                                Update
+                            </a>
+                        </td>
+                        <td>
+                            @if (comment.Status)
+                            {
+                                <a href="/Comment/ToggleCommentStatus/@comment.CommentID" class="btn btn-success w-100">Active</a>
+                            }else
+                            {
+                                <a href="/Comment/ToggleCommentStatus/@comment.CommentID" class="btn btn-danger w-100">Passive</a>
+                            }
+                           
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#commet-@comment.CommentID">
+                                Comment
+                            </button>
+                        </td>
+                        <td>
+                            @comment.FullName
+                        </td>
+                        <td>
+                            @comment.Country
+                        </td>
+                        
+                        
+                        <!-- Comment Modal-->
+                        <div class="modal fade" id="commet-@comment.CommentID" tabindex="-1" aria-labelledby="current-iconLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">@comment.FullName Comment</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        @comment.Comment
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comment Modal-->
+                    </tr>
+                }
+               
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+

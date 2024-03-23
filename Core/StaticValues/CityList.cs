@@ -1,0 +1,98 @@
+﻿using Core.StaticClass;
+using Dto.ApiWebDtos.GeneralDtos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Core.StaticValues
+{
+    public class CityList
+    {
+        public List<SelectListOption> Cities = new List<SelectListOption>()
+        {
+            new SelectListOption() { ID = 1, Value = "Adana" },
+            new SelectListOption() { ID = 2, Value = "Adıyaman" },
+            new SelectListOption() { ID = 3, Value = "Afyonkarahisar" },
+            new SelectListOption() { ID = 4, Value = "Ağrı" },
+            new SelectListOption() { ID = 5, Value = "Amasya" },
+            new SelectListOption() { ID = 6, Value = "Ankara" },
+            new SelectListOption() { ID = 7, Value = "Antalya" },
+            new SelectListOption() { ID = 8, Value = "Artvin" },
+            new SelectListOption() { ID = 9, Value = "Aydın" },
+            new SelectListOption() { ID = 10, Value = "Balıkesir" },
+            new SelectListOption() { ID = 11, Value = "Bilecik" },
+            new SelectListOption() { ID = 12, Value = "Bingöl" },
+            new SelectListOption() { ID = 13, Value = "Bitlis" },
+            new SelectListOption() { ID = 14, Value = "Bolu" },
+            new SelectListOption() { ID = 15, Value = "Burdur" },
+            new SelectListOption() { ID = 16, Value = "Bursa" },
+            new SelectListOption() { ID = 17, Value = "Çanakkale" },
+            new SelectListOption() { ID = 18, Value = "Çankırı" },
+            new SelectListOption() { ID = 19, Value = "Çorum" },
+            new SelectListOption() { ID = 20, Value = "Denizli" },
+            new SelectListOption() { ID = 21, Value = "Diyarbakır" },
+            new SelectListOption() { ID = 22, Value = "Edirne" },
+            new SelectListOption() { ID = 23, Value = "Elazığ" },
+            new SelectListOption() { ID = 24, Value = "Erzincan" },
+            new SelectListOption() { ID = 25, Value = "Erzurum" },
+            new SelectListOption() { ID = 26, Value = "Eskişehir" },
+            new SelectListOption() { ID = 27, Value = "Gaziantep" },
+            new SelectListOption() { ID = 28, Value = "Giresun" },
+            new SelectListOption() { ID = 29, Value = "Gümüşhane" },
+            new SelectListOption() { ID = 30, Value = "Hakkâri" },
+            new SelectListOption() { ID = 31, Value = "Hatay" },
+            new SelectListOption() { ID = 32, Value = "Isparta" },
+            new SelectListOption() { ID = 33, Value = "Mersin" },
+            new SelectListOption() { ID = 34, Value = "İstanbul" },
+            new SelectListOption() { ID = 35, Value = "İzmir" },
+            new SelectListOption() { ID = 36, Value = "Kars" },
+            new SelectListOption() { ID = 37, Value = "Kastamonu" },
+            new SelectListOption() { ID = 38, Value = "Kayseri" },
+            new SelectListOption() { ID = 39, Value = "Kırklareli" },
+            new SelectListOption() { ID = 40, Value = "Kırşehir" },
+            new SelectListOption() { ID = 41, Value = "Kocaeli" },
+            new SelectListOption() { ID = 42, Value = "Konya" },
+            new SelectListOption() { ID = 43, Value = "Kütahya" },
+            new SelectListOption() { ID = 44, Value = "Malatya" },
+            new SelectListOption() { ID = 45, Value = "Manisa" },
+            new SelectListOption() { ID = 46, Value = "Kahramanmaraş" },
+            new SelectListOption() { ID = 47, Value = "Mardin" },
+            new SelectListOption() { ID = 48, Value = "Muğla" },
+            new SelectListOption() { ID = 49, Value = "Muş" },
+            new SelectListOption() { ID = 50, Value = "Nevşehir" },
+            new SelectListOption() { ID = 51, Value = "Niğde" },
+            new SelectListOption() { ID = 52, Value = "Ordu" },
+            new SelectListOption() { ID = 53, Value = "Rize" },
+            new SelectListOption() { ID = 54, Value = "Sakarya" },
+            new SelectListOption() { ID = 55, Value = "Samsun" },
+            new SelectListOption() { ID = 56, Value = "Siirt" },
+            new SelectListOption() { ID = 57, Value = "Sinop" },
+            new SelectListOption() { ID = 58, Value = "Sivas" },
+            new SelectListOption() { ID = 59, Value = "Tekirdağ" },
+            new SelectListOption() { ID = 60, Value = "Tokat" },
+            new SelectListOption() { ID = 61, Value = "Trabzon" },
+            new SelectListOption() { ID = 62, Value = "Tunceli" },
+            new SelectListOption() { ID = 63, Value = "Şanlıurfa" },
+            new SelectListOption() { ID = 64, Value = "Uşak" },
+            new SelectListOption() { ID = 65, Value = "Van" },
+            new SelectListOption() { ID = 66, Value = "Yozgat" },
+            new SelectListOption() { ID = 67, Value = "Zonguldak" },
+            new SelectListOption() { ID = 68, Value = "Aksaray" },
+            new SelectListOption() { ID = 69, Value = "Bayburt" },
+            new SelectListOption() { ID = 70, Value = "Karaman" },
+            new SelectListOption() { ID = 71, Value = "Kırıkkale" },
+            new SelectListOption() { ID = 72, Value = "Batman" },
+            new SelectListOption() { ID = 73, Value = "Şırnak" },
+            new SelectListOption() { ID = 74, Value = "Bartın" },
+            new SelectListOption() { ID = 75, Value = "Ardahan" },
+            new SelectListOption() { ID = 76, Value = "Iğdır" },
+            new SelectListOption() { ID = 77, Value = "Yalova" },
+            new SelectListOption() { ID = 78, Value = "Karabük" },
+            new SelectListOption() { ID = 79, Value = "Kilis" },
+            new SelectListOption() { ID = 80, Value = "Osmaniye" },
+            new SelectListOption() { ID = 81, Value = "Düzce" }
+        };
+    }
+}

@@ -1,0 +1,512 @@
+﻿@using Core.StaticValues;
+@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@model WebReservationListDto
+@{
+    ViewData["Title"] = "ReservationInquiryResponse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="feature-section2 mt-120 mb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="row">
+                    <div class="col text-center">
+                        <h1>Reservation Inquiry</h1>
+                    </div>
+                    <div class=" form-left h-100 py-5 px-5 booking-form-box">
+                        <fieldset>
+                            <div class="form-card border px-3">
+                                <form id="msform" action="/Reservation/ReservationInquiryResponse" class="banner-form row">
+                                    <div class="col-10">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-barcode"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input placeholder="Reservation Code" type="text" name="ReservationCode" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit"
+                                                class="eg-btn btn--primary btn--md submit-btn float-end" title="Search">
+                                            Search
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="feature-section2 mt-60">
+    <div class="container mt-5 mb-120">
+        <div class="table-responsive">
+            <table id="scroll-horizontal-datatable" class="text-center table w-100 nowrap table-striped p-2">
+                <thead>
+                    <tr>
+                        <th>Reservation Code</th>
+                        <th>Start Date</th>
+                        <th>Type</th>
+                        <th style="width: 0%;">Reservation</th>
+                        <th>Cancel</th>
+                        <th>Update</th>
+                        <th>Detail</th>
+                        <th>Status</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.ReservationCode</td>
+                        <td>@Model.StartDate</td>
+                        <td>Best Seller Tour</td>
+
+                        <td>
+                            @if (Model.Status ==  MyReservationStatus.GetValue(1))
+                            {
+                                <a href="/Payment/PaymentParticipant/@Model.ReservationId" class="btn btn-warning btn--sm w-100">Pay</a>
+                            }
+                            else if (Model.Status ==  MyReservationStatus.GetValue(2))
+                            {
+                                <button class="btn btn-primary btn--sm" disabled>
+                                    Comment
+                                </button>
+                            }
+                            else if (Model.Status ==  MyReservationStatus.GetValue(3))
+                            {
+                                <button class="btn btn-primary btn--sm" data-bs-toggle="modal" data-bs-target="#commentModal">
+                                    Comment
+                                </button>
+                            }
+
+
+                        </td>
+                        <td>
+                            @if (Model.Cancellable && !(Model.Status ==  MyReservationStatus.GetValue(1)))
+                            {
+                                <button class="btn btn-danger btn--sm" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                    Cancel
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger btn--sm" disabled>Cancel</button>
+                            }
+
+                        </td>
+                        <td>
+                            @if (Model.Updateable && !(Model.Status ==  MyReservationStatus.GetValue(1)))
+                            {
+                                <button class="btn btn-success btn--sm" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">
+                                    Update
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-success btn--sm" disabled>Update</button>
+                            }
+
+                        </td>
+                        <td>
+                            <a href="/Reservation/ReservationDetail/@Model.ReservationId" class="btn btn-info btn--sm w-100" title="Reservation Detail">
+                                Detail
+                            </a>
+                        </td>
+                        <td>@Model.Status</td>
+                        <td>$@Model.Price</td>
+
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modals:     -->
+    <!-- Modal Cancel -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelLabel">Warning</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row m-4">
+                        <div>
+                            <p class="text-indent-2">
+                                50% of the deposited deposit is cancelled. Half paid after 24
+                                hours.
+                            </p>
+                            <p class="text-indent-2">
+                                A cancellation request will be sent for your reservation. Do
+                                you confirm?
+                            </p>
+                        </div>
+                        <!-- <div class="col-sm-3 mb-3">
+                            <label for="operator" class="form-label fw-bold">Operator:<span
+                                    class="text-danger fw-bold">*</span></label>
+                        </div> -->
+                        <div class="col-sm-12 mb-3">
+                            <select id="operator">
+                                <option selected disabled>Reason for Cancellation</option>
+                                <option value="">Reason for Cancellation 1</option>
+                                <option value="">Reason for Cancellation 2</option>
+                                <option value="">Wrong Date</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 mb-3">
+                            <label for="content"><b>Explain Your Reason</b> </label>
+                            <textarea name="" id="content" cols="" rows="4"
+                                      class="form-control input-font"> </textarea>
+                        </div>
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="" id="i-have-read">
+                            <label class="form-check-label" for="i-have-read">
+                                I have read the cancellation policy.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content: space-evenly">
+                    <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font"
+                            data-bs-dismiss="modal">
+                        No
+                    </button>
+                    <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Comment -->
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelLabel">Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row m-5 mb-0">
+                        <form>
+                            <fieldset class="m-2">
+                                <label for="rating"><b>Rate</b> </label>
+                                <div class="container">
+                                    <div class="star-1"></div>
+                                </div>
+                                <div class="rating">
+                                    <input id="rating1" type="radio" name="rating" value="1">
+                                    <label for="rating1">1</label>
+                                    <input id="rating2" type="radio" name="rating" value="2">
+                                    <label for="rating2">2</label>
+                                    <input id="rating3" type="radio" name="rating" value="3">
+                                    <label for="rating3">3</label>
+                                    <input id="rating4" type="radio" name="rating" value="4">
+                                    <label for="rating4">4</label>
+                                    <input id="rating5" type="radio" name="rating" value="5">
+                                    <label for="rating5">5</label>
+                                </div>
+
+                                </span>
+                            </fieldset>
+                            <div class="m-2 mt-0">
+                                <label for="Comment"><b>Comment</b> </label>
+                                <textarea class="form-control input-font" name="Comment" id="Comment" cols="30"
+                                          rows="6"></textarea>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content: space-evenly">
+                    <button type="button" class="btn btn-danger btn-lg ps-5 pe-5 input-font"
+                            data-bs-dismiss="modal">
+                        No
+                    </button>
+                    <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Update Requests -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateLabel">Update Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-4">
+                    <div class="col-sm-12 mb-3">
+                        <label for="content"><b>Explain Your Reason</b> </label>
+                        <textarea name="" id="content" cols="" rows="4" class="form-control input-font"> </textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Detail -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailLabel">Detail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#info" role="tab" aria-controls="info"
+                               data-bs-toggle="tab" aria-selected="true">
+                                General
+                                Info
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#program" role="tab" aria-controls="program"
+                               data-bs-toggle="tab" aria-selected="false">Program</a>
+                        </li>
+                    </ul>
+
+                    <div id="tab-panel-font-size" class="tab-content">
+                        <div class="tab-pane active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                            <div class="row m-3">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Transaction Date:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>14.04.2023</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Reservation Number:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>REZ8756635</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Title:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>2 DAYS PRIVATE EPHESUS AND PAMUKKALE</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Starting City:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>TOUR</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Date:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>Istanbul</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Type:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>23.10.2022 12:30</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2">
+                                        <label for="operator" class="form-label fw-bold h2">Tour Name:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>Private</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Price:</label>
+                                    </div>
+                                    <div class="ccol-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>$500</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Program:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>****************</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Inclusions:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>*******</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Tour Exclusions:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>****</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">
+                                            Tour Additional
+                                            Services:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <label>
+                                            <span class="fw-bold">Language:</span><span class="ms-2">German($100,00)</span>
+                                        </label>
+                                        <label>
+                                            <span class="fw-bold">Yacht:</span><span class="ms-2">
+                                                2-hour Private
+                                                Yacht
+                                                ($500,00)
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Participants:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <label>
+                                            <span class="fw-bold">Transfer:</span><span class="ms-2">
+                                                No
+                                                Transfer(0)
+                                            </span>
+                                        </label>
+                                        <label>
+                                            <span class="fw-bold">Number of days:</span><span class="ms-2">
+                                                2-Day
+                                                Tour($1450,00)
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Pick up Point:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>Divan Hotel</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Reservation Note:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <p>***</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5 col-lg-5 mt-2 h2">
+                                        <label for="operator" class="form-label fw-bold">Payment History:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7 col-lg-7 mt-2">
+                                        <label>
+                                            <span class="fw-bold">Full Payment:</span><span class="ms-2">($2000,00)</span>
+                                        </label><br>
+                                        <label>
+                                            <span class="fw-bold">Advance Payment:</span><span class="ms-2">(€396,00)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane " id="program" role="tabpanel" aria-labelledby="program-tab">
+                            <div class="row m-3">
+                                <div class="row mt-3">
+                                    <div class="col-sm-12 col-md-2 col-lg-2">
+                                        <h3>Day 1</h2>
+                                    </div>
+                                    <div class="col-sm-12 col-md-10 col-lg-10 ">
+                                        <p>
+                                            Misafirler sabah otellerinden alınacak ve Troya bölgesine doğru yola
+                                            çıkacaklardır.
+                                        </p>
+                                        <p>Troy(Truva), Tevfikiye Köyü, İntepe, Çanakkale Türkiye, 3 saat.</p>
+                                        <p>Truva Şehir Maketi, İskele Meydanı, Çanakkale 17000 Türkiye, 4 saat.</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12 col-md-2 col-lg-2">
+                                        <h3>Day 2</h2>
+                                    </div>
+                                    <div class="col-sm-12 col-md-10 col-lg-10">
+                                        <p>
+                                            Misafirler sabah otellerinden alınacak ve Troya bölgesine doğru yola
+                                            çıkacaklardır.
+                                        </p>
+                                        <p>Troy(Truva), Tevfikiye Köyü, İntepe, Çanakkale Türkiye, 3 saat.</p>
+                                        <p>Truva Şehir Maketi, İskele Meydanı, Çanakkale 17000 Türkiye, 4 saat.</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-12 col-md-2 col-lg-2">
+                                        <h3>Day 3</h2>
+                                    </div>
+                                    <div class="col-sm-12 col-md-10 col-lg-10">
+                                        <p>
+                                            Misafirler sabah otellerinden alınacak ve Troya bölgesine doğru yola
+                                            çıkacaklardır.
+                                        </p>
+                                        <p>Troy(Truva), Tevfikiye Köyü, İntepe, Çanakkale Türkiye, 3 saat.</p>
+                                        <p>Truva Şehir Maketi, İskele Meydanı, Çanakkale 17000 Türkiye, 4 saat.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Update Requests -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateLabel">Update Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="margin: 3%;">
+                    <textarea name="" id="content" cols="" rows="5" class="form-control"> </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-lg">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

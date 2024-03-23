@@ -1,0 +1,18 @@
+﻿@using DTO;
+@using Dto.ApiWebDtos.ApiToWebDtos.PageComponets;
+@model CustomResponseDto<GetVisitTurkeyCardDto>
+
+<div class="row abous-us-body m-0">
+    <div class="col-12 col-md-6 p-0">
+        <img src="/Panel/img/AddImagePanel/@Model.Data.ConstantValues.FirstOrDefault(x=>x.Key == "VisitTurkeyCardImagePath").Value" class="w-100" alt="">
+    </div>
+    <div class="col-12 col-md-6 p-0">
+        <div class="features-content p-0 abous-us-text">
+            <h3>“@Model.Data.ConstantValues.FirstOrDefault(x=>x.Key == "VisitTurkeyCardTitle").Value”</h3>
+            <p>
+                @Model.Data.ConstantValues.FirstOrDefault(x=>x.Key == "VisitTurkeyCardDescription").Value<br>
+                <a class="btn_1 medium" href="/Tour/TourCategory" target="_self" rel="noopener">@Model.Data.ConstantValues.FirstOrDefault(x=>x.Key == "VisitTurkeyCardButton").Value</a>
+            </p>
+        </div>
+    </div>
+</div>

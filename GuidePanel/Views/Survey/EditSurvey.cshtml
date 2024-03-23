@@ -1,0 +1,38 @@
+﻿@using Dto.ApiPanelDtos.SurveyDtos;
+@model EditSurveyDto
+@{
+    ViewData["Title"] = "EditSurvey";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header"><a href="/Survey/Index">Survey List</a>
+        > Edit Survey > @ViewBag.QuestionLangItem</h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Edit Survey Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input hidden asp-for="SurveyID" />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Order:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="Order" class="form-control">
+                </div>
+                <!-- Button -->
+                <div class="col-sm-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Edit Survey End-->
+    </div>
+</div>

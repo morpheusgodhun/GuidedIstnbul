@@ -1,0 +1,115 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Guide;
+@model GetTourServedDto
+@{
+    ViewData["Title"] = "TourServed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="feature-section2 mt-60 mb-120">
+    <div class="row">
+        <div class="col text-center">
+            <h1>@Helpers.Wcv(Model.ConstantValues,"TourServed.Title")</h1>
+        </div>
+    </div>
+    <div class="container mt-40">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>@Helpers.Wcv(Model.ConstantValues,"TourServed.Table.ProgramDetailLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues,"TourServed.Table.CommentReportLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "TourServed.Table.TourDateLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues, "TourServed.Table.TourTitleLabel")</th>
+                        <th>@Helpers.Wcv(Model.ConstantValues,"TourServed.Table.CityLabel")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tour in Model.Tours)
+                    {
+                        <tr>
+                            <th class="p-3">
+                                <button class="btn btn-primary btn--sm" data-bs-toggle="modal"
+                                        data-bs-target="#detailModal">
+                                    Program Detail
+                                </button>
+                            </th>
+                            @if (tour.Date>DateTime.Now)
+                            {
+                                <td class="p-3">
+                                    <button class="btn btn-danger btn--sm" data-bs-toggle="modal"
+                                            data-bs-target="#commentModal">
+                                        Send Comment Report
+                                    </button>
+                                </td>
+                            }else
+                            {
+                                <td>
+                                    <button disabled class="btn btn-danger btn--sm">Send Comment Report</button>
+                                </td>
+                                
+                            }
+                            
+                            <td class="p-3">@tour.Date.ToString("dd-MMM-yyyy")</td>
+                            <td class="p-3">@tour.TourTitle</td>
+                            <td class="p-3">@tour.City</td>
+                        </tr>
+                    }
+                    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detail -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailLabel">@Helpers.Wcv(Model.ConstantValues,"TourServed.DetailModal.Title")</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row m-4 text-justify">
+                    @Html.Raw("String");
+
+
+                </div>
+                <br>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modals:End -->
+<!-- Modal Comment -->
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentLabel">@Helpers.Wcv(Model.ConstantValues, "TourServed.CommentReportModal.Title")</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row m-4">
+                    <div class="col-8">
+                        <b>How was customer satisfaction?*</b>
+                    </div>
+                    <div class="col-4">
+                        <select select class="defult-select-drowpown" data-placeholder="" id="activity-dropdown">
+                            <option value="0">Select</option>
+                            <option value="1">Pleased</option>
+                            <option value="2">Not Glad</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-lg ps-5 pe-5 input-font">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modals:End -->
+

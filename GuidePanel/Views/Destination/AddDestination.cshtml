@@ -1,0 +1,51 @@
+﻿@using Dto.ApiPanelDtos.DestinationDtos;
+@model AddDestinationDto
+@{
+    ViewData["Title"] = "AddDestination";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Destination/Index">Destination List</a>
+        > Add Destination
+    </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!--Add Destinational Start-->
+        <!-- start page title -->
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="destination-name" class="form-label fw-bold">
+                        Destination Name:
+                        <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="text" asp-for="DestinationName" class="form-control" required>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Order: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input type="number" asp-for="Order" class="form-control" required>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        ADD
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--Add Destinational End-->
+
+    </div>
+</div>
+

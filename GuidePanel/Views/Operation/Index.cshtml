@@ -1,0 +1,838 @@
+﻿@using Core.StaticValues.Operation;
+@using Dto.ApiPanelDtos.OperationDtos
+@using Dto.ApiWebDtos.GeneralDtos
+@model List<OperationVM>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var today = DateTime.Today;
+}
+<style>
+
+
+</style>
+<div class="card">
+    <h4 class="card-header">Operation List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    @* <a class="btn btn-secondary float-end" href="/Discount/AddDiscount">
+                    Add Discount
+                    </a>*@
+
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#mail-content2">
+                        Mail
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable2">
+                <thead class="table-light">
+                    <tr>
+                        <th>Reservation Code</th>
+                        <th>Product</th>
+                        <th>Customer Name</th>
+                        <th>Hotel</th>
+                        <th>Number of Participant</th>
+                        <th>Date</th>
+                        <th>Day</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var operationItem in Model)
+                    {
+                        @* <!-- bir satır--> *@
+                        <tr>
+                            <td>
+                                <a href="/Reservation/ReservationFormDetail/@operationItem.ReservationId" class="">
+                                    @operationItem.ReservationCode
+                                </a>
+                            </td>
+                            <td>
+                                @operationItem.ProductName
+
+                            </td>
+                            <td>
+                                @operationItem.CustomerName
+                            </td>
+                            <td>
+                                @operationItem.Hotel
+                            </td>
+
+                            <td>
+                                @operationItem.NumberOfParticipants
+                            </td>
+                            <td>
+                                @operationItem.Date.ToShortDateString()
+                                @* <span class="badge bg-success">Active</span> lazım olabilir *@
+                            </td>
+                            <td>
+                                @operationItem.Day
+                            </td>
+
+                            <td class="table-action">
+                                <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="8">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-centered mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Guide</th>
+                                                <th>Vehicle</th>
+                                                <th>Ticket</th>
+                                                <th>Note</th>
+                                                <th>Hour</th>
+                                                <th>Shop</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    @if (string.IsNullOrEmpty(operationItem.OperationGuide.Guide) || string.IsNullOrWhiteSpace(operationItem.OperationGuide.Guide))
+                                                    {
+                                                        <span class="badge bg-danger-lighten text-danger p-2 rounded-pill">Not Assigned</span>
+                                                        <button class="btn btn-success ml-3" type="button" data-bs-toggle="modal" data-bs-target="#assign-guide" data-id="@operationItem.OperationGuide.OperationGuideId" id="assignGuideBtn">Assign Guide</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="mr-3"> @operationItem.OperationGuide.Guide</p>
+                                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#assign-guide" data-id="@operationItem.OperationGuide.OperationGuideId" id="assignGuideBtn" data-isUpdating="true">Update</button>
+
+                                                        if (operationItem.OperationGuide.GuideStatus == OperationGuideStatus.GetValue((int)OperationGuideStatus.No.Canceled))
+                                                        {
+                                                            <span class="badge rounded-pill bg-danger p-2">Canceled</span>
+                                                        }
+                                                        if (operationItem.OperationGuide.GuideStatus == OperationGuideStatus.GetValue((int)OperationGuideStatus.No.DetailSent))
+                                                        {
+                                                            <span class="badge rounded-pill bg-info text-dark p-2">Detail Sent</span>
+                                                        }
+                                                        if (operationItem.OperationGuide.GuideStatus == OperationGuideStatus.GetValue((int)OperationGuideStatus.No.Reserved))
+                                                        {
+                                                            <span class="badge rounded-pill bg-warning text-dark p-2">Reserved</span>
+                                                        }
+
+                                                        if (operationItem.OperationGuide.GuideStatus == OperationGuideStatus.GetValue((int)OperationGuideStatus.No.Waiting))
+                                                        {
+                                                            <span class="badge rounded-pill bg-primary p-2">Waiting</span>
+
+                                                        }
+                                                        if (operationItem.OperationGuide.GuideStatus == OperationGuideStatus.GetValue((int)OperationGuideStatus.No.Confirmed))
+                                                        {
+                                                            <span class="badge rounded-pill bg-success p-2">Confirmed</span>
+                                                        }
+
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (string.IsNullOrEmpty(operationItem.OperationVehicle.Vehicle) || string.IsNullOrWhiteSpace(operationItem.OperationVehicle.Vehicle))
+                                                    {
+                                                        <span class="badge bg-danger-lighten text-danger p-2 rounded-pill">Not Assigned</span>
+                                                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#assign-vehicle" data-id="@operationItem.OperationVehicle.OperationVehicleId" id="assignVehicleBtn">Assign Vehicle</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="mr-3">@operationItem.OperationVehicle.Vehicle</p>
+                                                        
+
+                                                        if (operationItem.OperationVehicle.VehicleStatus == OperationVehicleStatus.GetValue((int)OperationVehicleStatus.No.Canceled))
+                                                        {
+                                                            <span class="badge rounded-pill bg-danger p-2">Canceled</span>
+                                                        }
+                                                        if (operationItem.OperationVehicle.VehicleStatus == OperationVehicleStatus.GetValue((int)OperationVehicleStatus.No.DetailSent))
+                                                        {
+                                                            <span class="badge rounded-pill bg-info text-dark p-2">Detail Sent</span>
+                                                        }
+                                                        if (operationItem.OperationVehicle.VehicleStatus == OperationVehicleStatus.GetValue((int)OperationVehicleStatus.No.Reserved))
+                                                        {
+                                                            <span class="badge rounded-pill bg-warning text-dark p-2">Reserved</span>
+                                                        }
+
+                                                        if (operationItem.OperationVehicle.VehicleStatus == OperationVehicleStatus.GetValue((int)OperationVehicleStatus.No.Waiting))
+                                                        {
+                                                            <span class="badge rounded-pill bg-primary p-2">Waiting</span>
+
+                                                        }
+                                                        if (operationItem.OperationVehicle.VehicleStatus == OperationVehicleStatus.GetValue((int)OperationVehicleStatus.No.Confirmed))
+                                                        {
+                                                            <span class="badge rounded-pill bg-success p-2">Confirmed</span>
+
+                                                        }
+                                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#assign-vehicle" data-id="@operationItem.OperationVehicle.OperationVehicleId" data-isUpdating="true" id="assignVehicleBtn">Update</button>
+                                                    }
+                                                </td>
+                                                <td>
+
+                                                    @if (string.IsNullOrEmpty(operationItem.OperationTicket.Price) || string.IsNullOrWhiteSpace(operationItem.OperationTicket.Price))
+                                                    {
+                                                        <button class="btn btn-primary" type="button" id="enterTicketBtn" data-bs-toggle="modal" data-bs-target="#enter-ticket" data-id="@operationItem.OperationTicket.OperationTicketId">Add</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        var price = $"{operationItem.OperationTicket.Price} $";
+                                                        <p id="ticket-price-@operationItem.OperationTicket.Day">@price</p>
+                                                        <button class="btn btn-warning" type="button" id="enterTicketBtn" data-bs-toggle="modal" data-bs-target="#enter-ticket" data-id="@operationItem.OperationTicket.OperationTicketId" data-isupdating="true" data-day="@operationItem.OperationTicket.Day">Update</button>
+
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @if (string.IsNullOrEmpty(operationItem.OperationNotes.Note) || string.IsNullOrWhiteSpace(operationItem.OperationNotes.Note))
+                                                    {
+                                                        @*<span class="badge bg-danger-lighten text-danger p-2">Girilmedi</span>*@
+                                                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#enter-note" data-id="@operationItem.OperationNotes.OperationNoteId" id="enterNoteBtn">Enter</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p id="operation-note-@operationItem.OperationNotes.Day">@operationItem.OperationNotes.Note</p>
+                                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#enter-note" data-id="@operationItem.OperationNotes.OperationNoteId" data-isupdating="true" id="enterNoteBtn" data-day="@operationItem.OperationNotes.Day">Update</button>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (string.IsNullOrEmpty(operationItem.OperationNotes.Hour) || string.IsNullOrWhiteSpace(operationItem.OperationNotes.Hour))
+                                                    {
+                                                        @*<span class="badge bg-warning-lighten text-danger p-2">Girilmedi</span>*@
+                                                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#enter-hour" data-id="@operationItem.OperationNotes.OperationNoteId" id="enterHourBtn">Enter</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p id="operation-hour-@operationItem.OperationNotes.Day">@operationItem.OperationNotes.Hour</p>
+                                                        <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#enter-hour" data-id="@operationItem.OperationNotes.OperationNoteId" id="enterHourBtn" data-isupdating="true" data-day="@operationItem.OperationNotes.Day">Update</button>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (operationItem.OperationShop.ShopStatus == OperationShopStatus.GetValue((int)OperationShopStatus.No.None))
+                                                    {
+                                                        <span class="badge rounded-pill bg-secondary p-2">None</span>
+                                                    }
+                                                    @if (operationItem.OperationShop.ShopStatus == OperationShopStatus.GetValue((int)OperationShopStatus.No.Shopped))
+                                                    {
+                                                        <span class="badge rounded-pill bg-success p-2">Shopped</span>
+                                                    }
+                                                    @if (operationItem.OperationShop.ShopStatus == OperationShopStatus.GetValue((int)OperationShopStatus.No.Visited))
+                                                    {
+                                                        <span class="badge rounded-pill bg-primary p-2">Visited</span>
+                                                    }
+                                                    @if (operationItem.OperationShop.ShopStatus == OperationShopStatus.GetValue((int)OperationShopStatus.No.Directed))
+                                                    {
+                                                        <span class="badge rounded-pill bg-info text-dark p-2">Directed</span>
+                                                    }
+                                                    <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#change-shop-status" data-id="@operationItem.OperationShop.OperationShopId" id="changeShopStatusBtn">Change</button>
+
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div> <!-- end table-responsive-->
+                                <hr />
+
+                        </tr>
+                        @*    <div class="alert alert-warning mt-3" role="alert">
+                    Use coupon code <strong>HYPBM</strong> and get 10% discount !
+                    </div> *@
+
+                        <!--bitti-->
+                        <tr>
+                            <td colspan="8" style="background-color: aquamarine;">
+                                AYIRGAÇ
+                            </td>
+                        </tr>
+                    }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Payment History modal-->
+<div class="modal fade" id="payment-history" tabindex="-1" role="dialog"
+     aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div>
+                    <table id="scroll-horizontal-datatable"
+                           class="table w-100 nowrap table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Payment Type</th>
+                                <th>Service</th>
+                                <th>Description</th>
+                                <th>Payment Amount</th>
+                                <th>Rest</th>
+                                <th>Payment Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 1 -->
+                            <tr>
+                                <td>10.05.2023 15:24</td>
+                                <td>Return</td>
+                                <td>Tour Payment</td>
+                                <td>İade işlemi gerçekleştirildi.</td>
+                                <td>-$75</td>
+                                <td>0</td>
+                                <td></td>
+                            </tr>
+                            <!-- 2 -->
+                            <tr>
+                                <td>16.03.2023 12:11</td>
+                                <td>Cash Payment</td>
+                                <td>Tour Payment</td>
+                                <td></td>
+                                <td>$25</td>
+                                <td>$350</td>
+                                <td></td>
+                            </tr>
+                            <!-- 3 -->
+                            <tr>
+                                <td>13.03.2023 12:11</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Paid</td>
+                            </tr>
+                            <!-- 4 -->
+                            <tr>
+                                <td>11.02.2023 18:59</td>
+                                <td>Card</td>
+                                <td>First Payment</td>
+                                <td></td>
+                                <td>$125</td>
+                                <td>$375</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Cash Payment modal-->
+<div class="modal fade" id="cash-payment" tabindex="-1" aria-labelledby="cashPaymentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="notesModalLabel">
+                    Cash Payment
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <label for="">Cash Price</label>
+                        <input class="form-control" type="number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 mt-2 me-2">
+                        <button class="btn btn-primary float-end"
+                                type="button">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@* Assign Driver-Vehicle Modal *@
+<div class="modal fade" id="assign-vehicle" tabindex="-1" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="myLargeModalLabel">
+                    Driver Information
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <form class="ps-3 pe-3" action="#" id="assignVehicleForm">
+                    <!--onsubmit="supplierDropdownSelectionChanged()" -->
+                    @Html.Hidden("OperationVehicleId", "", new { @class = "hiddenOperationVehicleId" })
+                    <h6 class="font-10 fst-italic mb-2">
+                        Asterisk (<span class="text-danger fw-bold">*</span>) required fields
+                    </h6>
+                    <div class="mb-3">
+                        <label for="suppliers" class="form-label fw-bold">Suppliers:<span class="text-danger fw-bold">*</span></label>
+                        <select class="form-select" id="suppliers" onchange="supplierDropdownSelectionChanged(event)" required>
+                            <option selected disabled value="">Choose...</option>
+                            @foreach (var item in (List<SelectListOptionDto>)ViewBag.SupplierSelectList)
+                            {
+                                <option value="@item.OptionID">@item.Option</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="vehicles" class="form-label fw-bold">Vehicles:<span class="text-danger fw-bold">*</span></label>
+                        <select class="form-select" id="vehicles" required>
+                            <option selected disabled value="">Choose...</option>
+                            @* supplier seçildiği zaman dolacak*@
+                        </select>
+                    </div>
+                    <div class="mb-5 text-end">
+                        <button class="btn btn-success" type="submit">Assign</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- /.modal-content -->
+    </div>
+</div>
+@* Asssign - Update Guide Modal *@
+<div class="modal fade" id="assign-guide" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="myLargeModalLabel">
+                    Guide Information
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <form class="ps-3 pe-3" action="/Operation/AssignGuide" method="post">
+                    @Html.Hidden("OperationGuideId", "", new { @class = "hiddenOperationGuideId" }) @* rowId *@
+                    <h6 class="font-10 fst-italic mb-5">
+                        Asterisk (<span class="text-danger fw-bold">*</span>) required fields
+                    </h6>
+                    <div class="col-sm-12 mb-3">
+                        <label for="guide" class="form-label fw-bold">
+                            Guide :<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select for="GuideId" name="GuideId" class="form-select" id="guideSelectList">
+                            <option selected disabled value="">Choose...</option>
+                            @foreach (var guide in (List<SelectListOptionDto>)ViewBag.GuideSelectList)
+                            {
+                                <option value="@guide.OptionID">@guide.Option</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-5 text-end">
+                        <button class="btn btn-success" type="submit">Assign</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- Mail Content modal-->
+<div class="modal fade" id="mail-content" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="myLargeModalLabel">Mail Content</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-hidden="true"></button>
+            </div>
+            <div class="modal-head">
+                <div class="row float-end">
+                    <div class="col-12 mt-1 me-1">
+                        <button class="btn btn-secondary btn-sm" type="button">
+                            Copy
+                            Mail
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <p>
+                            Şu rezervasyona atandınız. <br> Rezervasyon bilgileri aşağıdaki
+                            gibidir.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-12 float-center">
+                        <button class="btn btn-secondary btn-sm" type="button">
+                            Send
+                            Mail
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal -->
+<!-- Mail Content modal-->
+<div class="modal fade" id="mail-content2" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="myLargeModalLabel">Mail Content</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-hidden="true"></button>
+            </div>
+            <div class="modal-head">
+                <div class="row float-end">
+                    <div class="col-12 mt-1 me-1">
+                        <button class="btn btn-secondary btn-sm" type="button">
+                            Copy
+                            Mail
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="snow-editor" class="bg-white" style="height: 300px;">
+                            <h3>24 Haziran Tour Ataması</h3>
+                            <br>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero ipsam beatae excepturi ipsa nulla! Unde nobis iure aspernatur facilis obcaecati aliquid maxime, atque mollitia asperiores voluptate, est at exercitationem dicta?</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum vitae, quasi illo doloribus nam iure eveniet ab, dignissimos atque mollitia libero sequi facere assumenda. At atque eligendi odit velit veritatis.</p>
+                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem repudiandae beatae quod optio vitae inventore asperiores accusantium temporibus quis et, ea quo quam ipsa iste quos itaque. Totam, quae dolore.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto enim dolorem nam. Provident pariatur nobis accusantium modi odio adipisci, quam placeat doloremque voluptatem, ratione, magni aut maiores tenetur consequuntur tempore.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-12 float-center">
+                        <button class="btn btn-secondary btn-sm" type="button">
+                            Send
+                            Mail
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal -->
+<!-- Operation Note Modal start-->
+<!-- Operation Note cross table olan, operations içerisindeki değil-->
+<div class="modal fade" id="enter-note" tabindex="-1" aria-labelledby="notesModalLabel" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="notesModalLabel">
+                    Note
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <form class="ps-3 pe-3" asp-action="SaveDailyOperationNote" method="post">
+                    @Html.Hidden("OperationNoteId", "", new { @class = "hiddenOperationNoteId" })
+                    <label>Note</label>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <textarea name="OperationNote"></textarea>
+                    </div>
+                    <div class="mb-5 mt-5 text-end">
+                        <button class="btn btn-success" type="submit">Enter</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Operation Note modal finish-->
+<!-- Operation Ticket Modal start-->
+<div class="modal fade" id="enter-ticket" tabindex="-1" aria-labelledby="ticketsModalLabel" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="notesModalLabel">
+                    Ticket
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <form class="ps-3 pe-3" asp-action="SaveTicketInfo" method="post" id="enterOperationTicketForm">
+                    @Html.Hidden("OperationTicketId", "", new { @class = "hiddenOperationTicketId" })
+                    <label>
+                        Price
+                    </label>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <input type="number" class="form-control" name="Price" id="ticketPriceInput" />
+                    </div>
+                    <div class="mb-3 mt-3 text-end">
+                        <button class="btn btn-success" type="submit">Enter</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Operation Ticket Modal finish-->
+<!-- Operation Hour Modal start-->
+<div class="modal fade" id="enter-hour" tabindex="-1" aria-labelledby="hourModalLabel" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="notesModalLabel">
+                    Hour
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <form class="ps-3 pe-3" asp-action="SaveHour" method="post" id="enterOperationTicketForm">
+                    @Html.Hidden("OperationNoteId", "", new { @class = "hiddenOperationNoteId" })
+                    <label>Hour</label>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <select name="Hour" class="form-control" id="hourDropdown"></select>
+                    </div>
+                    <div class="mb-3 mt-3 text-end">
+                        <button class="btn btn-success" type="submit">Enter</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- Operation Shop Status Modal start-->
+<div class="modal fade" id="change-shop-status" tabindex="-1" aria-labelledby="hourModalLabel" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center" id="notesModalLabel">
+                    Status
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <form class="ps-3 pe-3" asp-action="ChangeShopStatus" method="post" id="enterOperationTicketForm">
+                    @Html.Hidden("OperationShopId", "", new { @class = "hiddenOperationShopId" })
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                       <label for="guide" class="form-label fw-bold">
+                            Status :<span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select for="ShopStatus" name="ShopStatus" class="form-select">
+                            <option selected disabled value="">Choose...</option>
+                            @foreach (var status in (List<SelectListOption>)ViewBag.ShopStatusSelectList)
+                            {
+                                <option value="@status.ID">@status.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3 mt-3 text-end">
+                        <button class="btn btn-success" type="submit">Enter</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Operation Shop Status Modal start-->
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var hourDropdown = document.getElementById("hourDropdown");
+            for (var hour = 0; hour < 24; hour++) {
+                var formattedHour = ('0' + hour).slice(-2);
+                var optionText = formattedHour + ':' + "00";
+                var option = document.createElement("option");
+
+                option.value = optionText;
+                option.text = optionText;
+                hourDropdown.add(option);
+            }
+        });
+
+        //assign driver & vehicle - supplierDropdownSelectionChanged
+        function supplierDropdownSelectionChanged(event) {
+            var supplierId = event.target.value;
+            fillVehicleDropdown(supplierId);
+        }
+
+        function fillVehicleDropdown(supplierId, successCallback = () => { }) { //methodu çağırdığın yerde callback func vermeyi unutma
+            var vehicleSelectList = document.getElementById("vehicles");
+            vehicleSelectList.options.forEach(opt => {
+                if (!opt.disabled)
+                    opt.remove()
+            });
+            $.ajax({
+                type: "GET",
+                url: `/Operation/VehicleSelectList/${supplierId}`,
+                success: function (result) {
+                    var data = result.data;
+                    data.forEach(opt => {
+                        let option = new Option(opt.option, opt.optionID);
+                        vehicleSelectList.add(option);
+                    });
+                    vehicleSelectList.options[0].selected = 'selected'
+                    successCallback();
+                },
+                error: function (error) {
+                    // AJAX isteği başarısız olursa burası çalışır
+                    console.error("AJAX isteği başarısız oldu:", error);
+                }
+            });
+        }
+
+        $(document).on("click", "#assignVehicleBtn", (event) => {
+            var data = event.target.dataset;
+            $("#assignVehicleForm select").val("");
+            var passedOperationVehicleId = data.id;
+            $("#assign-vehicle .hiddenOperationVehicleId").val(passedOperationVehicleId);
+
+            if (data.isupdating) {
+                $.ajax({
+                    url: `/Operation/GetOperationVehicle/${passedOperationVehicleId}`,
+                    type: "GET",
+                    success: (response) => {
+                        var supplierId = response.data.supplierId;
+                        var vehicleId = response.data.vehicleId;
+
+                        var suppliersDropdown = document.getElementById('suppliers');
+                        var supplierDropdownOptionsArray = Array.from(suppliersDropdown.options);
+                        var supplierSelectedOption = supplierDropdownOptionsArray.find(opt => opt.value.toLowerCase() == supplierId.toLowerCase());
+                        supplierSelectedOption.selected = true;
+                        fillVehicleDropdown(supplierId, () => {
+
+                            var vehicleDropdown = document.getElementById("vehicles");
+                            var vehicleDropdownOptionsArray = Array.from(vehicleDropdown.options)
+                            var vehicleSelectedOption = vehicleDropdownOptionsArray.find(opt => opt.value.toLowerCase() == vehicleId.toLowerCase())
+                            vehicleSelectedOption.selected = true;
+                        });
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        //assign vehicle form submitted
+        //bunu niye ajax ile post ettiğimi bilmiyorum, guide atamayı controllera form action ile post ediyorum. bunu da form action ile post edebilirim. -mehmet ali
+        $(document).on('submit', "#assignVehicleForm", function () {
+            var hiddenOperationVehicleId = $(".hiddenOperationVehicleId").val();
+            var vehicleId = $("#vehicles")[0].value;
+            var assignRequest = {
+                operationVehicleId: hiddenOperationVehicleId,
+                vehicleId: vehicleId,
+            }
+            $.ajax({
+                url: '/Operation/AssignVehicle/',
+                type: 'POST',
+                data: assignRequest,
+                dataType: 'json',
+                success: function (res) {
+                    window.location.reload();
+                },
+                error: function (err) {
+                }
+            });
+        });
+
+        function getPassedId(event) {
+            const data = event.target.dataset
+            return data.id;
+        }
+
+        //assign or update guide button click event
+        $(document).on("click", "#assignGuideBtn", (event) => {
+            var data = event.target.dataset;
+            var passedOperationGuideId = data.id;
+            $("#assign-guide .hiddenOperationGuideId").val(passedOperationGuideId);
+            console.log(data)
+            if (data.isupdating) {
+                $.ajax({
+                    url: `/Operation/GetOperationGuide/${passedOperationGuideId}`,
+                    type: "GET",
+                    success: (response) => {
+                        var guideId = response.data.guideId;
+                        $('#guideSelectList').val(guideId).change();
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    }
+                })
+            }
+        });
+
+        $(document).on("click", "#enterTicketBtn", (event) => {
+            var data = event.target.dataset;
+            console.log(data)
+            const passedTicketId = data.id;
+            $("#enter-ticket .hiddenOperationTicketId").val(passedTicketId);
+            if (data.isupdating) {
+                console.log("içerdeyim")
+                var priceStr = document.getElementById(`ticket-price-${data.day}`).innerHTML;
+                var price = parseInt(priceStr.replace('$', ''));
+                $("#ticketPriceInput").val(price);
+            }
+        });
+
+        $(document).on("click", "#enterNoteBtn", (event) => {
+            $("#enter-note textarea").val("");
+
+            var data = event.target.dataset;
+            const passedTicketId = data.id;
+            $("#enter-note .hiddenOperationNoteId").val(passedTicketId);
+            if (data.isupdating) {
+                $("#enter-note textarea").val(document.getElementById(`operation-note-${data.day}`).innerHTML);
+            }
+        });
+
+        $(document).on("click", "#enterHourBtn", (event) => {
+            var data = event.target.dataset;
+            const passedTicketId = data.id;
+            $("#enter-hour .hiddenOperationNoteId").val(passedTicketId);
+            if (data.isupdating) {
+
+                var updatingRowHourValue = document.getElementById(`operation-hour-${data.day}`).innerHTML;
+                var hourDropdown = document.getElementById("hourDropdown");
+                var hourDropdownOptionsArray = Array.from(hourDropdown.options)
+                var hourSelectedOption = hourDropdownOptionsArray.find(opt => opt.value == updatingRowHourValue)
+                hourSelectedOption.selected = true;
+            }
+        });
+        $(document).on("click", "#changeShopStatusBtn", (event) => {
+            var data = event.target.dataset;
+            const passedTicketId = data.id;
+            $("#change-shop-status .hiddenOperationShopId").val(passedTicketId);
+           
+        });
+
+
+    </script>
+    }
+@*
+    if (data.isupdating) {
+    $.ajax({
+    url: `/Operation/GetOperationVehicle/${passedOperationVehicleId}`,
+    type: "GET",
+    success: (response) => {
+    console.log(response)
+    var supplierId = response.data.supplierId;
+    var vehicleId = response.data.vehicleId;
+    $('#suppliers').val(supplierId).change();
+    $('#vehicles').val(vehicleId).change();
+    },
+    error: (error) => {
+    console.log(error);
+    }
+    })
+    }
+    *@

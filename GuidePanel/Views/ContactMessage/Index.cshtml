@@ -1,0 +1,44 @@
+﻿@using Dto.ApiPanelDtos.ContactMessageDtos;
+@model List<ContactMessageListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Contact Message List</h4>
+    <div class="card-body">
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th>Sending Date</th>
+                    <th>Name Surname</th>
+                    <th>Phone Number</th>
+                    <th>Subject</th>
+                    <th style="width: 0%;">Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contactMessage in Model.OrderByDescending(x=>x.SendingDate))
+                {
+                    <tr>
+                        <td>@contactMessage.SendingDate.ToString("dd-MM-yyyy")</td>
+                        <td>@contactMessage.SenderName</td>
+                        <td>@contactMessage.SenderPhone</td>
+                        <td>@contactMessage.Subject</td>
+                        <td>
+                            <a href="/ContactMessage/ContactMessageDetail/@contactMessage.ContactMessageID" class="btn btn-primary w-100">Detail</a>
+                        </td>
+                    </tr>
+                }
+                
+
+
+            </tbody>
+
+
+        </table>
+
+    </div>
+</div>
+

@@ -1,0 +1,126 @@
+﻿@using Dto.ApiPanelDtos.Discount
+@model List<DiscountListDto>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">Discount List</h4>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="row justify-content-end">
+                <div class="mb-4">
+                    <a class="btn btn-secondary float-end" href="/Discount/AddDiscount">
+                        Add Discount
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 0%;">Update</th>
+                    <th style="width: 0%;">Delete</th>
+                    <th style="width: 0%;">Status</th>
+                    <th style="width: 0%;">Discount Name</th>
+                    <th style="width: 0%;">Discount Type</th>
+                    <th style="width: 0%;">Discount Amount</th>
+                    <th style="width: 0%;">Coupon Code</th>
+                    <th style="width: 0%;">Starting Date</th>
+                    <th style="width: 0%;">End Date</th>
+                    <th style="width: 0%;">Using Start Date</th>
+                    <th style="width: 0%;">Using End Date</th>
+                    <th style="width: 0%;">Explanation</th>
+                    <th style="width: 0%;">Tour Categories</th>
+                    <th style="width: 0%;">Tours To Benefit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var discount in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Discount/EditDiscount/@discount.Id" class="btn btn-primary">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Discount/DeleteDiscount/@discount.Id" class="btn btn-danger">Delete</a>
+                            </div>
+                        </td>
+                        <td>
+                            @if (discount.Status)
+                            {
+                                <a href="/Discount/ToggleDiscountStatus/@discount.Id" class="btn btn-success w-100">Active</a>
+                            }
+                            else
+                            {
+                                <a href="/Discount/ToggleDiscountStatus/@discount.Id" class="btn btn-danger w-100">Passive</a>
+                            }
+                        </td>
+                        <td>
+                            @discount.DiscountName
+                        </td>   
+                        <td>
+                            @discount.DiscountType
+                        </td>  
+                        <td>
+                            @discount.DiscountAmount
+                        </td> 
+                        <td>
+                            @discount.CouponCode
+                        </td>  
+                        <td>
+                            @discount.StartDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @discount.EndDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @discount.UsingStartDate?.ToShortDateString()
+                        </td>
+                        <td>
+                            @discount.UsingEndDate?.ToShortDateString()
+                        </td>
+                        <td>
+                            @discount.Explanation
+                        </td>
+                          <td>
+                            @{
+                                if(discount.TourCategories.Count > 0)
+                                {   
+                                  string cellValueStrTourCategory = string.Empty;
+                                  foreach(var category in discount.TourCategories)
+                                  {
+                                      cellValueStrTourCategory += $"{category},";
+                                  }
+                                    @cellValueStrTourCategory
+                                }
+                                 else
+                                    @string.Empty;
+                            }
+                        </td> 
+                        <td>
+                            @{
+                                if (discount.ToursToBenefit.Count > 0)
+                                {
+                                    string cellValueStrTour = string.Empty;
+                                    foreach (var tour in discount.ToursToBenefit)
+                                    {
+                                        cellValueStrTour += $"{tour},";
+                                    }
+                                    @cellValueStrTour
+                                }
+                                else
+                                    @string.Empty;
+                            }
+                        </td> 
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

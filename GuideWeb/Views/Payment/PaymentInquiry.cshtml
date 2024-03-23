@@ -1,0 +1,147 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.Payment;
+@using Dto.ApiWebDtos.WebToApiDtos.Reservation;
+@using GuideWeb.Helpers;
+@model PaymentInquiryDto
+@{
+    ViewData["Title"] = "PaymentInquiry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string languagePrefix = ViewData["language"].ToString();
+}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="booking-form-box pb-0">
+              
+              
+                <br>
+                <!-- fieldsets -->
+                <fieldset>
+                    <div>
+                        <div class="row">
+                            <div class="container text-center">
+                                <span id="payable">
+                                    <label for="totalPrice">Total Price ( @Helpers.Wprice((decimal)Model.Amount) )</label>
+
+                                </span>
+                            </div>
+                        </div>
+                      @*   <div class="row">
+                            <div class="payment-title">
+                                <h1>Payment Inquiry</h1>
+                            </div>
+                        </div> *@
+                        <div class="row mt-5 mb-5">
+                            <div class="col-lg-4 offset-md-1">
+                                <img class="w-100 mt-5" src="@Resource.ImagePath/cc-sample.png" alt="credit-card">
+                            </div>
+                            <div class="col-lg-5 offset-md-1">
+                                <form method="post" id="payment-form" class="banner-form" action="/Payment/PaymentInquiry">
+                                    <input asp-for="ReservationId" hidden />
+                                    <input asp-for="Amount" hidden value ="@Model.Amount"/>
+                                    <div class="row">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="Card Holder Name" type="text" asp-for="CardHolderName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required placeholder="Card Number" type="number" maxlength="16" asp-for="CardNumber" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input hidden asp-for="Amount" value="@Model.Amount" />
+                                    <div class="row">
+                                        <div class="col p-0">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    <input required placeholder="Month" min="1" max="12" type="number" asp-for="Month" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col pe-0">
+                                            <div class="search-box-single destination-box postition-relative">
+                                                <div class="searchbox-icon">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                                <div class="searchbox-input">
+                                                    @{
+                                                        var currentYear = DateTime.Now.Year;
+                                                    }
+                                                    <input required placeholder="Year" min="@currentYear" max="@currentYear + 8" type="number" asp-for="Year" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="search-box-single destination-box postition-relative">
+                                            <div class="searchbox-icon">
+                                                <i class="fas fa-id-card"></i>
+                                            </div>
+                                            <div class="searchbox-input">
+                                                <input required maxlength="3" placeholder="Security Code" type="number" asp-for="SecurityCode" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+                                    <div class="row clearfix">
+                                        <div class="searchbox-icon ">
+                                            <input id="Cancellation" class="float-start vertical-half"
+                                                   type="checkbox" name="Cancellation" required />
+                                            <label for="Cancellation" class="float-start ms-3 ">
+                                                I accept <a class="orange" href="@Helpers.PrepareUrl(languagePrefix,"cancellation-policy")">Cancellation Policy</a>
+                                            </label>
+                                            <label for="Terms" class="float-start ms-3 ">
+                                                I accept <a class="orange" href="@Helpers.PrepareUrl(languagePrefix,"terms-and-conditions")">Terms And Conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <br /><br />
+
+                                    <div id="completePaymentButton" style="display:flex">
+                                        @*  bunu javascript ile componentin içinden eklemeye karar verdim*@
+                                        <div id="payment2">
+                                            @*@if (User.IsInRole("Agent"))
+                                            {
+                                            <a href="/Payment/CompleteWithoutPayment/@Model.ReservationId" class="eg-btn btn--secondary btn--sm submit-btn action-button" style="width:auto;">Reservation Without Payment</a>
+                                            }*@
+                                        </div>
+                                        <button type="submit" class="eg-btn btn--primary btn--lg submit-btn action-button" alt="Complete Purchase" title="Complete Purchase" style="width:auto;">Complete Payment</button>
+
+                                        @*<a href="/Payment/PaymentBilling/@Model.ReservationId" class=" text-center float-end previous action-button-previous">Previous</a>*@
+                                        @*<a href="/Payment/PaymentParticipant/@Model.ReservationId" class=" text-center float-end previous action-button-previous">Previous</a>*@
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<div class="modal fade" id="payment-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <iframe style="width:100%;height:500px;border:none" frameborder="0"></iframe>
+                <div id="iframeV2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,254 @@
+﻿@using Dto.ApiWebDtos.ApiToWebDtos.GeneralPages;
+@using Dto.ApiWebDtos.ApiToWebDtos.Tour;
+@using Dto.ApiWebDtos.GeneralDtos;
+@using Dto.ApiWebDtos.WebToApiDtos;
+@using GuideWeb.Helpers;
+@model (List<BlogsWithNameAndIdDto> blogs,List<TourListDto> tours,CustomPageConstantValueDto customPageDto)
+@{
+    string languagePrefix = ViewData["language"].ToString();
+}
+
+<footer class=" footer-section">
+    <div class="footer-top">
+        <div class="container-xl container-lg-fluid container">
+            <div class="row">
+                <div class="col-md-6 col-xl-3 ">
+                    <div class="footer-item">
+                        <div class="footer-item">
+                            <div id="block-7" class="destination-widget-item widget_block">
+                                <div class="footer-item">
+                                    <div id="block-7" class="destination-widget-item widget_block">
+                                        <div class="footer-about">
+                                            <div class="footer1-logo">
+                                                <img src="~/assets/images/logo-1.png" class="w-100 rounded-circle"
+                                                     alt="Guided Istanbul Tours" title="Guided Istanbul Tours">
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                                 viewBox="0 0 400 400">
+                                                <defs>
+                                                    <path d="M0, 200a200, 200 0 1, 0 400, 0a200, 200 0 1, 0 -400, 0"
+                                                          id="txt-path" fill="white"></path>
+                                                </defs>
+
+                                                <text fill="#DDDDDD" font-size="35.5" font-family="Helvetica Neue"
+                                                      font-weight="600">
+                                                    <textPath startOffset="0" xlink:href="#txt-path">
+                                                        GUIDED ISTANBUL
+                                                        TOURS &nbsp; GUIDED ISTANBUL TOURS
+                                                    </textPath>
+                                                </text>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="footer-item mt-5">
+                        <p class="text-justify">
+                            <a href="index.html" class="fw-bold "> Guided Istanbul Tours</a> is
+                            a professional travel agency operated by Urban Explorist and a proud member of <a href="https://www.tursab.org.tr/tr/ddsv" class="fw-bold" alt="Guided Istanbul Tours TURSAB" title="Guided Istanbul Tours TURSAB">
+                                TURSAB with license
+                                #10876.
+                            </a>
+                        </p>
+                        <a href="https://www.tursab.org.tr/tr/ddsv">
+                            <img class="mb-3" src="~/assets/images/tursab-dvs.png"
+                                 alt="TURSAB" title="TURSAB Digital Verification System">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 d-flex justify-content-lg-center">
+                    <div class="footer-item">
+                        <div id="nav_menu-2" class="destination-widget-item widget_nav_menu">
+                            <div class="destination-widget-title">
+                                <h3>Recent Posts</h3>
+                            </div>
+                            <div class="menu-information-container">
+                                @*/////////////////////////////*@
+                                <ul id="menu-information" class="menu">
+                                    @foreach (var blog in Model.blogs)
+                                    {
+                                        <li>
+                                            <a href="@Helpers.PrepareUrl(languagePrefix,blog.Slug)" title="@blog.BlogTitle">@blog.BlogTitle</a> <!--/Blog/BlogDetail/blog.BlogId-->
+                                        </li>
+                                    }
+                                    @* <li>
+                                    <a href="blog-details.html">Where to go in Europe for Christmas 2023?</a>
+                                    </li>
+                                    <li>
+                                    <a href="blog-details.html">Cable Car-Teleferik Fees in Turkey 2023 </a>
+                                    </li>
+                                    <li>
+                                    <a href="blog-details.html">What To Wear In Turkey Visit</a>
+                                    </li>
+                                    <li>
+                                    <a href="blog-details.html">Benefits of Private Tour in Istanbul</a>
+                                    </li>
+                                    <li>
+                                    <a href="blog-details.html">Istanbul Layover Activities and Tours</a>
+                                    </li>*@
+                                </ul>
+                            </div>
+                            <div class="destination-widget-title mt-5">
+                                <h3>Subscribe</h3>
+                            </div>
+                            <div class="menu-information-container">
+                                <form class="form" method="post" action="">
+                                    <div class="form-group pe-5 ps-3">
+                                        <input style="font-size: large;" class="form-control" type="text"
+                                               name="Email" placeholder="E-Mail">
+                                    </div>
+                                    <div class="clearfix col-lg-12 pe-5 mt-3">
+                                        <button style="border-radius: 20px;" type="submit"
+                                                class="float-end eg-btn btn--primary btn--md submit-btn" title=Subscribe>
+                                            Subcribe
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 d-flex justify-content-lg-center">
+                    <div class="footer-item">
+                        <div id="nav_menu-3" class="destination-widget-item widget_nav_menu">
+                            <div class="destination-widget-title">
+                                <h3>Popular Tours</h3>
+                            </div>
+                            <div class="menu-destination-container">
+                                <ul id="menu-destination" class="menu">
+                                    @foreach (var tour in Model.tours)
+                                    {
+                                        <li>
+                                            <a href="@Helpers.PrepareUrl(languagePrefix,tour.Slug)" title="@tour.Name">@tour.Name</a>  @*/Tour/TourDetail/tour.ProductID*@
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 d-flex justify-content-lg-end">
+                    <div class="footer-item">
+                        <div id="egens_contacts-3" class="destination-widget-item widget_egens_contacts">
+                            <div class="destination-widget-title">
+                                <h3>Reach Us</h3>
+                            </div>
+                            <ul class="contact-list">
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-telephone" alt="Guided Istanbul Tours Telephone" title="Guided Istanbul Tours Telephone"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="tel:+1-202-555-0144" alt="" title="">+90 542 591 9925</a>
+                                        <a href="tel:+1-202-555-0152" alt="" title="">+90 542 591 9925</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-envelope" alt="Guided Istanbul Tours Mail" title="Guided Istanbul Tours Mail"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="mailto:info@guidedistanbultours.com" title="Info Mail">info@guidedistanbultours.com</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-geo-alt" alt="Guided Istanbul Tours Location" title="Guided Istanbul Tours Address"></i>
+                                    </div>
+                                    <div class="text">
+                                        Alemdar Mah. Divanyolu Cad. No:22 Kat:3 (3rd Floor) Fatih/Istanbul/Turkey
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="@Helpers.PrepareUrl(languagePrefix,"terms-and-conditions")" title="Terms and Conditions">@Helpers.Wcv(Model.customPageDto.ConstantValues,"Footer.TermsAndConditions") </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="@Helpers.PrepareUrl(languagePrefix,Model.customPageDto.SlugDict["cancellationPolicySlug"])" title="Cancellation Policy">@Helpers.Wcv(Model.customPageDto.ConstantValues,"Footer.CancellationPolicy") </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="@Helpers.PrepareUrl(languagePrefix,"reservation-inquiry")" title="Reservation Inquiry">  @Helpers.Wcv(Model.customPageDto.ConstantValues,"Footer.ReservationInquiry") </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="@Helpers.PrepareUrl(languagePrefix,Model.customPageDto.SlugDict["applyAgentSlug"])" title="Apply as an Agent"> @Helpers.Wcv(Model.customPageDto.ConstantValues,"ApplyAgent.Title")</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="text">
+                                        <a href="@Helpers.PrepareUrl(languagePrefix,"apply-as-guide")" title="Apply as a Guide"> @Helpers.Wcv(Model.customPageDto.ConstantValues, "Footer.ApplyGuide")</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row footer-meta">
+                <div class="col-lg-6 d-flex justify-content-lg-start justify-content-center align-items-center mb-lg-0 mb-5">
+                    <h4>Stay Connected:</h4>
+
+                    <ul class="footer-social">
+                        <li>
+                            <a href="https://www.facebook.com/privateguidedistanbultours" title="Guided Istanbul Tours Facebook">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li><a href="https://www.tripadvisor.com/Attraction_Review-g293974-d4053683-Reviews-Guided_Istanbul_Tours-Istanbul.html" title="Guided Istanbul Tours Tripadvisor"><i class="fa fa-tripadvisor"></i></a></li>
+                        <li>
+                            <a href="https://www.instagram.com/guidedistanbultour/" title="Guided Istanbul Tours Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                        </li>
+
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="container">
+        <div class="footer-bottom mt-80">
+            <div class="row d-flex align-items-center g-3 justify-content-md-between">
+                <div class="col-md-6 d-flex justify-content-lg-start justify-content-center text-lg-start text-center">
+                    <p>
+                        <a href="https://www.demircode.com/" title="Design By Demircode"> Demircode 2023 | <a href="#">Guided Istanbul Tours</a>
+                    </p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-lg-end justify-content-center align-items-center">
+                    <ul class="f-bottom-list d-flex jusify-content-start align-items-center">
+                        <li><a target="_blank" href="@Helpers.PrepareUrl(languagePrefix,Model.customPageDto.SlugDict["privacyPolicySlug"])" title="Privacy Policy">@Helpers.Wcv(Model.customPageDto.ConstantValues,"Privacy Policy")</a></li>
+                        <li><a target="_blank" href="#" title="Terms of Use">Terms of Use</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

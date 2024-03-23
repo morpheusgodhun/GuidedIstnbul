@@ -1,0 +1,707 @@
+﻿@using Dto.ApiPanelDtos.AgentDtos;
+@using Dto.ApiPanelDtos.ProductDtos.GeneralDtos;
+@model ( List<AgentDto> getApplyAgentDto, List<ProductNameAndIdDto> ProductAdvanceDiscounts )
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mt-2">
+            <div class="card-header">
+                <h4 class="header-title mb-1 mt-1">Business Partners Management List</h4>
+            </div>
+            @*<div class="card-body">
+            <div class="row col-sm-12 col-md-6 col-lg-6 mt-2 mb-2 w-100">
+            <div class="input-group ">
+            <select class="form-select" id="example-select">
+            <option value="">Unanswered</option>
+            <option value="">Approved</option>
+            <option value="">Rejects</option>
+            </select>
+
+            <button type="button" class="btn btn-secondary">Filter</button>
+            </div>
+            </div>
+            </div>*@
+        </div>
+        <div class="card">
+            <div class="card-body ">
+                <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Payment Management</th>
+                            <th>User Requests</th>
+                            <th>User Type</th>
+                            <th>Request Date</th>
+                            <th>Agent Title</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Country&City</th>
+                            <th>Tax Administraion</th>
+                            <th>Tax Number</th>
+                            <th>Company Manager's Name and Surname</th>
+                            <th>Trade Registry Number</th>
+                            <th>Website Link</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 1 -->
+                        @foreach (var item in Model.getApplyAgentDto)
+                        {
+                            <tr class="odd">
+                                @if (item.ApproveStatus == 1)
+                                {
+                                    <td class="text-center sorting_1">
+                                        <a href="ChangeStatus?AgentId=@item.Id" class="btn btn-success w-100">@(item.Status ? "Passive" : "Active")</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="sorting_1">
+                                        <button type="button" class="btn btn-primary approve" data-bs-toggle="modal" data-bs-target="#approve" data-id="@item.Id">Approve</button>
+                                        <button type="button" class="btn btn-danger">Reject</button>
+                                        <input type="checkbox" id="switch1" checked="" data-switch="success">
+                                    </td>
+                                }
+                                <td>
+                                    <button type="button" data-id="@item.Id" data-tourdiscount="@item.DefaultTourDiscount" data-servicediscount="@item.ServicesDiscountRate" data-withoutPay="@item.WithoutPay" class="btn btn-warning payment-management" data-bs-toggle="modal" data-bs-target="#payment-management">Payment Management</button>
+                                </td>
+                                <td>
+                                    <a class="btn btn-dark" href="UserRequests?agentId=@item.Id">User Requests</a>
+                                </td>
+                                <td>Agent</td>
+                                <td>@item.CreateDate</td>
+                                <td>@item.AgentTitle</td>
+                                <td>@item.Email</td>
+                                <td>@item.Phone</td>
+                                <td>@item.CountryCity</td>
+                                <td>@item.TaxAdministration</td>
+                                <td>@item.TaxNumber</td>
+                                <td>@item.CompanyManager</td>
+                                <td>@item.TradeRegistryNumber</td>
+                                <td>@item.WebsiteLink</td>
+                                <td>@item.Address</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- Advence Commission modal start -->
+                <div class="modal fade" id="advence-commission" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Advence Commission</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <!-- start page title -->
+                                    @foreach (var item in Model.ProductAdvanceDiscounts)
+                                    {
+                                        <div class="row">
+                                            <div class="col-sm-12 mb-3 mr-1">
+                                                <label for="@item.Id" class="form-label fw-bold">@item.Name:</label>
+                                                <div class="input-group">
+                                                    <input id="@item.Id" type="number" class="form-control discountAdv" aria-label="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                    <div class="row">
+                                        <!-- Button -->
+                                        <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                            <button type="button" class="btn btn-dark rounded-pill px-5 mt-3" id="saveAdvdis">
+                                                SAVE
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+                <!-- Advence Commission modal end -->
+                <!-- Payment Management modal -->
+                <div class="modal fade" id="payment-management" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">
+                                    Payment
+                                    Management
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="clearfix">
+                                        <button type="button" data-bs-target="#advence-commission"
+                                                data-bs-toggle="modal" style="float: right;"
+                                                class="btn btn-warning">
+                                            Advance Commission
+                                        </button>
+                                    </div>
+                                    <div class="page-title-box">
+                                        <h6 class="font-10 fst-italic mb-3">
+                                            Asterisk (<span class="text-danger fw-bold">*</span>)
+                                            required fields
+                                        </h6>
+                                    </div>
+                                    <!---Add Survey Start-->
+                                    <!-- start page title -->
+                                    <form method="" action="">
+                                        <div class="row">
+                                            <div class="col-sm-12 mb-3 mr-1">
+                                                <label for="Commission-Rate"
+                                                       class="form-label fw-bold">
+                                                    Default Tours Commission
+                                                    Rate:<span class="text-danger fw-bold">*</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <input id="Commission-Rate" type="number"
+                                                           class="form-control"
+                                                           aria-label="Amount (to the nearest dollar)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 mb-3 mr-1">
+                                                <label for="additional-services-commission-rate"
+                                                       class="form-label fw-bold">
+                                                    Additional Services
+                                                    Commission Rate:<span class="text-danger fw-bold">*</span>
+                                                </label>
+                                                <div class="input-group">
+                                                    <input id="additional-services-commission-rate"
+                                                           type="number" class="form-control"
+                                                           aria-label="Amount (to the nearest dollar)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="row">
+                                        <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="right-curront"
+                                        class="form-label fw-bold">
+                                        Right
+                                        to
+                                        curront
+                                        balance:<span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input id="right-curront" type="number"
+                                        class="form-control"
+                                        aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                        </div>
+                                        </div>*@
+                                        @* <div class="row">
+                                        <div class="col-sm-12  mb-3 mr-1">
+                                        <label for="datepicker1"
+                                        class="form-label fw-bold">
+                                        Payment
+                                        Due Date:
+                                        <span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <div class="mb-3 position-relative" id="datepicker1">
+                                        <input type="text" class="form-control"
+                                        data-provide="datepicker"
+                                        data-date-container="#datepicker1">
+                                        </div>
+                                        </div>
+                                        </div>*@
+                                        <div class="row">
+                                            <div class="col-sm-12  mb-3 mr-1">
+                                                <label for="" class="form-label fw-bold">
+                                                    *
+                                                    First it will write <span class="text-danger fw-bold">-</span> , then it
+                                                    will write <span class="text-danger fw-bold">+</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12  mb-3 mr-1">
+                                                <input type="checkbox" class="form-check-input"
+                                                       id="customCheck2">
+                                                <label class="form-check-label" for="customCheck2">
+                                                    The
+                                                    right to make a reservation without paying.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Button -->
+                                            <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                                <button type="submit"
+                                                        class="btn btn-dark rounded-pill px-5 mt-3">
+                                                    SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+                <!-- Aprove modal -->
+                <div class="modal fade" id="approve" aria-hidden="true"
+                     aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalToggleLabel">Approve</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="page-title-box">
+                                        <h6 class="font-10 fst-italic mb-3">
+                                            Asterisk (<span class="text-danger fw-bold">*</span>)
+                                            required fields
+                                        </h6>
+                                    </div>
+                                    <!---Add Survey Start-->
+                                    <!-- start page title -->
+                                    <form method="post" asp-action="Approve" asp-controller="Agent">
+                                        <div class="row">
+                                            <div class="col-sm-12 mb-3 mr-1">
+                                                <label for="commission-rate"
+                                                       class="form-label fw-bold">
+                                                    Discount Rate:
+                                                    <span class="text-danger fw-bold">*</span>
+                                                </label>
+                                                <input type="hidden" name="AgentId" value="" />
+                                                <input type="number" name="DiscountRate" id="commission-rate"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Button -->
+                                            <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                                <button type="submit"
+                                                        class="btn btn-dark rounded-pill px-5 mt-3">
+                                                    SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Business Partners Management List End-->
+
+</div>
+@section Scripts {
+    <script>
+
+        var agentId;
+
+        $(document).ready(function () {
+            $('.approve').on('click', function (e) {
+                // Butona tıklanınca
+                var agentId = $(this).data('id'); // data-id özelliğinden AgentId değerini al
+                console.log(agentId);
+
+                // Modal içindeki formu bul ve içindeki AgentId input'unun değerini ayarla
+                var modalForm = $('#approve').find('form');
+                modalForm.find('input[name="AgentId"]').val(agentId);
+            });
+        });
+    </script>
+
+    <script>
+
+
+
+        $(document).ready(function () {
+            $('.payment-management').on('click', function (e) {
+                // Butona tıklanınca
+                agentId = $(this).data('id');
+                var tourDiscount = $(this).data('tourdiscount');
+                var serviceDiscount = $(this).data('servicediscount');
+                var withoutPay = $(this).data('withoutpay');
+
+
+
+                $('#Commission-Rate').val(tourDiscount)
+                $('#additional-services-commission-rate').val(serviceDiscount)
+                if (withoutPay == 'True') {
+                    //$('customCheck2').attr('checked','checked')
+                    $('#customCheck2').prop('checked', true);
+                }
+
+                $.ajax({
+                    type: "GET", // veya "GET" olarak ayarlayabilirsiniz
+                    url: "/Agent/GetAdvanceDiscountInfos/" + agentId, // AJAX isteği işlenecek olan server tarafı dosyasının yolu
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        console.log("fda", result.data, result.data.length);
+                        //discountAdv
+                        if (result.data.length > 0) {
+                            result.data.forEach(function (dsc) {
+                                console.log("22", result.data.length);
+                                $("#" + dsc.productId).val(dsc.discountRate);
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        // AJAX isteği başarısız olursa burası çalışır
+                        console.error("AJAX isteği başarısız oldu:", error);
+                    }
+                });
+
+
+                // Modal içindeki formu bul ve içindeki AgentId input'unun değerini ayarla
+                //var modalForm = $('#approve').find('form');
+                //modalForm.find('input[name="AgentId"]').val(agentId);
+            });
+
+
+
+            $('#saveAdvdis').on('click', function (e) {
+
+                var inputs = $(".discountAdv");
+                var jsonPost = [];
+                for (var i = 0; i < inputs.length; i++) {
+                    if ($(inputs[i]).val() != "") {
+
+                        ProductId = $(inputs[i]).attr("id");
+                        DiscountRate = $(inputs[i]).val();
+
+                        jsonPost.push({ "AgentId": agentId, "ProductId": ProductId, "DiscountRate": DiscountRate })
+                    }
+
+                }
+
+                console.log(jsonPost)
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Agent/PostAdvanceDiscountInfos",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(jsonPost),
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result);
+                    },
+                    error: function (error) {
+                        console.error("AJAX isteği başarısız oldu:", error);
+                    }
+                });
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+        });
+    </script>
+}
+
+@*<div class="card">
+    <div class="card-body ">
+        <div id="scroll-horizontal-datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+            <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="scroll-horizontal-datatable_length"><label class="form-label">Show <select name="scroll-horizontal-datatable_length" aria-controls="scroll-horizontal-datatable" class="form-select form-select-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="scroll-horizontal-datatable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="scroll-horizontal-datatable"></label></div></div></div><div class="row">
+                <div class="col-sm-12">
+                    <div class="dataTables_scroll">
+                        <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                            <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 2224.02px; padding-right: 0px;">
+                                <table class="table w-100 nowrap table-striped dataTable no-footer" style="margin-left: 0px; width: 2224.02px;">
+                                    <thead>
+                                        <tr><th class="sorting sorting_asc" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 144.925px;" aria-sort="ascending" aria-label="Status: activate to sort column descending">Status</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 160.925px;" aria-label="Payment Management: activate to sort column ascending">Payment Management</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 66.2px;" aria-label="User Type: activate to sort column ascending">User Type</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 90.025px;" aria-label="Request Date: activate to sort column ascending">Request Date</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 73.7875px;" aria-label="Agent Title: activate to sort column ascending">Agent Title</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 86.6875px;" aria-label="Email: activate to sort column ascending">Email</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 80.2375px;" aria-label="Phone: activate to sort column ascending">Phone</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 89.7375px;" aria-label="Country&amp;amp;City: activate to sort column ascending">Country&amp;City</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 120.55px;" aria-label="Tax Administraion: activate to sort column ascending">Tax Administraion</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 80.525px;" aria-label="Tax Number: activate to sort column ascending">Tax Number</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 270px;" aria-label="Company Manager's Name and Surname: activate to sort column ascending">Company Manager's Name and Surname</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 154.325px;" aria-label="Trade Registry Number: activate to sort column ascending">Trade Registry Number</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 86.75px;" aria-label="Website Link: activate to sort column ascending">Website Link</th><th class="sorting" tabindex="0" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 86.55px;" aria-label="Address: activate to sort column ascending">Address</th></tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div><div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%;">
+                            <table id="scroll-horizontal-datatable" class="table w-100 nowrap table-striped dataTable no-footer" aria-describedby="scroll-horizontal-datatable_info" style="width: 2230px;">
+                                <thead>
+                                    <tr style="height: 0px;"><th class="sorting sorting_asc" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 144.925px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-sort="ascending" aria-label="Status: activate to sort column descending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Status</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 160.925px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Payment Management: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Payment Management</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 66.2px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="User Type: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">User Type</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 90.025px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Request Date: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Request Date</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 73.7875px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Agent Title: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Agent Title</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 86.6875px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Email: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Email</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 80.2375px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Phone: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Phone</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 89.7375px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Country&amp;amp;City: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Country&amp;City</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 120.55px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Tax Administraion: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Tax Administraion</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 80.525px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Tax Number: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Tax Number</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 270px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Company Manager's Name and Surname: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Company Manager's Name and Surname</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 154.325px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Trade Registry Number: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Trade Registry Number</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 86.75px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Website Link: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Website Link</div></th><th class="sorting" aria-controls="scroll-horizontal-datatable" rowspan="1" colspan="1" style="width: 86.55px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Address: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Address</div></th></tr>
+                                </thead>
+
+                                <tbody>
+                                    <!-- 1 -->
+                                    <!-- 2 -->
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr class="odd">
+                                            @if (item.IsApproved)
+                                            {
+                                                 <td class="text-center sorting_1">
+
+                                                    <a href="#" class="btn btn-danger w-50">@(item.Status ? "Passive" : "Active")</a>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="sorting_1">
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approve">Approve</button>
+                                                    <button type="button" class="btn btn-danger">Reject</button>
+                                                    <input type="checkbox" id="switch1" checked="" data-switch="success">
+                                                </td>
+                                            }
+                                            <td>
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#payment-management">Payment Management</button>
+                                            </td>
+                                            <td>Agent</td>
+                                            <td>@item.CreateDate</td>
+                                            <td>@item.AgentTitle</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.CountryCity</td>
+                                            <td>@item.TaxAdministration</td>
+                                            <td>@item.TaxNumber</td>
+                                            <td>@item.CompanyManager</td>
+                                            <td>@item.TradeRegistryNumber</td>
+                                            <td>@item.WebsiteLink</td>
+                                            <td>@item.Address</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="scroll-horizontal-datatable_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="scroll-horizontal-datatable_paginate"><ul class="pagination pagination-rounded"><li class="paginate_button page-item previous disabled" id="scroll-horizontal-datatable_previous"><a href="#" aria-controls="scroll-horizontal-datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li><li class="paginate_button page-item active"><a href="#" aria-controls="scroll-horizontal-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="scroll-horizontal-datatable_next"><a href="#" aria-controls="scroll-horizontal-datatable" data-dt-idx="2" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li></ul></div></div></div>
+        </div>
+        <!-- Advence Commission modal start -->
+        <div class="modal fade" id="advence-commission" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Advence Commission</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <!-- start page title -->
+                            <form method="" action="">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="Tour1" class="form-label fw-bold">A Tour:<span class="text-danger fw-bold">*</span></label>
+                                        <div class="input-group">
+                                            <input id="Tour1" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="Tour2" class="form-label fw-bold">B Tour:<span class="text-danger fw-bold">*</span></label>
+                                        <div class="input-group">
+                                            <input id="Tour2" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="Tour3" class="form-label fw-bold">C Tour:<span class="text-danger fw-bold">*</span></label>
+                                        <div class="input-group">
+                                            <input id="Tour3" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="Tour4" class="form-label fw-bold">Airport Transfer:<span class="text-danger fw-bold">*</span></label>
+                                        <div class="input-group">
+                                            <input id="Tour4" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="Tour5" class="form-label fw-bold">Yatch:<span class="text-danger fw-bold">*</span></label>
+                                        <div class="input-group">
+                                            <input id="Tour5" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Button -->
+                                    <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                        <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">SAVE</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!-- Advence Commission modal end -->
+        <!-- Payment Management modal -->
+        <div class="modal fade" id="payment-management" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">
+                            Payment
+                            Management
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="clearfix">
+                                <button type="button" data-bs-target="#advence-commission" data-bs-toggle="modal" style="float: right;" class="btn btn-warning">
+                                    Advance Commission
+                                </button>
+                            </div>
+                            <div class="page-title-box">
+                                <h6 class="font-10 fst-italic mb-3">
+                                    Asterisk (<span class="text-danger fw-bold">*</span>)
+                                    required fields
+                                </h6>
+                            </div>
+                            <!---Add Survey Start-->
+                            <!-- start page title -->
+                            <form method="" action="">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="Commission-Rate" class="form-label fw-bold">
+                                            Default Tours Commission
+                                            Rate:<span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input id="Commission-Rate" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="additional-services-commission-rate" class="form-label fw-bold">
+                                            Additional Services
+                                            Commission Rate:<span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input id="additional-services-commission-rate" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="right-curront" class="form-label fw-bold">
+                                            Right
+                                            to
+                                            curront
+                                            balance:<span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input id="right-curront" type="number " class="form-control" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12  mb-3 mr-1">
+                                        <label for="datepicker1" class="form-label fw-bold">
+                                            Payment
+                                            Due Date:
+                                            <span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <div class="mb-3 position-relative" id="datepicker1">
+                                            <input type="text" class="form-control" data-provide="datepicker" data-date-container="#datepicker1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12  mb-3 mr-1">
+                                        <label for="" class="form-label fw-bold">
+                                            *
+                                            First it will write <span class="text-danger fw-bold">-</span> , then it
+                                            will write <span class="text-danger fw-bold">+</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12  mb-3 mr-1">
+                                        <input type="checkbox" class="form-check-input" id="customCheck2">
+                                        <label class="form-check-label" for="customCheck2">
+                                            The
+                                            right to make a reservation without paying.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!-- Button -->
+                                    <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                        <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">SAVE</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!-- Aprove modal -->
+        <div class="modal fade" id="approve" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Approve</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="page-title-box">
+                                <h6 class="font-10 fst-italic mb-3">
+                                    Asterisk (<span class="text-danger fw-bold">*</span>)
+                                    required fields
+                                </h6>
+                            </div>
+                            <!---Add Survey Start-->
+                            <!-- start page title -->
+                            <form method="" action="">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3 mr-1">
+                                        <label for="commission-rate" class="form-label fw-bold">
+                                            Commission Rate:
+                                            <span class="text-danger fw-bold">*</span>
+                                        </label>
+                                        <input type="number" id="commission-rate" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Button -->
+                                    <div class="col-sm-12  mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                                        <button type="submit" class="btn btn-dark rounded-pill px-5 mt-3">SAVE</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</div>*@

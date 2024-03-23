@@ -1,0 +1,55 @@
+﻿@using Dto.ApiPanelDtos.FaqCategoryDtos;
+@using Dto.ApiPanelDtos.FaqManagementDtos;
+@model EditFaqDto
+@{
+    ViewData["Title"] = "EditFaq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <h4 class="card-header">
+        <a href="/Faq/Index">F.A.Q List</a>
+        > Edit F.A.Q > @Model.FaqQuestion
+        </h4>
+    <div class="card-body">
+        <p class="card-text">
+            Asterisk (<span class="text-danger fw-bold">*</span>) required
+            fields
+        </p>
+        <!---Edit FAQ Start-->
+        <!-- start page title -->
+        <form method="post">
+            <input asp-for="FaqID" hidden />
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="faqcategory" class="form-label fw-bold">
+                        FAQ Category:<span class="text-danger fw-bold">*</span>
+                    </label>
+                    <select asp-for="FaqCategoryID" class="form-select" id="faqcategory">
+                        <option selected disabled>Select...</option>
+                        @foreach (var faqCategory in ((List<FaqCategoryListForSelectDto>)ViewBag.FaqCategories).OrderBy(x => x.Order))
+                        {
+                            <option value="@faqCategory.CategoryID">@faqCategory.CategoryName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 mb-3 mr-1">
+                    <label for="order" class="form-label fw-bold">
+                        Order: <span class="text-danger fw-bold">*</span>
+                    </label>
+                    <input required asp-for="Order" type="number" id="order" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <!-- Button -->
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3 mr-1 d-flex flex-row-reverse bd-highlight">
+                    <button type="submit"
+                            class="btn btn-dark rounded-pill px-5 mt-3">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---Edit FAQ End-->
+    </div>
+</div>
